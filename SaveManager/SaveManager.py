@@ -2,6 +2,8 @@ import dearpygui.dearpygui as dpg
 import shutil
 import os
 import json
+import threading
+
 
 dpg.create_context()
 
@@ -110,7 +112,10 @@ def copy_all_callback(sender, app_data):
 
             # Skip copying if folder size exceeds 5 GB
             if folder_size > 5 * 1024 * 1024 * 1024:  # 5 GB in bytes
-                dpg.set_value("error_text", f"Skipped '{name}' (size: {folder_size / (1024 * 1024 * 1024):.2f} GB) as it exceeds 5 GB.")
+                dpg.set_value(
+                    "error_text",
+                    f"Skipped '{name}' (size: {folder_size / (1024 * 1024 * 1024):.2f} GB) as it exceeds 5 GB.",
+                )
                 continue  # Skip this folder and move to the next
 
             # Copy the directory
@@ -149,6 +154,100 @@ def cancel_callback(sender, app_data):
     dpg.set_value("status_text", "Operation was cancelled.")
 
 
+def search_files():
+    local_app_data = os.getenv("LOCALAPPDATA")
+    documents_path = os.path.join(os.path.expanduser("~"), "Documents")
+    file_extensions = (".sav", ".dat")
+    sav_directories = set()  # Use a set to store unique directories
+
+    dpg.set_value("finder_progress_bar", 0.0)
+    dpg.show_item("finder_progress_bar")
+    dpg.set_value("finder_text", "Searching...")
+    dpg.show_item("finder_text")
+
+    directories_to_search = [local_app_data, documents_path]
+
+    total_dirs = 0
+    for directory in directories_to_search:
+        for _, dirs, _ in os.walk(directory):
+            total_dirs += len(dirs) + 1
+
+    processed_dirs = 0  # To count processed directories
+
+    # Walk through all directories and find files
+    for directory in directories_to_search:
+        for root, dirs, files in os.walk(directory):
+            processed_dirs += 1
+            dpg.set_value(
+                "finder_progress_bar",
+                (processed_dirs / total_dirs) * 100 if total_dirs > 0 else 100,
+            )
+
+            for file in files:
+                if file.endswith(file_extensions):
+                    sav_directories.add(root)
+
+    dpg.hide_item("finder_progress_bar")
+    dpg.hide_item("finder_text")
+
+    # Clear previous contents in the directory list group
+    if dpg.does_item_exist("directory_list"):
+        dpg.delete_item("directory_list", children_only=True)
+
+    if sav_directories:
+        for directory in sav_directories:
+            dpg.add_text(directory, wrap=580, parent="directory_list")
+    else:
+        dpg.add_text("No files found.", wrap=580, parent="directory_list")
+
+
+def start_search_thread():
+    thread = threading.Thread(target=search_files)
+    thread.start()
+
+
+def open_save_finder():
+    if not dpg.does_item_exist("save_finder_window"):
+        with dpg.window(
+            label="Save Finder",
+            modal=True,
+            width=600,
+            height=400,
+            no_resize=True,
+            no_collapse=True,
+            no_move=True,
+            pos=[100, 100],
+            tag="save_finder_window",
+        ):
+            dpg.add_button(label="Search for files", callback=start_search_thread)
+            dpg.add_spacer(height=5)
+            dpg.add_progress_bar(
+                tag="finder_progress_bar",
+                default_value=0.0,
+                width=400,
+                height=20,
+                show=False,
+            )
+            dpg.add_text("", tag="finder_text", show=False)
+            dpg.add_separator()
+            dpg.add_text(
+                "Directories containing .sav and .dat files will be listed here after search.",
+                wrap=580,
+            )
+
+            with dpg.group(tag="directory_list"):
+                pass
+
+            dpg.add_separator()
+            dpg.add_spacer(height=20)
+            dpg.add_button(
+                label="Close Save Finder",
+                callback=lambda: dpg.hide_item("save_finder_window"),
+            )
+    else:
+        dpg.show_item("save_finder_window")
+
+
 # File Dialog for selecting source directory
 dpg.add_file_dialog(
     directory_selector=True,
@@ -179,6 +278,10 @@ with dpg.window(tag="Primary Window"):
     dpg.add_text("Directory Copy Manager")
     dpg.add_separator()
     dpg.add_spacer(height=10)
+
+    with dpg.menu_bar():
+        with dpg.menu(label="Tools"):
+            dpg.add_menu_item(label="Save Finder", callback=open_save_finder)
 
     # Input for the name
     dpg.add_input_text(label="Name", tag="name_input")
@@ -213,10 +316,10 @@ with dpg.window(tag="Primary Window"):
 
     # Button to copy all entries
     dpg.add_spacer(height=5)
-    dpg.add_button(label="Copy All", callback=copy_all_callback)
+    dpg.add_button(label="Run Copy Operation", callback=copy_all_callback)
 
     # Progress Bar
-    dpg.add_spacer(height=10)
+    dpg.add_spacer(height=5)
     dpg.add_progress_bar(
         tag="progress_bar", default_value=0.0, width=400, height=20, show=False
     )
@@ -226,8 +329,8 @@ with dpg.window(tag="Primary Window"):
     # Horizontal group for Save and Clear All buttons
     dpg.add_spacer(height=5)
     with dpg.group(horizontal=True):
-        dpg.add_button(label="Clear All Entries", callback=clear_entries_callback)
-        dpg.add_button(label="Save Entries", callback=save_entries)
+        dpg.add_button(label="Clear all entries", callback=clear_entries_callback)
+        dpg.add_button(label="Save entries to JSON", callback=save_entries)
 
     dpg.add_spacer(height=5)
     dpg.add_text("", tag="status_text")
