@@ -157,7 +157,18 @@ def cancel_callback(sender, app_data):
 def search_files():
     local_app_data = os.getenv("LOCALAPPDATA")
     documents_path = os.path.join(os.path.expanduser("~"), "Documents")
-    file_extensions = (".sav", ".dat")
+    public_documents_path = os.path.join("C:\\Users\\Public\\Documents")
+    common_paths = [
+        "C:\\Program Files",
+        "C:\\Program Files (x86)",
+        os.path.join(os.getenv("USERPROFILE"), "Desktop"),
+        os.path.join(os.getenv("USERPROFILE"), "AppData", "Roaming"),
+        os.path.join(os.getenv("USERPROFILE"), "AppData", "Local"),
+        os.path.join("C:\\Program Files (x86)", "Steam", "steamapps", "common"),
+        os.path.join("C:\\Program Files", "Epic Games"),
+    ]
+
+    file_extensions = (".sav", ".save")
     sav_directories = set()  # Use a set to store unique directories
 
     dpg.set_value("finder_progress_bar", 0.0)
@@ -165,7 +176,11 @@ def search_files():
     dpg.set_value("finder_text", "Searching...")
     dpg.show_item("finder_text")
 
-    directories_to_search = [local_app_data, documents_path]
+    directories_to_search = [
+        local_app_data,
+        documents_path,
+        public_documents_path,
+    ] + common_paths
 
     total_dirs = 0
     for directory in directories_to_search:
@@ -194,9 +209,22 @@ def search_files():
     if dpg.does_item_exist("directory_list"):
         dpg.delete_item("directory_list", children_only=True)
 
+    colors = [
+        (0, 140, 139),  # Dark Cyan
+        (255, 140, 0),  # Dark Orange
+    ]
+    color_index = 0
+
     if sav_directories:
-        for directory in sav_directories:
-            dpg.add_text(directory, wrap=580, parent="directory_list")
+        for index, directory in enumerate(sorted(sav_directories), start=1):
+            cur_color = colors[color_index]
+            dpg.add_text(
+                f"{index}. {directory}",
+                wrap=580,
+                parent="directory_list",
+                color=cur_color,
+            )
+            color_index = (color_index + 1) % len(colors)
     else:
         dpg.add_text("No files found.", wrap=580, parent="directory_list")
 
@@ -207,16 +235,27 @@ def start_search_thread():
 
 
 def open_save_finder():
+    viewport_width = dpg.get_viewport_width()
+    viewport_height = dpg.get_viewport_height()
+
+    # Set maximum width and height for the window
+    max_width = 600
+    max_height = 500
+
+    # Calculate position to center within the viewport
+    pos_x = max(0, (viewport_width - max_width) // 2)
+    pos_y = max(0, (viewport_height - max_height) // 2)
+
     if not dpg.does_item_exist("save_finder_window"):
         with dpg.window(
             label="Save Finder",
             modal=True,
-            width=600,
-            height=400,
-            no_resize=True,
+            width=max_width,
+            height=max_height,
             no_collapse=True,
-            no_move=True,
-            pos=[100, 100],
+            no_resize=False,  # Change to true when needed
+            no_move=False,  # Change to true when needed
+            pos=[pos_x, pos_y - 30],
             tag="save_finder_window",
         ):
             dpg.add_button(label="Search for files", callback=start_search_thread)
@@ -231,7 +270,7 @@ def open_save_finder():
             dpg.add_text("", tag="finder_text", show=False)
             dpg.add_separator()
             dpg.add_text(
-                "Directories containing .sav and .dat files will be listed here after search.",
+                "Directories containing .sav and .save files will be listed here after search.",
                 wrap=580,
             )
 
@@ -241,7 +280,7 @@ def open_save_finder():
             dpg.add_separator()
             dpg.add_spacer(height=20)
             dpg.add_button(
-                label="Close Save Finder",
+                label="Hide Save Finder",
                 callback=lambda: dpg.hide_item("save_finder_window"),
             )
     else:
