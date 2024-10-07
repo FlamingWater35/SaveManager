@@ -234,13 +234,13 @@ def search_files():
                 cur_color = colors[color_index]
                 dpg.add_text(
                     f"{index}. {directory}",
-                    wrap=580,
+                    wrap=770,
                     parent="directory_list",
                     color=cur_color,
                 )
                 color_index = (color_index + 1) % len(colors)
         else:
-            dpg.add_text("No files found.", wrap=580, parent="directory_list")
+            dpg.add_text("No files found.", wrap=770, parent="directory_list")
 
     # Start the search in a separate thread
     thread = threading.Thread(target=thread_target)
@@ -256,7 +256,7 @@ def open_save_finder():
     viewport_height = dpg.get_viewport_height()
 
     # Set maximum width and height for the window
-    max_width = 600
+    max_width = 800
     max_height = 500
 
     # Calculate position to center within the viewport
@@ -312,7 +312,7 @@ dpg.add_file_dialog(
     tag="source_file_dialog",
     cancel_callback=cancel_callback,
     width=700,
-    height=400,
+    height=450,
 )
 
 # File Dialog for selecting destination directory
@@ -323,7 +323,7 @@ dpg.add_file_dialog(
     tag="destination_file_dialog",
     cancel_callback=cancel_callback,
     width=700,
-    height=400,
+    height=450,
 )
 
 with dpg.font_registry():
@@ -397,7 +397,7 @@ load_entries()
 
 # Necessary setup
 dpg.bind_font(custom_font)
-dpg.create_viewport(title="Save Manager", width=800, height=600)
+dpg.create_viewport(title="Save Manager", width=1000, height=600)
 dpg.setup_dearpygui()
 dpg.show_viewport()
 dpg.set_primary_window("Primary Window", True)
