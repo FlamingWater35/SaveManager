@@ -163,17 +163,14 @@ def search_files():
         "C:\\Program Files (x86)",
         os.path.join(os.getenv("USERPROFILE"), "Desktop"),
         os.path.join(os.getenv("USERPROFILE"), "AppData", "Roaming"),
-        os.path.join(os.getenv("USERPROFILE"), "AppData", "Local"),
-        os.path.join("C:\\Program Files (x86)", "Steam", "steamapps", "common"),
-        os.path.join("C:\\Program Files", "Epic Games"),
     ]
 
     file_extensions = (".sav", ".save")
-    sav_directories = set()  # Use a set to store unique directories
+    sav_directories = set()
 
     dpg.set_value("finder_progress_bar", 0.0)
     dpg.show_item("finder_progress_bar")
-    dpg.set_value("finder_text", "Searching...")
+    dpg.set_value("finder_text", "Starting search...")
     dpg.show_item("finder_text")
 
     directories_to_search = [
@@ -182,56 +179,76 @@ def search_files():
         public_documents_path,
     ] + common_paths
 
-    total_dirs = 0
-    for directory in directories_to_search:
-        for _, dirs, _ in os.walk(directory):
-            total_dirs += len(dirs) + 1
+    total_dirs = sum(
+        len(dirs)
+        for dirpath in directories_to_search
+        for _, dirs, _ in os.walk(dirpath)
+    )
+    dpg.set_value("finder_text", "Searching...")
 
     processed_dirs = 0  # To count processed directories
+    total_files = 0  # Count total files found
 
-    # Walk through all directories and find files
-    for directory in directories_to_search:
-        for root, dirs, files in os.walk(directory):
-            processed_dirs += 1
-            dpg.set_value(
-                "finder_progress_bar",
-                (processed_dirs / total_dirs) * 100 if total_dirs > 0 else 100,
-            )
+    def process_directory(directory):
+        nonlocal processed_dirs, total_files
+        try:
+            for root, dirs, files in os.walk(directory):
+                processed_dirs += 1
+                dpg.set_value("finder_progress_bar", processed_dirs / total_dirs)
 
-            for file in files:
-                if file.endswith(file_extensions):
-                    sav_directories.add(root)
+                # Add files that match extensions
+                for file in files:
+                    if file.endswith(file_extensions):
+                        sav_directories.add(root)
+                        total_files += 1
 
-    dpg.hide_item("finder_progress_bar")
-    dpg.hide_item("finder_text")
+                # Update progress every 10 directories
+                if processed_dirs % 10 == 0:
+                    dpg.set_value("finder_progress_bar", processed_dirs / total_dirs)
 
-    # Clear previous contents in the directory list group
-    if dpg.does_item_exist("directory_list"):
-        dpg.delete_item("directory_list", children_only=True)
+        except Exception as e:
+            print(f"Error processing directory {directory}: {e}")
 
-    colors = [
-        (0, 140, 139),  # Dark Cyan
-        (255, 140, 0),  # Dark Orange
-    ]
-    color_index = 0
+    # Use threading to prevent UI freezing
+    def thread_target():
+        for directory in directories_to_search:
+            process_directory(directory)
 
-    if sav_directories:
-        for index, directory in enumerate(sorted(sav_directories), start=1):
-            cur_color = colors[color_index]
-            dpg.add_text(
-                f"{index}. {directory}",
-                wrap=580,
-                parent="directory_list",
-                color=cur_color,
-            )
-            color_index = (color_index + 1) % len(colors)
-    else:
-        dpg.add_text("No files found.", wrap=580, parent="directory_list")
+        # Final UI update
+        dpg.set_value("finder_progress_bar", 1.0)
+        dpg.hide_item("finder_progress_bar")
+        dpg.hide_item("finder_text")
+
+        # Update UI with found directories
+        if dpg.does_item_exist("directory_list"):
+            dpg.delete_item("directory_list", children_only=True)
+
+        colors = [
+            (0, 140, 139),  # Dark Cyan
+            (255, 140, 0),  # Dark Orange
+        ]
+        color_index = 0
+
+        if sav_directories:
+            for index, directory in enumerate(sorted(sav_directories), start=1):
+                cur_color = colors[color_index]
+                dpg.add_text(
+                    f"{index}. {directory}",
+                    wrap=580,
+                    parent="directory_list",
+                    color=cur_color,
+                )
+                color_index = (color_index + 1) % len(colors)
+        else:
+            dpg.add_text("No files found.", wrap=580, parent="directory_list")
+
+    # Start the search in a separate thread
+    thread = threading.Thread(target=thread_target)
+    thread.start()
 
 
 def start_search_thread():
-    thread = threading.Thread(target=search_files)
-    thread.start()
+    threading.Thread(target=search_files).start()
 
 
 def open_save_finder():
@@ -270,7 +287,7 @@ def open_save_finder():
             dpg.add_text("", tag="finder_text", show=False)
             dpg.add_separator()
             dpg.add_text(
-                "Directories containing .sav and .save files will be listed here after search.",
+                "Directories containing .sav and .save files will be listed here.",
                 wrap=580,
             )
 
