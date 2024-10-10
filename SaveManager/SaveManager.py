@@ -311,7 +311,7 @@ dpg.add_file_dialog(
     callback=source_callback,
     tag="source_file_dialog",
     cancel_callback=cancel_callback,
-    width=700,
+    width=800,
     height=450,
 )
 
@@ -322,7 +322,7 @@ dpg.add_file_dialog(
     callback=destination_callback,
     tag="destination_file_dialog",
     cancel_callback=cancel_callback,
-    width=700,
+    width=800,
     height=450,
 )
 
