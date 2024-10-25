@@ -3,6 +3,7 @@ import shutil
 import os
 import json
 import threading
+import sys
 
 
 dpg.create_context()
@@ -326,9 +327,22 @@ dpg.add_file_dialog(
     height=450,
 )
 
+def resource_path(relative_path):
+    """ Get the absolute path to the resource, works for dev and for PyInstaller """
+    if getattr(sys, 'frozen', False):
+        # If the application is frozen (i.e., running as a .exe)
+        base_path = sys._MEIPASS
+    else:
+        # If running in a normal Python environment
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+font_path = resource_path("docs/font.otf")
+
 with dpg.font_registry():
     # Add font file and size
-    custom_font = dpg.add_font("docs/font.otf", 20)
+    custom_font = dpg.add_font(font_path, 20)
 
 with dpg.window(tag="Primary Window"):
     dpg.add_text("Directory Copy Manager")
