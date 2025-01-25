@@ -4,6 +4,7 @@ import os
 import json
 import threading
 import sys
+import configparser
 
 
 dpg.create_context()
@@ -16,6 +17,44 @@ ui_items = []
 
 # File path for the JSON file
 json_file_path = "save_folders.json"
+config_file = "settings.ini"
+
+config = configparser.ConfigParser()
+
+
+def resource_path(relative_path):
+    """Get the absolute path to the resource, works for dev and for PyInstaller"""
+    if getattr(sys, "frozen", False):
+        # If the application is frozen (i.e., running as a .exe)
+        base_path = sys._MEIPASS
+    else:
+        # If running in a normal Python environment
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+
+font_path = resource_path("docs/font.otf")
+default_font_size = 20
+font_size = default_font_size
+
+
+# Function to load settings from the .ini file
+def load_settings(section, key, default=None):
+    if os.path.exists(config_file):
+        config.read(config_file)
+        if config.has_section(section) and key in config[section]:
+            return eval(config[section][key])  # Convert string back to its original type
+    return default
+
+
+# Function to save settings to the .ini file
+def save_settings(section, key, value):
+    if not config.has_section(section):
+        config.add_section(section)
+    config[section][key] = str(value)
+    with open(config_file, "w") as configfile:
+        config.write(configfile)
 
 
 def load_entries():
@@ -341,29 +380,64 @@ dpg.add_file_dialog(
 )
 
 
-def resource_path(relative_path):
-    """Get the absolute path to the resource, works for dev and for PyInstaller"""
-    if getattr(sys, "frozen", False):
-        # If the application is frozen (i.e., running as a .exe)
-        base_path = sys._MEIPASS
-    else:
-        # If running in a normal Python environment
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
-
-
-font_path = resource_path("docs/font.otf")
-
 with dpg.font_registry():
     # Add font file and size
-    custom_font = dpg.add_font(font_path, 20)
+    font_size = load_settings("DisplayOptions", "font_size")
+    if font_size == None:
+        font_size = default_font_size
+    custom_font = dpg.add_font(font_path, font_size)
 
 
 def update_wrap(new_wrap_value):
     global ui_items
     for text_id in ui_items:
         dpg.configure_item(text_id, wrap=new_wrap_value)
+
+
+def change_font_size(sender, app_data):
+    save_settings("DisplayOptions", "font_size", app_data)
+
+
+def open_settings():
+    global ui_items
+
+    viewport_width = dpg.get_viewport_width()
+    viewport_height = dpg.get_viewport_height()
+
+    # Set maximum width and height for the window
+    max_width = 800
+    max_height = 500
+
+    # Calculate position to center within the viewport
+    pos_x = max(0, (viewport_width - max_width) // 2)
+    pos_y = max(0, (viewport_height - max_height) // 2)
+
+    if not dpg.does_item_exist("settings_window"):
+        with dpg.window(
+            label="Settings",
+            modal=True,
+            width=max_width,
+            height=max_height,
+            no_collapse=True,
+            no_resize=False,  # Change to true when needed
+            no_move=False,  # Change to true when needed
+            pos=[pos_x, pos_y - 30],
+            tag="settings_window",
+        ):
+            with dpg.group():
+                with dpg.group(horizontal=True):
+                    dpg.add_text("Font size")
+                    dpg.add_slider_int(
+                        min_value=8,
+                        max_value=40,
+                        default_value=font_size,
+                        callback=change_font_size,
+                    )
+                with dpg.group(horizontal=True):
+                    dpg.add_text("Autowrap")
+                    dpg.add_text("lol")
+    else:
+        dpg.show_item("settings_window")
 
 
 with dpg.window(tag="Primary Window"):
@@ -375,7 +449,7 @@ with dpg.window(tag="Primary Window"):
         with dpg.menu(label="Tools"):
             dpg.add_menu_item(label="Save Finder", callback=open_save_finder)
         with dpg.menu(label="Settings"):
-            dpg.add_menu_item(label="Display options", callback=open_save_finder)
+            dpg.add_menu_item(label="Display options", callback=open_settings)
 
     # Input for the name
     dpg.add_input_text(label="Name", tag="name_input")

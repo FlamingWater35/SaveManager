@@ -12,10 +12,6 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\_py_abc.py',
    'PYMODULE'),
-  ('_pydatetime',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\_pydatetime.py',
-   'PYMODULE'),
   ('_pydecimal',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\_pydecimal.py',
@@ -51,6 +47,10 @@
   ('calendar',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\calendar.py',
+   'PYMODULE'),
+  ('configparser',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\configparser.py',
    'PYMODULE'),
   ('contextlib',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
@@ -422,13 +422,5 @@
    'PYMODULE'),
   ('zipfile',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\zipfile\\__init__.py',
-   'PYMODULE'),
-  ('zipfile._path',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\zipfile\\_path\\__init__.py',
-   'PYMODULE'),
-  ('zipfile._path.glob',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\zipfile\\_path\\glob.py',
+   'projects\\SaveManager\\.conda\\Lib\\zipfile.py',
    'PYMODULE')])
