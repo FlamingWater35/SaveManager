@@ -12,6 +12,7 @@ dpg.create_context()
 sources = []
 destinations = []
 names = []
+ui_items = []
 
 # File path for the JSON file
 json_file_path = "save_folders.json"
@@ -212,6 +213,8 @@ def search_files():
 
     # Use threading to prevent UI freezing
     def thread_target():
+        global ui_items
+
         for directory in directories_to_search:
             process_directory(directory)
 
@@ -233,15 +236,20 @@ def search_files():
         if sav_directories:
             for index, directory in enumerate(sorted(sav_directories), start=1):
                 cur_color = colors[color_index]
-                dpg.add_text(
+                item_id = dpg.add_text(
                     f"{index}. {directory}",
-                    wrap=770,
+                    wrap=dpg.get_item_width("save_finder_window") - 30,
                     parent="directory_list",
                     color=cur_color,
                 )
+                ui_items.append(item_id)
                 color_index = (color_index + 1) % len(colors)
         else:
-            dpg.add_text("No files found.", wrap=770, parent="directory_list")
+            dpg.add_text(
+                "No files found.",
+                wrap=dpg.get_item_width("save_finder_window") - 30,
+                parent="directory_list",
+            )
 
     # Start the search in a separate thread
     thread = threading.Thread(target=thread_target)
@@ -253,6 +261,8 @@ def start_search_thread():
 
 
 def open_save_finder():
+    global ui_items
+
     viewport_width = dpg.get_viewport_width()
     viewport_height = dpg.get_viewport_height()
 
@@ -287,10 +297,11 @@ def open_save_finder():
             )
             dpg.add_text("", tag="finder_text", show=False)
             dpg.add_separator()
-            dpg.add_text(
+            item_id = dpg.add_text(
                 "Directories containing .sav and .save files will be listed here.",
-                wrap=580,
+                wrap=dpg.get_item_width("save_finder_window") - 30,
             )
+            ui_items.append(item_id)
 
             with dpg.group(tag="directory_list"):
                 pass
@@ -298,8 +309,10 @@ def open_save_finder():
             dpg.add_separator()
             dpg.add_spacer(height=20)
             dpg.add_button(
-                label="Hide Save Finder",
-                callback=lambda: dpg.hide_item("save_finder_window"),
+                label="Wrap",
+                callback=lambda: update_wrap(
+                    dpg.get_item_width("save_finder_window") - 30
+                ),
             )
     else:
         dpg.show_item("save_finder_window")
@@ -327,9 +340,10 @@ dpg.add_file_dialog(
     height=450,
 )
 
+
 def resource_path(relative_path):
-    """ Get the absolute path to the resource, works for dev and for PyInstaller """
-    if getattr(sys, 'frozen', False):
+    """Get the absolute path to the resource, works for dev and for PyInstaller"""
+    if getattr(sys, "frozen", False):
         # If the application is frozen (i.e., running as a .exe)
         base_path = sys._MEIPASS
     else:
@@ -338,11 +352,19 @@ def resource_path(relative_path):
 
     return os.path.join(base_path, relative_path)
 
+
 font_path = resource_path("docs/font.otf")
 
 with dpg.font_registry():
     # Add font file and size
     custom_font = dpg.add_font(font_path, 20)
+
+
+def update_wrap(new_wrap_value):
+    global ui_items
+    for text_id in ui_items:
+        dpg.configure_item(text_id, wrap=new_wrap_value)
+
 
 with dpg.window(tag="Primary Window"):
     dpg.add_text("Directory Copy Manager")
@@ -352,6 +374,8 @@ with dpg.window(tag="Primary Window"):
     with dpg.menu_bar():
         with dpg.menu(label="Tools"):
             dpg.add_menu_item(label="Save Finder", callback=open_save_finder)
+        with dpg.menu(label="Settings"):
+            dpg.add_menu_item(label="Display options", callback=open_save_finder)
 
     # Input for the name
     dpg.add_input_text(label="Name", tag="name_input")
