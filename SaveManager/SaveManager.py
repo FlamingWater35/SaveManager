@@ -13,7 +13,7 @@ dpg.create_context()
 sources = []
 destinations = []
 names = []
-ui_items = []
+ui_items = {}
 
 # File path for the JSON file
 json_file_path = "save_folders.json"
@@ -99,6 +99,7 @@ def clear_entries_callback(sender, app_data):
 
 
 def add_entry_callback(sender, app_data):
+    global ui_items
     name = dpg.get_value("name_input")
 
     if name and sources and destinations:
@@ -107,9 +108,12 @@ def add_entry_callback(sender, app_data):
 
         # Add the new entry
         names.append(name)
-        dpg.add_text(
-            f"{name}: {current_source} -> {current_destination}", parent="entry_list"
+        item_id = dpg.add_text(
+            f"{name}: {current_source} -> {current_destination}",
+            parent="entry_list",
+            wrap=dpg.get_item_width("Primary Window") - 30,
         )
+        ui_items["Primary Window"].append(item_id)
 
         # Clear the displayed paths
         dpg.set_value("source_display", "")
@@ -283,7 +287,7 @@ def search_files():
                     parent="directory_list",
                     color=cur_color,
                 )
-                ui_items.append(item_id)
+                ui_items["save_finder_window"].append(item_id)
                 color_index = (color_index + 1) % len(colors)
         else:
             dpg.add_text(
@@ -327,6 +331,8 @@ def open_save_finder():
             pos=[pos_x, pos_y - 30],
             tag="save_finder_window",
         ):
+            if "save_finder_window" not in ui_items:
+                ui_items["save_finder_window"] = []
             dpg.add_button(label="Search for files", callback=start_search_thread)
             dpg.add_spacer(height=5)
             dpg.add_progress_bar(
@@ -342,20 +348,14 @@ def open_save_finder():
                 "Directories containing .sav and .save files will be listed here.",
                 wrap=dpg.get_item_width("save_finder_window") - 30,
             )
-            ui_items.append(item_id)
+            ui_items["save_finder_window"].append(item_id)
 
             with dpg.group(tag="directory_list"):
                 pass
 
             dpg.add_separator()
             dpg.add_spacer(height=20)
-            dpg.add_button(
-                label="Wrap",
-                callback=lambda: update_wrap(
-                    dpg.get_item_width("save_finder_window") - 30
-                ),
-            )
-        dpg.bind_item_handler_registry("save_finder_window", "window_handler")
+        dpg.bind_item_handler_registry("save_finder_window", "save_window_handler")
     else:
         dpg.show_item("save_finder_window")
 
@@ -391,10 +391,11 @@ with dpg.font_registry():
     custom_font = dpg.add_font(font_path, font_size)
 
 
-def update_wrap(new_wrap_value):
+def update_wrap(window_tag, new_wrap_value):
     global ui_items
-    for text_id in ui_items:
-        dpg.configure_item(text_id, wrap=new_wrap_value)
+    if window_tag in ui_items:
+        for text_id in ui_items[window_tag]:
+            dpg.configure_item(text_id, wrap=new_wrap_value)
 
 
 def change_font_size(sender, app_data):
@@ -443,20 +444,26 @@ def open_settings():
         dpg.show_item("settings_window")
 
 
-def resize_callback(sender, app_data):
+def resize_callback():
     # Get the current window width
-    if dpg.does_item_exist("save_finder_window"):
-        window_width = dpg.get_item_width("save_finder_window")
-    else:
-        return
-    # window_width = dpg.get_item_width(sender)
+    window_width = dpg.get_item_width("Primary Window")
 
-    # Set new wrap value based on window width (example: window width minus 50)
+    # Set new wrap value based on window width
     new_wrap_value = max(100, window_width - 30)  # Ensure wrap doesn't go too small
-    update_wrap(new_wrap_value)
+    update_wrap("Primary Window", new_wrap_value)
+
+
+def save_resize_callback():
+    window_width = dpg.get_item_width("save_finder_window")
+
+    # Set new wrap value based on window width
+    new_wrap_value = max(100, window_width - 30)  # Ensure wrap doesn't go too small
+    update_wrap("save_finder_window", new_wrap_value)
 
 
 with dpg.window(tag="Primary Window"):
+    if "Primary Window" not in ui_items:
+        ui_items["Primary Window"] = []
     dpg.add_text("Directory Copy Manager")
     dpg.add_separator()
     dpg.add_spacer(height=10)
@@ -525,6 +532,8 @@ load_entries()
 
 with dpg.item_handler_registry(tag="window_handler") as handler:
     dpg.add_item_resize_handler(callback=resize_callback)
+with dpg.item_handler_registry(tag="save_window_handler") as handler:
+    dpg.add_item_resize_handler(callback=save_resize_callback)
 
 
 dpg.bind_item_handler_registry("Primary Window", "window_handler")
