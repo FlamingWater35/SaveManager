@@ -5,6 +5,7 @@ import json
 import threading
 import sys
 import configparser
+import pyperclip
 
 
 dpg.create_context()
@@ -112,8 +113,20 @@ def add_entry_callback(sender, app_data):
             f"{name}: {current_source} -> {current_destination}",
             parent="entry_list",
             wrap=dpg.get_item_width("Primary Window") - 30,
+            user_data=[current_source, current_destination],
         )
         ui_items["Primary Window"].append(item_id)
+
+        with dpg.item_handler_registry(tag=f"text_handler_{item_id}"):
+            dpg.add_item_clicked_handler(
+                user_data=dpg.get_item_user_data(item_id)[0],
+                callback=text_click_handler,
+            )
+            dpg.add_item_double_clicked_handler(
+                user_data=dpg.get_item_user_data(item_id)[1],
+                callback=text_click_handler,
+            )
+        dpg.bind_item_handler_registry(item_id, f"text_handler_{item_id}")
 
         # Clear the displayed paths
         dpg.set_value("source_display", "")
@@ -286,8 +299,17 @@ def search_files():
                     wrap=dpg.get_item_width("save_finder_window") - 30,
                     parent="directory_list",
                     color=cur_color,
+                    user_data=directory,
                 )
                 ui_items["save_finder_window"].append(item_id)
+
+                with dpg.item_handler_registry(tag=f"text_handler_{item_id}"):
+                    dpg.add_item_clicked_handler(
+                        user_data=dpg.get_item_user_data(item_id),
+                        callback=text_click_handler,
+                    )
+                dpg.bind_item_handler_registry(item_id, f"text_handler_{item_id}")
+
                 color_index = (color_index + 1) % len(colors)
         else:
             dpg.add_text(
@@ -353,7 +375,7 @@ def open_save_finder():
             dpg.add_text("", tag="finder_text", show=False)
             dpg.add_separator()
             item_id = dpg.add_text(
-                "Directories containing .sav and .save files will be listed here.",
+                "Directories containing .sav and .save files will be listed below (click to copy to clipboard).",
                 wrap=dpg.get_item_width("save_finder_window") - 30,
             )
             ui_items["save_finder_window"].append(item_id)
@@ -481,6 +503,13 @@ def save_window_positions():
     save_settings("Window", "main_width", dpg.get_item_width("Primary Window"))
 
 
+def text_click_handler(sender, app_data, user_data):
+    # Copy the text to the clipboard
+    pyperclip.copy(user_data)
+    # Update the status text to inform the user
+    dpg.set_value("status_text", f"Copied to clipboard: {user_data}")
+
+
 with dpg.window(tag="Primary Window"):
     if "Primary Window" not in ui_items:
         ui_items["Primary Window"] = []
@@ -521,7 +550,12 @@ with dpg.window(tag="Primary Window"):
     dpg.add_separator()
 
     # Container for displaying entries
-    dpg.add_text("Entries will appear here:")
+    item_id = dpg.add_text(
+        "Entries will appear below (click or double click to copy to clipboard):",
+        wrap=dpg.get_item_width("Primary Window") - 30,
+    )
+    ui_items["Primary Window"].append(item_id)
+
     with dpg.group(tag="entry_list"):
         # This will hold all entries
         pass
@@ -545,8 +579,8 @@ with dpg.window(tag="Primary Window"):
         dpg.add_button(label="Save entries to JSON", callback=save_entries)
 
     dpg.add_spacer(height=5)
-    dpg.add_text("", tag="status_text")
-    dpg.add_text("", tag="error_text")
+    dpg.add_text("", tag="status_text", color=(255, 140, 0))
+    dpg.add_text("", tag="error_text", color=(139, 140, 0))
 
 
 def setup_viewport():
