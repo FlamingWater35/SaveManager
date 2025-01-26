@@ -311,9 +311,17 @@ def open_save_finder():
     viewport_width = dpg.get_viewport_width()
     viewport_height = dpg.get_viewport_height()
 
+    save_height = load_settings("Window", "save_finder_height")
+    save_width = load_settings("Window", "save_finder_width")
+
     # Set maximum width and height for the window
-    max_width = 800
-    max_height = 500
+
+    if save_height != None:
+        max_width = save_width
+        max_height = save_height
+    else:
+        max_width = 800
+        max_height = 500
 
     # Calculate position to center within the viewport
     pos_x = max(0, (viewport_width - max_width) // 2)
@@ -461,6 +469,18 @@ def save_resize_callback():
     update_wrap("save_finder_window", new_wrap_value)
 
 
+def save_window_positions():
+    if dpg.does_item_exist("save_finder_window"):
+        save_settings(
+            "Window", "save_finder_height", dpg.get_item_height("save_finder_window")
+        )
+        save_settings(
+            "Window", "save_finder_width", dpg.get_item_width("save_finder_window")
+        )
+    save_settings("Window", "main_height", dpg.get_item_height("Primary Window"))
+    save_settings("Window", "main_width", dpg.get_item_width("Primary Window"))
+
+
 with dpg.window(tag="Primary Window"):
     if "Primary Window" not in ui_items:
         ui_items["Primary Window"] = []
@@ -473,6 +493,7 @@ with dpg.window(tag="Primary Window"):
             dpg.add_menu_item(label="Save Finder", callback=open_save_finder)
         with dpg.menu(label="Settings"):
             dpg.add_menu_item(label="Display options", callback=open_settings)
+            dpg.add_menu_item(label="Save window pos", callback=save_window_positions)
 
     # Input for the name
     dpg.add_input_text(label="Name", tag="name_input")
@@ -527,6 +548,22 @@ with dpg.window(tag="Primary Window"):
     dpg.add_text("", tag="status_text")
     dpg.add_text("", tag="error_text")
 
+
+def setup_viewport():
+    main_height = load_settings("Window", "main_height")
+    main_width = load_settings("Window", "main_width")
+
+    # Set maximum width and height for the window
+    if main_height != None:
+        max_width = main_width
+        max_height = main_height
+    else:
+        max_width = 1000
+        max_height = 600
+
+    dpg.create_viewport(title="Save Manager", width=max_width, height=max_height)
+
+
 # Load entries on application start
 load_entries()
 
@@ -537,10 +574,8 @@ with dpg.item_handler_registry(tag="save_window_handler") as handler:
 
 
 dpg.bind_item_handler_registry("Primary Window", "window_handler")
-
-# Necessary setup
 dpg.bind_font(custom_font)
-dpg.create_viewport(title="Save Manager", width=1000, height=600)
+setup_viewport()
 dpg.setup_dearpygui()
 dpg.show_viewport()
 dpg.set_primary_window("Primary Window", True)
