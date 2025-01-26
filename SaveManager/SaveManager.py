@@ -458,6 +458,13 @@ def open_settings():
             pos=[pos_x, pos_y - 30],
             tag="settings_window",
         ):
+            dpg.add_text(
+                "Changes to font size will be applied after application restart",
+                wrap=dpg.get_item_width("settings_window") - 30,
+            )
+            dpg.add_separator()
+            dpg.add_spacer(height=10)
+
             with dpg.group():
                 with dpg.group(horizontal=True):
                     dpg.add_text("Font size")
@@ -465,11 +472,13 @@ def open_settings():
                         min_value=8,
                         max_value=40,
                         default_value=font_size,
+                        width=300,
                         callback=change_font_size,
                     )
+                dpg.add_spacer(height=20)
                 with dpg.group(horizontal=True):
                     dpg.add_text("Autowrap")
-                    dpg.add_text("lol")
+                    dpg.add_checkbox()
     else:
         dpg.show_item("settings_window")
 
