@@ -44,7 +44,9 @@ def load_settings(section, key, default=None):
     if os.path.exists(config_file):
         config.read(config_file)
         if config.has_section(section) and key in config[section]:
-            return eval(config[section][key])  # Convert string back to its original type
+            return eval(
+                config[section][key]
+            )  # Convert string back to its original type
     return default
 
 
@@ -353,6 +355,7 @@ def open_save_finder():
                     dpg.get_item_width("save_finder_window") - 30
                 ),
             )
+        dpg.bind_item_handler_registry("save_finder_window", "window_handler")
     else:
         dpg.show_item("save_finder_window")
 
@@ -440,6 +443,19 @@ def open_settings():
         dpg.show_item("settings_window")
 
 
+def resize_callback(sender, app_data):
+    # Get the current window width
+    if dpg.does_item_exist("save_finder_window"):
+        window_width = dpg.get_item_width("save_finder_window")
+    else:
+        return
+    # window_width = dpg.get_item_width(sender)
+
+    # Set new wrap value based on window width (example: window width minus 50)
+    new_wrap_value = max(100, window_width - 30)  # Ensure wrap doesn't go too small
+    update_wrap(new_wrap_value)
+
+
 with dpg.window(tag="Primary Window"):
     dpg.add_text("Directory Copy Manager")
     dpg.add_separator()
@@ -506,6 +522,12 @@ with dpg.window(tag="Primary Window"):
 
 # Load entries on application start
 load_entries()
+
+with dpg.item_handler_registry(tag="window_handler") as handler:
+    dpg.add_item_resize_handler(callback=resize_callback)
+
+
+dpg.bind_item_handler_registry("Primary Window", "window_handler")
 
 # Necessary setup
 dpg.bind_font(custom_font)
