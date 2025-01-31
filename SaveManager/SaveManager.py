@@ -16,6 +16,8 @@ destinations = []
 names = []
 ui_items = {}
 
+copy_folder_checkbox_state = False
+
 # File path for the JSON file
 json_file_path = "save_folders.json"
 config_file = "settings.ini"
@@ -148,7 +150,31 @@ def get_folder_size(folder):
     return total_size
 
 
+def copy_operation(source, destination, operation_number, name):
+    if operation_number == 1:
+        for item in os.listdir(source):
+            s_item = os.path.join(source, item)
+            d_item = os.path.join(destination, item)
+            if os.path.isdir(s_item):
+                shutil.copytree(s_item, d_item)
+            else:
+                shutil.copy2(s_item, d_item)
+        dpg.set_value(
+            "status_text",
+            f"Copied '{name}' from '{source}' to '{destination}' successfully.",
+        )
+    elif operation_number == 2:
+        shutil.copytree(source, destination)
+        dpg.set_value(
+            "status_text",
+            f"Copied '{name}' from '{source}' to '{destination}' successfully.",
+        )
+    else:
+        dpg.set_value("error_text", "Invalid operation")
+
+
 def copy_all_callback(sender, app_data):
+    global copy_folder_checkbox_state
     if not sources or not destinations or not names:
         dpg.set_value("status_text", "No entries to copy.")
         return
@@ -178,19 +204,24 @@ def copy_all_callback(sender, app_data):
                 )
                 continue  # Skip this folder and move to the next
 
-            # Copy the directory
-            shutil.copytree(source_directory, dest_path)
-            dpg.set_value(
-                "status_text",
-                f"Copied '{name}' from '{source_directory}' to '{dest_path}' successfully.",
-            )
+            if not os.path.exists(destination_directory):
+                dpg.set_value(
+                    "error_text", "Destination folder does not exist. WTF did you do?"
+                )
+
+            if copy_folder_checkbox_state == False:
+                copy_operation(source_directory, destination_directory, 1, name)
+            elif copy_folder_checkbox_state == True:
+                copy_operation(source_directory, dest_path, 2, name)
+            else:
+                dpg.set_value("error_text", "Invalid copy_folder_checkbox state")
 
             # Update progress bar
             progress = (index + 1) / total_pairs
             dpg.set_value("progress_bar", progress)
 
         except Exception as e:
-            dpg.set_value("status_text", f"Error copying {name}: {str(e)}")
+            dpg.set_value("error_text", f"Error copying {name}: {str(e)}")
 
     dpg.set_value("status_text", "Copying completed.")
     dpg.hide_item("progress_bar")
@@ -432,8 +463,17 @@ def change_font_size(sender, app_data):
     save_settings("DisplayOptions", "font_size", app_data)
 
 
+def copy_folder_checkbox_callback(sender, app_data):
+    global copy_folder_checkbox_state
+    save_settings("DisplayOptions", "copy_folder_status", app_data)
+    copy_folder_checkbox_state = load_settings("DisplayOptions", "copy_folder_status")
+    if copy_folder_checkbox_state == None:
+        copy_folder_checkbox_state = False
+
+
 def open_settings():
     global ui_items
+    global copy_folder_checkbox_state
 
     viewport_width = dpg.get_viewport_width()
     viewport_height = dpg.get_viewport_height()
@@ -477,8 +517,13 @@ def open_settings():
                     )
                 dpg.add_spacer(height=20)
                 with dpg.group(horizontal=True):
-                    dpg.add_text("Autowrap")
-                    dpg.add_checkbox()
+                    dpg.add_text(
+                        "Copy entire source folder to destination (if disabled, only files inside selected folder)"
+                    )
+                    dpg.add_checkbox(
+                        default_value=copy_folder_checkbox_state,
+                        callback=copy_folder_checkbox_callback,
+                    )
     else:
         dpg.show_item("settings_window")
 
@@ -593,8 +638,12 @@ with dpg.window(tag="Primary Window"):
 
 
 def setup_viewport():
+    global copy_folder_checkbox_state
     main_height = load_settings("Window", "main_height")
     main_width = load_settings("Window", "main_width")
+    copy_folder_checkbox_state = load_settings("DisplayOptions", "copy_folder_status")
+    if copy_folder_checkbox_state == None:
+        copy_folder_checkbox_state = False
 
     # Set maximum width and height for the window
     if main_height != None:
