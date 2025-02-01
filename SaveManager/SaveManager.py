@@ -625,7 +625,7 @@ def text_click_handler(sender, app_data, user_data):
 
 
 with dpg.texture_registry():
-    width, height, channels, data = dpg.load_image(resource_path("docs/cute_image.png"))
+    width, height, channels, data = dpg.load_image(resource_path("docs\cute_image.png"))
     dpg.add_static_texture(
         width=width, height=height, default_value=data, tag="cute_image"
     )
@@ -735,6 +735,7 @@ def setup_viewport():
         max_height = 600
 
     dpg.create_viewport(title="Save Manager", width=max_width, height=max_height)
+    dpg.set_viewport_small_icon(resource_path("docs\icon.ico"))
 
 
 # Load entries on application start
