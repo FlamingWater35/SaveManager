@@ -513,14 +513,14 @@ def open_settings():
             dpg.add_separator()
             dpg.add_spacer(height=10)
 
-            with dpg.group():
+            with dpg.child_window(auto_resize_x=True, width=-1):
                 with dpg.group(horizontal=True):
                     dpg.add_text("Font size")
                     dpg.add_slider_int(
                         min_value=8,
                         max_value=40,
                         default_value=font_size,
-                        width=300,
+                        width=-100,
                         callback=change_font_size,
                     )
                 dpg.add_spacer(height=20)
@@ -541,7 +541,7 @@ def open_settings():
                         min_value=1,
                         max_value=500,
                         default_value=file_size_limit,
-                        width=400,
+                        width=-100,
                         callback=file_size_limit_callback,
                     )
     else:
@@ -623,7 +623,7 @@ with dpg.window(tag="Primary Window"):
         wrap=0,
     )
 
-    with dpg.group(tag="entry_list"):
+    with dpg.child_window(tag="entry_list", auto_resize_y=True):
         # This will hold all entries
         pass
 
