@@ -679,7 +679,12 @@ with dpg.window(tag="Primary Window"):
     # Progress Bar
     dpg.add_spacer(height=5)
     dpg.add_progress_bar(
-        tag="progress_bar", default_value=0.0, width=-200, height=20, show=False
+        tag="progress_bar",
+        default_value=0.0,
+        width=-200,
+        height=20,
+        show=False,
+        overlay="0.00 GB / 0.00 GB",
     )
     dpg.add_spacer(height=5)
     dpg.add_separator()
@@ -749,6 +754,15 @@ while dpg.is_dearpygui_running():
         elif item_type == "progress":
             copied_bytes = data
             if total_bytes_global > 0:
+                copied_gb = copied_bytes / (1024**3)
+                total_gb = total_bytes_global / (1024**3)
+
+                # Update progress bar overlay text
+                dpg.configure_item(
+                    "progress_bar",
+                    overlay=f"{copied_gb:.2f} GB / {total_gb:.2f} GB",
+                )
+
                 progress_value = copied_bytes / total_bytes_global
                 dpg.set_value("progress_bar", progress_value)
 
