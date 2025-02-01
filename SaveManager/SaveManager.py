@@ -19,6 +19,7 @@ ui_items = {}
 
 copy_folder_checkbox_state = False
 file_size_limit = 5
+cancel_flag = False
 
 # File path for the JSON file
 json_file_path = "save_folders.json"
@@ -142,6 +143,11 @@ def add_entry_callback(sender, app_data):
         dpg.set_value("status_text", "Please fill the name and select folders.")
 
 
+def set_cancel_to_true():
+    global cancel_flag
+    cancel_flag = True
+
+
 def get_folder_size(folder):
     total_size = 0
     for dirpath, dirnames, filenames in os.walk(folder):
@@ -154,9 +160,13 @@ def get_folder_size(folder):
 
 
 def copy_thread(valid_entries, total_bytes):
+    global cancel_flag
     try:
         copied_bytes = 0
         for index in valid_entries:
+            if cancel_flag:
+                progress_queue.put(("cancel", "Copy cancelled by user!"))
+                break
             source = sources[index]
             dest = destinations[index]
             name = names[index]
@@ -170,12 +180,16 @@ def copy_thread(valid_entries, total_bytes):
 
             # Copy files with progress
             for src_path, size in file_list:
+                if cancel_flag:
+                    break
                 rel_path = os.path.relpath(src_path, source)
                 dest_path = os.path.join(dest, rel_path)
                 os.makedirs(os.path.dirname(dest_path), exist_ok=True)
 
                 with open(src_path, "rb") as f_src, open(dest_path, "wb") as f_dst:
                     while chunk := f_src.read(1024 * 1024):  # 1MB chunks
+                        if cancel_flag:
+                            break
                         f_dst.write(chunk)
                         copied_bytes += len(chunk)
                         progress_queue.put(("progress", copied_bytes / total_bytes))
@@ -186,13 +200,20 @@ def copy_thread(valid_entries, total_bytes):
                 dest_dir = os.path.join(dest, base_dir)
                 shutil.copystat(source, dest_dir)
 
-        progress_queue.put(("complete", "Copying completed."))
+        if not cancel_flag:
+            progress_queue.put(("complete", "Copying completed."))
+        else:
+            progress_queue.put(("cancel", "Copy cancelled by user!"))
+
     except Exception as e:
-        progress_queue.put(("error", f"Copy error: {str(e)}"))
+        progress_queue.put(("error", f"Error: {str(e)}"))
+    finally:
+        cancel_flag = False
 
 
 def copy_all_callback(sender, app_data):
-    global copy_folder_checkbox_state, file_size_limit
+    global copy_folder_checkbox_state, file_size_limit, cancel_flag
+    cancel_flag = False
 
     if not sources or not destinations or not names:
         dpg.set_value("status_text", "No entries to copy.")
@@ -630,7 +651,13 @@ with dpg.window(tag="Primary Window"):
 
     # Button to copy all entries
     dpg.add_spacer(height=5)
-    dpg.add_button(label="Run Copy Operation", callback=copy_all_callback)
+    with dpg.group(horizontal=True):
+        dpg.add_button(label="Run Copy Operation", callback=copy_all_callback)
+        dpg.add_button(
+            label="Cancel Copy",
+            callback=set_cancel_to_true,
+            tag="cancel_button",
+        )
 
     # Progress Bar
     dpg.add_spacer(height=5)
@@ -693,7 +720,6 @@ dpg.show_viewport()
 dpg.set_primary_window("Primary Window", True)
 
 while dpg.is_dearpygui_running():
-    # Process progress updates
     while not progress_queue.empty():
         item_type, data = progress_queue.get()
         if item_type == "progress":
@@ -701,11 +727,21 @@ while dpg.is_dearpygui_running():
         elif item_type == "complete":
             dpg.set_value("status_text", data)
             dpg.hide_item("progress_bar")
+        elif item_type == "cancel":
+            dpg.set_value("status_text", data)
+            dpg.set_value("error_text", "Operation cancelled")
+            dpg.hide_item("progress_bar")
         elif item_type == "error":
             dpg.set_value("error_text", data)
             dpg.hide_item("progress_bar")
 
-    # Render frame
     dpg.render_dearpygui_frame()
 
+
+def cleanup():
+    global cancel_flag
+    cancel_flag = True
+
+
+dpg.set_exit_callback(cleanup)
 dpg.destroy_context()
