@@ -218,6 +218,7 @@ def copy_all_callback(sender, app_data):
     global copy_folder_checkbox_state, file_size_limit, cancel_flag
     cancel_flag = False
     dpg.set_value("speed_text", "")
+    dpg.show_item("speed_text")
 
     if not sources or not destinations or not names:
         dpg.set_value("status_text", "No entries to copy.")
@@ -691,8 +692,8 @@ with dpg.window(tag="Primary Window"):
         dpg.add_button(label="Save entries to JSON", callback=save_entries)
 
     dpg.add_spacer(height=5)
-    dpg.add_text("", tag="speed_text", color=(0, 255, 0))
     dpg.add_text("", tag="status_text", color=(255, 140, 0))
+    dpg.add_text("", tag="speed_text", color=(0, 255, 0), show=False)
     dpg.add_text("", tag="error_text", color=(139, 140, 0))
 
 
@@ -769,13 +770,16 @@ while dpg.is_dearpygui_running():
         elif item_type == "complete":
             dpg.set_value("status_text", data)
             dpg.hide_item("progress_bar")
+            dpg.hide_item("speed_text")
         elif item_type == "cancel":
             dpg.set_value("status_text", data)
             dpg.set_value("error_text", "Operation cancelled")
             dpg.hide_item("progress_bar")
+            dpg.hide_item("speed_text")
         elif item_type == "error":
             dpg.set_value("error_text", data)
             dpg.hide_item("progress_bar")
+            dpg.hide_item("speed_text")
 
     dpg.render_dearpygui_frame()
 
