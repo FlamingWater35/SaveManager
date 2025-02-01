@@ -77,10 +77,24 @@ def load_entries():
                 names.append(entry["name"])
                 sources.append(entry["source"])
                 destinations.append(entry["destination"])
-                dpg.add_text(
+
+                item_id = dpg.add_text(
                     f"{entry['name']}: {entry['source']} -> {entry['destination']}",
                     parent="entry_list",
+                    wrap=0,
+                    user_data=[entry["source"], entry["destination"]],
                 )
+
+                with dpg.item_handler_registry(tag=f"text_handler_{item_id}"):
+                    dpg.add_item_clicked_handler(
+                        user_data=dpg.get_item_user_data(item_id)[0],
+                        callback=text_click_handler,
+                    )
+                    dpg.add_item_double_clicked_handler(
+                        user_data=dpg.get_item_user_data(item_id)[1],
+                        callback=text_click_handler,
+                    )
+                dpg.bind_item_handler_registry(item_id, f"text_handler_{item_id}")
 
 
 def save_entries():
