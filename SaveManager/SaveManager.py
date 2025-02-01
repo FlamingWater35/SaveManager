@@ -17,6 +17,7 @@ names = []
 ui_items = {}
 
 copy_folder_checkbox_state = False
+file_size_limit = 5
 
 # File path for the JSON file
 json_file_path = "save_folders.json"
@@ -175,6 +176,8 @@ def copy_operation(source, destination, operation_number, name):
 
 def copy_all_callback(sender, app_data):
     global copy_folder_checkbox_state
+    global file_size_limit
+
     if not sources or not destinations or not names:
         dpg.set_value("status_text", "No entries to copy.")
         return
@@ -196,11 +199,11 @@ def copy_all_callback(sender, app_data):
 
             folder_size = get_folder_size(source_directory)
 
-            # Skip copying if folder size exceeds 5 GB
-            if folder_size > 5 * 1024 * 1024 * 1024:  # 5 GB in bytes
+            # Skip copying if folder size exceeds the limit
+            if folder_size > file_size_limit * 1024 * 1024 * 1024:  # 5 GB in bytes
                 dpg.set_value(
                     "error_text",
-                    f"Skipped '{name}' (size: {folder_size / (1024 * 1024 * 1024):.2f} GB) as it exceeds 5 GB.",
+                    f"Skipped '{name}' (size: {folder_size / (1024 * 1024 * 1024):.2f} GB) as it exceeds {file_size_limit} GB.",
                 )
                 continue  # Skip this folder and move to the next
 
@@ -471,6 +474,14 @@ def copy_folder_checkbox_callback(sender, app_data):
         copy_folder_checkbox_state = False
 
 
+def file_size_limit_callback(sender, app_data):
+    global file_size_limit
+    save_settings("DisplayOptions", "file_size_limit", app_data)
+    file_size_limit = load_settings("DisplayOptions", "file_size_limit")
+    if file_size_limit == None:
+        file_size_limit = 5
+
+
 def open_settings():
     global ui_items
     global copy_folder_checkbox_state
@@ -518,11 +529,23 @@ def open_settings():
                 dpg.add_spacer(height=20)
                 with dpg.group(horizontal=True):
                     dpg.add_text(
-                        "Copy entire source folder to destination (if disabled, only files inside selected folder)"
+                        "Copy entire source folder to destination (if disabled, only files inside selected folder)",
+                        wrap=dpg.get_item_width("settings_window") - 30,
                     )
                     dpg.add_checkbox(
                         default_value=copy_folder_checkbox_state,
                         callback=copy_folder_checkbox_callback,
+                    )
+                dpg.add_spacer(height=20)
+                with dpg.group(horizontal=True):
+                    dpg.add_text("Size limit")
+                    dpg.add_slider_int(
+                        label="GB",
+                        min_value=1,
+                        max_value=500,
+                        default_value=file_size_limit,
+                        width=400,
+                        callback=file_size_limit_callback,
                     )
     else:
         dpg.show_item("settings_window")
@@ -639,11 +662,17 @@ with dpg.window(tag="Primary Window"):
 
 def setup_viewport():
     global copy_folder_checkbox_state
+    global file_size_limit
     main_height = load_settings("Window", "main_height")
     main_width = load_settings("Window", "main_width")
+
     copy_folder_checkbox_state = load_settings("DisplayOptions", "copy_folder_status")
-    if copy_folder_checkbox_state == None:
+    if copy_folder_checkbox_state != True and copy_folder_checkbox_state != False:
         copy_folder_checkbox_state = False
+
+    file_size_limit = load_settings("DisplayOptions", "file_size_limit")
+    if file_size_limit == None:
+        file_size_limit = 5
 
     # Set maximum width and height for the window
     if main_height != None:

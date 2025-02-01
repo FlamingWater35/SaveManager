@@ -1,0 +1,12 @@
+[
+    {
+        "name": "1",
+        "source": "C:\\Users\\Admin\\Documents\\work\\projects\\models",
+        "destination": "D:\\work\\projects\\models"
+    },
+    {
+        "name": "2",
+        "source": "C:\\Users\\Admin\\Documents\\work\\projects\\VSCode projects\\SaveManager",
+        "destination": "C:\\Users\\Admin\\SaveManager\\SaveManager"
+    }
+]
