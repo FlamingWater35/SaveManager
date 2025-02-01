@@ -6,6 +6,7 @@ import threading
 import sys
 import configparser
 import pyperclip
+import queue
 
 
 dpg.create_context()
@@ -24,6 +25,7 @@ json_file_path = "save_folders.json"
 config_file = "settings.ini"
 
 config = configparser.ConfigParser()
+progress_queue = queue.Queue()
 
 
 def resource_path(relative_path):
@@ -151,83 +153,72 @@ def get_folder_size(folder):
     return total_size
 
 
-def copy_operation(source, destination, operation_number, name):
-    if operation_number == 1:
-        for item in os.listdir(source):
-            s_item = os.path.join(source, item)
-            d_item = os.path.join(destination, item)
-            if os.path.isdir(s_item):
-                shutil.copytree(s_item, d_item)
-            else:
-                shutil.copy2(s_item, d_item)
-        dpg.set_value(
-            "status_text",
-            f"Copied '{name}' from '{source}' to '{destination}' successfully.",
-        )
-    elif operation_number == 2:
-        shutil.copytree(source, destination)
-        dpg.set_value(
-            "status_text",
-            f"Copied '{name}' from '{source}' to '{destination}' successfully.",
-        )
-    else:
-        dpg.set_value("error_text", "Invalid operation")
+def copy_thread(valid_entries, total_bytes):
+    try:
+        copied_bytes = 0
+        for index in valid_entries:
+            source = sources[index]
+            dest = destinations[index]
+            name = names[index]
+
+            # Get all files with sizes
+            file_list = []
+            for root, _, files in os.walk(source):
+                for file in files:
+                    path = os.path.join(root, file)
+                    file_list.append((path, os.path.getsize(path)))
+
+            # Copy files with progress
+            for src_path, size in file_list:
+                rel_path = os.path.relpath(src_path, source)
+                dest_path = os.path.join(dest, rel_path)
+                os.makedirs(os.path.dirname(dest_path), exist_ok=True)
+
+                with open(src_path, "rb") as f_src, open(dest_path, "wb") as f_dst:
+                    while chunk := f_src.read(1024 * 1024):  # 1MB chunks
+                        f_dst.write(chunk)
+                        copied_bytes += len(chunk)
+                        progress_queue.put(("progress", copied_bytes / total_bytes))
+
+            # Handle folder copy mode
+            if copy_folder_checkbox_state:
+                base_dir = os.path.basename(source)
+                dest_dir = os.path.join(dest, base_dir)
+                shutil.copystat(source, dest_dir)
+
+        progress_queue.put(("complete", "Copying completed."))
+    except Exception as e:
+        progress_queue.put(("error", f"Copy error: {str(e)}"))
 
 
 def copy_all_callback(sender, app_data):
-    global copy_folder_checkbox_state
-    global file_size_limit
+    global copy_folder_checkbox_state, file_size_limit
 
     if not sources or not destinations or not names:
         dpg.set_value("status_text", "No entries to copy.")
         return
 
-    # Reset progress bar
-    total_pairs = len(sources)
+    # Calculate total size and valid entries
+    total_bytes = 0
+    valid_entries = []
+    for index in range(len(sources)):
+        source = sources[index]
+        folder_size = get_folder_size(source)
+        if folder_size <= file_size_limit * 1024**3:  # Check size limit
+            valid_entries.append(index)
+            total_bytes += folder_size
+
+    if not valid_entries:
+        dpg.set_value("status_text", "No entries to copy (all exceed size limit).")
+        return
+
+    # Setup UI
     dpg.set_value("progress_bar", 0.0)
     dpg.set_value("status_text", "Copying directories...")
     dpg.show_item("progress_bar")
 
-    for index in range(total_pairs):
-        try:
-            source_directory = sources[index]
-            destination_directory = destinations[index]
-            name = names[index]
-            dest_path = os.path.join(
-                destination_directory, os.path.basename(source_directory)
-            )
-
-            folder_size = get_folder_size(source_directory)
-
-            # Skip copying if folder size exceeds the limit
-            if folder_size > file_size_limit * 1024 * 1024 * 1024:  # 5 GB in bytes
-                dpg.set_value(
-                    "error_text",
-                    f"Skipped '{name}' (size: {folder_size / (1024 * 1024 * 1024):.2f} GB) as it exceeds {file_size_limit} GB.",
-                )
-                continue  # Skip this folder and move to the next
-
-            if not os.path.exists(destination_directory):
-                dpg.set_value(
-                    "error_text", "Destination folder does not exist. WTF did you do?"
-                )
-
-            if copy_folder_checkbox_state == False:
-                copy_operation(source_directory, destination_directory, 1, name)
-            elif copy_folder_checkbox_state == True:
-                copy_operation(source_directory, dest_path, 2, name)
-            else:
-                dpg.set_value("error_text", "Invalid copy_folder_checkbox state")
-
-            # Update progress bar
-            progress = (index + 1) / total_pairs
-            dpg.set_value("progress_bar", progress)
-
-        except Exception as e:
-            dpg.set_value("error_text", f"Error copying {name}: {str(e)}")
-
-    dpg.set_value("status_text", "Copying completed.")
-    dpg.hide_item("progress_bar")
+    # Start copy thread
+    threading.Thread(target=copy_thread, args=(valid_entries, total_bytes)).start()
 
 
 def source_callback(sender, app_data):
@@ -700,5 +691,21 @@ setup_viewport()
 dpg.setup_dearpygui()
 dpg.show_viewport()
 dpg.set_primary_window("Primary Window", True)
-dpg.start_dearpygui()
+
+while dpg.is_dearpygui_running():
+    # Process progress updates
+    while not progress_queue.empty():
+        item_type, data = progress_queue.get()
+        if item_type == "progress":
+            dpg.set_value("progress_bar", data)
+        elif item_type == "complete":
+            dpg.set_value("status_text", data)
+            dpg.hide_item("progress_bar")
+        elif item_type == "error":
+            dpg.set_value("error_text", data)
+            dpg.hide_item("progress_bar")
+
+    # Render frame
+    dpg.render_dearpygui_frame()
+
 dpg.destroy_context()
