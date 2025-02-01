@@ -1,5 +1,4 @@
 import dearpygui.dearpygui as dpg
-import shutil
 import os
 import json
 import threading
@@ -23,6 +22,7 @@ file_size_limit = 5
 cancel_flag = False
 start_time_global = 0
 total_bytes_global = 0
+last_update_time = 0
 
 # File path for the JSON file
 json_file_path = "save_folders.json"
@@ -745,6 +745,7 @@ while dpg.is_dearpygui_running():
         if item_type == "start":
             total_bytes_global = data
             start_time_global = time.time()
+            last_update_time = start_time_global
         elif item_type == "progress":
             copied_bytes = data
             if total_bytes_global > 0:
@@ -753,16 +754,18 @@ while dpg.is_dearpygui_running():
 
                 # Calculate speed and time
                 current_time = time.time()
-                elapsed = current_time - start_time_global
-                if elapsed > 0:
-                    speed = copied_bytes / elapsed  # bytes/sec
-                    speed_mb = speed / (1024**2)
-                    remaining = (total_bytes_global - copied_bytes) / max(speed, 1)
-                    mins_remaining = remaining / 60
-                    dpg.set_value(
-                        "speed_text",
-                        f"Speed: {speed_mb:.1f} MB/s | ETA: {mins_remaining:.1f} mins",
-                    )
+                if current_time - last_update_time >= 0.5:
+                    elapsed = current_time - start_time_global
+                    if elapsed > 0:
+                        speed = copied_bytes / elapsed  # bytes/sec
+                        speed_mb = speed / (1024**2)
+                        remaining = (total_bytes_global - copied_bytes) / max(speed, 1)
+                        mins_remaining = remaining / 60
+                        dpg.set_value(
+                            "speed_text",
+                            f"Speed: {speed_mb:.1f} MB/s | ETA: {mins_remaining:.1f} mins",
+                        )
+                    last_update_time = current_time
         elif item_type == "complete":
             dpg.set_value("status_text", data)
             dpg.hide_item("progress_bar")
