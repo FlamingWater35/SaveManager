@@ -230,6 +230,13 @@ def copy_all_callback(sender, app_data):
         if folder_size <= file_size_limit * 1024**3:  # Check size limit
             valid_entries.append(index)
             total_bytes += folder_size
+        else:
+            dpg.add_text(
+                f"Skipped {index} as it exceeds size limit.",
+                color=(139, 140, 0),
+                wrap=0,
+                parent="copy_log",
+            )
 
     if not valid_entries:
         dpg.set_value("status_text", "No entries to copy (all exceed size limit).")
@@ -654,7 +661,8 @@ with dpg.window(tag="Primary Window"):
     dpg.add_spacer(height=5)
     dpg.add_text("", tag="status_text", color=(255, 140, 0), wrap=0)
     dpg.add_text("", tag="speed_text", color=(0, 255, 0), show=False, wrap=0)
-    dpg.add_text("", tag="error_text", color=(139, 140, 0), wrap=0)
+    with dpg.child_window(tag="copy_log", auto_resize_y=True):
+        pass
 
     img_id = dpg.add_image("cute_image", pos=(0, 0), width=250, height=200)
 
@@ -731,11 +739,10 @@ while dpg.is_dearpygui_running():
             dpg.hide_item("speed_text")
         elif item_type == "cancel":
             dpg.set_value("status_text", data)
-            dpg.set_value("error_text", "Operation cancelled")
             dpg.hide_item("progress_bar")
             dpg.hide_item("speed_text")
         elif item_type == "error":
-            dpg.set_value("error_text", data)
+            dpg.add_text(data, color=(139, 140, 0), wrap=0, parent="copy_log")
             dpg.hide_item("progress_bar")
             dpg.hide_item("speed_text")
 
