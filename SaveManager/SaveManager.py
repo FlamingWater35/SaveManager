@@ -192,6 +192,15 @@ def copy_thread(valid_entries, total_bytes):
                 dest_path = os.path.join(dest, rel_path)
                 os.makedirs(os.path.dirname(dest_path), exist_ok=True)
 
+                if os.path.exists(dest_path):
+                    dpg.add_text(
+                        f"Skipped (already exists): {rel_path}",
+                        color=(139, 140, 0),  # Dark Orange
+                        wrap=0,
+                        parent="copy_log",
+                    )
+                    continue  # Skip this file
+
                 with open(src_path, "rb") as f_src, open(dest_path, "wb") as f_dst:
                     while chunk := f_src.read(1024 * 1024):  # 1MB chunks
                         if cancel_flag:
@@ -199,6 +208,14 @@ def copy_thread(valid_entries, total_bytes):
                         f_dst.write(chunk)
                         copied_bytes += len(chunk)
                         progress_queue.put(("progress", copied_bytes))
+
+                # Add a text item for the copied file
+                dpg.add_text(
+                    f"Copied: {rel_path}",
+                    wrap=0,
+                    color=(0, 140, 139),
+                    parent="copy_log",
+                )
 
         if not cancel_flag:
             progress_queue.put(("complete", "Copying completed."))
@@ -232,7 +249,7 @@ def copy_all_callback(sender, app_data):
             total_bytes += folder_size
         else:
             dpg.add_text(
-                f"Skipped {index} as it exceeds size limit.",
+                f"Skipped {source} as it exceeds size limit.",
                 color=(139, 140, 0),
                 wrap=0,
                 parent="copy_log",
@@ -742,7 +759,7 @@ while dpg.is_dearpygui_running():
             dpg.hide_item("progress_bar")
             dpg.hide_item("speed_text")
         elif item_type == "error":
-            dpg.add_text(data, color=(139, 140, 0), wrap=0, parent="copy_log")
+            dpg.add_text(data, color=(229, 57, 53), wrap=0, parent="copy_log")
             dpg.hide_item("progress_bar")
             dpg.hide_item("speed_text")
 
