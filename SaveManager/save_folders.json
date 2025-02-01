@@ -1,7 +1,7 @@
 [
     {
         "name": "1",
-        "source": "C:\\Users\\Admin\\Documents\\work\\projects\\models\\loras",
+        "source": "C:\\Users\\Admin\\Documents\\work\\projects\\models\\checkpoints",
         "destination": "C:\\Users\\Admin\\Documents\\test"
     }
 ]

@@ -7,6 +7,7 @@ import sys
 import configparser
 import pyperclip
 import queue
+import time
 
 
 dpg.create_context()
@@ -20,6 +21,8 @@ ui_items = {}
 copy_folder_checkbox_state = False
 file_size_limit = 5
 cancel_flag = False
+start_time_global = 0
+total_bytes_global = 0
 
 # File path for the JSON file
 json_file_path = "save_folders.json"
@@ -162,6 +165,7 @@ def get_folder_size(folder):
 def copy_thread(valid_entries, total_bytes):
     global cancel_flag
     try:
+        progress_queue.put(("start", total_bytes))
         copied_bytes = 0
         for index in valid_entries:
             if cancel_flag:
@@ -197,7 +201,7 @@ def copy_thread(valid_entries, total_bytes):
                             break
                         f_dst.write(chunk)
                         copied_bytes += len(chunk)
-                        progress_queue.put(("progress", copied_bytes / total_bytes))
+                        progress_queue.put(("progress", copied_bytes))
 
         if not cancel_flag:
             progress_queue.put(("complete", "Copying completed."))
@@ -213,6 +217,7 @@ def copy_thread(valid_entries, total_bytes):
 def copy_all_callback(sender, app_data):
     global copy_folder_checkbox_state, file_size_limit, cancel_flag
     cancel_flag = False
+    dpg.set_value("speed_text", "")
 
     if not sources or not destinations or not names:
         dpg.set_value("status_text", "No entries to copy.")
@@ -520,10 +525,13 @@ def open_settings():
             pos=[pos_x, pos_y - 30],
             tag="settings_window",
         ):
-            dpg.add_text(
+            if "settings_window" not in ui_items:
+                ui_items["settings_window"] = []
+            item_id = dpg.add_text(
                 "Changes to font size will be applied after application restart",
                 wrap=dpg.get_item_width("settings_window") - 30,
             )
+            ui_items["settings_window"].append(item_id)
             dpg.add_separator()
             dpg.add_spacer(height=10)
 
@@ -539,10 +547,11 @@ def open_settings():
                     )
                 dpg.add_spacer(height=20)
                 with dpg.group(horizontal=True):
-                    dpg.add_text(
+                    item_id = dpg.add_text(
                         "Copy entire source folder to destination (if disabled, only files inside selected folder)",
                         wrap=dpg.get_item_width("settings_window") - 30,
                     )
+                    ui_items["settings_window"].append(item_id)
                     dpg.add_checkbox(
                         default_value=copy_folder_checkbox_state,
                         callback=copy_folder_checkbox_callback,
@@ -558,6 +567,7 @@ def open_settings():
                         width=400,
                         callback=file_size_limit_callback,
                     )
+        dpg.bind_item_handler_registry("settings_window", "settings_window_handler")
     else:
         dpg.show_item("settings_window")
 
@@ -577,6 +587,14 @@ def save_resize_callback():
     # Set new wrap value based on window width
     new_wrap_value = max(100, window_width - 30)  # Ensure wrap doesn't go too small
     update_wrap("save_finder_window", new_wrap_value)
+
+
+def settings_resize_callback():
+    window_width = dpg.get_item_width("settings_window")
+
+    # Set new wrap value based on window width
+    new_wrap_value = max(100, window_width - 30)  # Ensure wrap doesn't go too small
+    update_wrap("settings_window", new_wrap_value)
 
 
 def save_window_positions():
@@ -673,6 +691,7 @@ with dpg.window(tag="Primary Window"):
         dpg.add_button(label="Save entries to JSON", callback=save_entries)
 
     dpg.add_spacer(height=5)
+    dpg.add_text("", tag="speed_text", color=(0, 255, 0))
     dpg.add_text("", tag="status_text", color=(255, 140, 0))
     dpg.add_text("", tag="error_text", color=(139, 140, 0))
 
@@ -709,6 +728,8 @@ with dpg.item_handler_registry(tag="window_handler") as handler:
     dpg.add_item_resize_handler(callback=resize_callback)
 with dpg.item_handler_registry(tag="save_window_handler") as handler:
     dpg.add_item_resize_handler(callback=save_resize_callback)
+with dpg.item_handler_registry(tag="settings_window_handler") as handler:
+    dpg.add_item_resize_handler(callback=settings_resize_callback)
 
 
 dpg.bind_item_handler_registry("Primary Window", "window_handler")
@@ -721,8 +742,27 @@ dpg.set_primary_window("Primary Window", True)
 while dpg.is_dearpygui_running():
     while not progress_queue.empty():
         item_type, data = progress_queue.get()
-        if item_type == "progress":
-            dpg.set_value("progress_bar", data)
+        if item_type == "start":
+            total_bytes_global = data
+            start_time_global = time.time()
+        elif item_type == "progress":
+            copied_bytes = data
+            if total_bytes_global > 0:
+                progress_value = copied_bytes / total_bytes_global
+                dpg.set_value("progress_bar", progress_value)
+
+                # Calculate speed and time
+                current_time = time.time()
+                elapsed = current_time - start_time_global
+                if elapsed > 0:
+                    speed = copied_bytes / elapsed  # bytes/sec
+                    speed_mb = speed / (1024**2)
+                    remaining = (total_bytes_global - copied_bytes) / max(speed, 1)
+                    mins_remaining = remaining / 60
+                    dpg.set_value(
+                        "speed_text",
+                        f"Speed: {speed_mb:.1f} MB/s | ETA: {mins_remaining:.1f} mins",
+                    )
         elif item_type == "complete":
             dpg.set_value("status_text", data)
             dpg.hide_item("progress_bar")
