@@ -598,6 +598,13 @@ def settings_resize_callback():
     update_wrap("settings_window", new_wrap_value)
 
 
+def image_resize_callback():
+    window_width = dpg.get_item_width("Primary Window")
+    new_x = window_width - 220
+    new_y = 20
+    dpg.set_item_pos(img_id, (new_x, new_y))
+
+
 def save_window_positions():
     if dpg.does_item_exist("save_finder_window"):
         save_settings(
@@ -616,6 +623,12 @@ def text_click_handler(sender, app_data, user_data):
     # Update the status text to inform the user
     dpg.set_value("status_text", f"Copied to clipboard: {user_data}")
 
+
+with dpg.texture_registry():
+    width, height, channels, data = dpg.load_image(resource_path("docs/cute_image.png"))
+    dpg.add_static_texture(
+        width=width, height=height, default_value=data, tag="cute_image"
+    )
 
 with dpg.window(tag="Primary Window"):
     if "Primary Window" not in ui_items:
@@ -696,6 +709,8 @@ with dpg.window(tag="Primary Window"):
     dpg.add_text("", tag="speed_text", color=(0, 255, 0), show=False)
     dpg.add_text("", tag="error_text", color=(139, 140, 0))
 
+    img_id = dpg.add_image("cute_image", pos=(0, 0), width=250, height=200)
+
 
 def setup_viewport():
     global copy_folder_checkbox_state
@@ -727,11 +742,11 @@ load_entries()
 
 with dpg.item_handler_registry(tag="window_handler") as handler:
     dpg.add_item_resize_handler(callback=resize_callback)
+    dpg.add_item_resize_handler(callback=image_resize_callback)
 with dpg.item_handler_registry(tag="save_window_handler") as handler:
     dpg.add_item_resize_handler(callback=save_resize_callback)
 with dpg.item_handler_registry(tag="settings_window_handler") as handler:
     dpg.add_item_resize_handler(callback=settings_resize_callback)
-
 
 dpg.bind_item_handler_registry("Primary Window", "window_handler")
 dpg.bind_font(custom_font)

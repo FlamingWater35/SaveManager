@@ -5,7 +5,7 @@ a = Analysis(
     ['SaveManager.py'],
     pathex=[],
     binaries=[],
-    datas=[('C:\\Users\\Admin\\Documents\\work\\projects\\VSCode projects\\SaveManager\\docs\\font.otf', 'docs')],
+    datas=[('C:\\Users\\Admin\\Documents\\work\\projects\\VSCode projects\\SaveManager\\docs\\font.otf', 'docs'), ('C:\\Users\\Admin\\Documents\\work\\projects\\VSCode projects\\SaveManager\\docs\\cute_image.png', 'docs')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
