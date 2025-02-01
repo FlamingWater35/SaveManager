@@ -15,7 +15,6 @@ dpg.create_context()
 sources = []
 destinations = []
 names = []
-ui_items = {}
 
 copy_folder_checkbox_state = False
 file_size_limit = 5
@@ -109,7 +108,6 @@ def clear_entries_callback(sender, app_data):
 
 
 def add_entry_callback(sender, app_data):
-    global ui_items
     name = dpg.get_value("name_input")
 
     if name and sources and destinations:
@@ -121,10 +119,9 @@ def add_entry_callback(sender, app_data):
         item_id = dpg.add_text(
             f"{name}: {current_source} -> {current_destination}",
             parent="entry_list",
-            wrap=dpg.get_item_width("Primary Window") - 30,
+            wrap=0,
             user_data=[current_source, current_destination],
         )
-        ui_items["Primary Window"].append(item_id)
 
         with dpg.item_handler_registry(tag=f"text_handler_{item_id}"):
             dpg.add_item_clicked_handler(
@@ -322,8 +319,6 @@ def search_files():
 
     # Use threading to prevent UI freezing
     def thread_target():
-        global ui_items
-
         for directory in directories_to_search:
             process_directory(directory)
 
@@ -347,12 +342,11 @@ def search_files():
                 cur_color = colors[color_index]
                 item_id = dpg.add_text(
                     f"{index}. {directory}",
-                    wrap=dpg.get_item_width("save_finder_window") - 30,
+                    wrap=0,
                     parent="directory_list",
                     color=cur_color,
                     user_data=directory,
                 )
-                ui_items["save_finder_window"].append(item_id)
 
                 with dpg.item_handler_registry(tag=f"text_handler_{item_id}"):
                     dpg.add_item_clicked_handler(
@@ -365,7 +359,7 @@ def search_files():
         else:
             dpg.add_text(
                 "No files found.",
-                wrap=dpg.get_item_width("save_finder_window") - 30,
+                wrap=0,
                 parent="directory_list",
             )
 
@@ -379,8 +373,6 @@ def start_search_thread():
 
 
 def open_save_finder():
-    global ui_items
-
     viewport_width = dpg.get_viewport_width()
     viewport_height = dpg.get_viewport_height()
 
@@ -412,8 +404,6 @@ def open_save_finder():
             pos=[pos_x, pos_y - 30],
             tag="save_finder_window",
         ):
-            if "save_finder_window" not in ui_items:
-                ui_items["save_finder_window"] = []
             dpg.add_button(label="Search for files", callback=start_search_thread)
             dpg.add_spacer(height=5)
             dpg.add_progress_bar(
@@ -425,18 +415,16 @@ def open_save_finder():
             )
             dpg.add_text("", tag="finder_text", show=False)
             dpg.add_separator()
-            item_id = dpg.add_text(
+            dpg.add_text(
                 "Directories containing .sav and .save files will be listed below (click to copy to clipboard).",
-                wrap=dpg.get_item_width("save_finder_window") - 30,
+                wrap=0,
             )
-            ui_items["save_finder_window"].append(item_id)
 
             with dpg.group(tag="directory_list"):
                 pass
 
             dpg.add_separator()
             dpg.add_spacer(height=20)
-        dpg.bind_item_handler_registry("save_finder_window", "save_window_handler")
     else:
         dpg.show_item("save_finder_window")
 
@@ -472,13 +460,6 @@ with dpg.font_registry():
     custom_font = dpg.add_font(font_path, font_size)
 
 
-def update_wrap(window_tag, new_wrap_value):
-    global ui_items
-    if window_tag in ui_items:
-        for text_id in ui_items[window_tag]:
-            dpg.configure_item(text_id, wrap=new_wrap_value)
-
-
 def change_font_size(sender, app_data):
     save_settings("DisplayOptions", "font_size", app_data)
 
@@ -500,7 +481,6 @@ def file_size_limit_callback(sender, app_data):
 
 
 def open_settings():
-    global ui_items
     global copy_folder_checkbox_state
 
     viewport_width = dpg.get_viewport_width()
@@ -526,13 +506,10 @@ def open_settings():
             pos=[pos_x, pos_y - 30],
             tag="settings_window",
         ):
-            if "settings_window" not in ui_items:
-                ui_items["settings_window"] = []
-            item_id = dpg.add_text(
+            dpg.add_text(
                 "Changes to font size will be applied after application restart",
-                wrap=dpg.get_item_width("settings_window") - 30,
+                wrap=0,
             )
-            ui_items["settings_window"].append(item_id)
             dpg.add_separator()
             dpg.add_spacer(height=10)
 
@@ -548,11 +525,10 @@ def open_settings():
                     )
                 dpg.add_spacer(height=20)
                 with dpg.group(horizontal=True):
-                    item_id = dpg.add_text(
+                    dpg.add_text(
                         "Copy entire source folder to destination (if disabled, only files inside selected folder)",
-                        wrap=dpg.get_item_width("settings_window") - 30,
+                        wrap=0,
                     )
-                    ui_items["settings_window"].append(item_id)
                     dpg.add_checkbox(
                         default_value=copy_folder_checkbox_state,
                         callback=copy_folder_checkbox_callback,
@@ -568,34 +544,8 @@ def open_settings():
                         width=400,
                         callback=file_size_limit_callback,
                     )
-        dpg.bind_item_handler_registry("settings_window", "settings_window_handler")
     else:
         dpg.show_item("settings_window")
-
-
-def resize_callback():
-    # Get the current window width
-    window_width = dpg.get_item_width("Primary Window")
-
-    # Set new wrap value based on window width
-    new_wrap_value = max(100, window_width - 30)  # Ensure wrap doesn't go too small
-    update_wrap("Primary Window", new_wrap_value)
-
-
-def save_resize_callback():
-    window_width = dpg.get_item_width("save_finder_window")
-
-    # Set new wrap value based on window width
-    new_wrap_value = max(100, window_width - 30)  # Ensure wrap doesn't go too small
-    update_wrap("save_finder_window", new_wrap_value)
-
-
-def settings_resize_callback():
-    window_width = dpg.get_item_width("settings_window")
-
-    # Set new wrap value based on window width
-    new_wrap_value = max(100, window_width - 30)  # Ensure wrap doesn't go too small
-    update_wrap("settings_window", new_wrap_value)
 
 
 def image_resize_callback():
@@ -631,8 +581,6 @@ with dpg.texture_registry():
     )
 
 with dpg.window(tag="Primary Window"):
-    if "Primary Window" not in ui_items:
-        ui_items["Primary Window"] = []
     dpg.add_text("Directory Copy Manager")
     dpg.add_separator()
     dpg.add_spacer(height=10)
@@ -645,7 +593,7 @@ with dpg.window(tag="Primary Window"):
             dpg.add_menu_item(label="Save window pos", callback=save_window_positions)
 
     # Input for the name
-    dpg.add_input_text(label="Name", tag="name_input")
+    dpg.add_input_text(label="Name", tag="name_input", width=-300)
     dpg.add_spacer(height=5)
 
     # Button to select source directory
@@ -670,11 +618,10 @@ with dpg.window(tag="Primary Window"):
     dpg.add_separator()
 
     # Container for displaying entries
-    item_id = dpg.add_text(
+    dpg.add_text(
         "Entries will appear below (click or double click to copy to clipboard):",
-        wrap=dpg.get_item_width("Primary Window") - 30,
+        wrap=0,
     )
-    ui_items["Primary Window"].append(item_id)
 
     with dpg.group(tag="entry_list"):
         # This will hold all entries
@@ -705,9 +652,9 @@ with dpg.window(tag="Primary Window"):
         dpg.add_button(label="Save entries to JSON", callback=save_entries)
 
     dpg.add_spacer(height=5)
-    dpg.add_text("", tag="status_text", color=(255, 140, 0))
-    dpg.add_text("", tag="speed_text", color=(0, 255, 0), show=False)
-    dpg.add_text("", tag="error_text", color=(139, 140, 0))
+    dpg.add_text("", tag="status_text", color=(255, 140, 0), wrap=0)
+    dpg.add_text("", tag="speed_text", color=(0, 255, 0), show=False, wrap=0)
+    dpg.add_text("", tag="error_text", color=(139, 140, 0), wrap=0)
 
     img_id = dpg.add_image("cute_image", pos=(0, 0), width=250, height=200)
 
@@ -742,12 +689,7 @@ def setup_viewport():
 load_entries()
 
 with dpg.item_handler_registry(tag="window_handler") as handler:
-    dpg.add_item_resize_handler(callback=resize_callback)
     dpg.add_item_resize_handler(callback=image_resize_callback)
-with dpg.item_handler_registry(tag="save_window_handler") as handler:
-    dpg.add_item_resize_handler(callback=save_resize_callback)
-with dpg.item_handler_registry(tag="settings_window_handler") as handler:
-    dpg.add_item_resize_handler(callback=settings_resize_callback)
 
 dpg.bind_item_handler_registry("Primary Window", "window_handler")
 dpg.bind_font(custom_font)
