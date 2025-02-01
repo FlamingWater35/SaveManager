@@ -171,6 +171,11 @@ def copy_thread(valid_entries, total_bytes):
             dest = destinations[index]
             name = names[index]
 
+            if copy_folder_checkbox_state:
+                new_destination = os.path.join(dest, os.path.basename(source))
+                os.makedirs(new_destination, exist_ok=True)
+                dest = new_destination
+
             # Get all files with sizes
             file_list = []
             for root, _, files in os.walk(source):
@@ -193,12 +198,6 @@ def copy_thread(valid_entries, total_bytes):
                         f_dst.write(chunk)
                         copied_bytes += len(chunk)
                         progress_queue.put(("progress", copied_bytes / total_bytes))
-
-            # Handle folder copy mode
-            if copy_folder_checkbox_state:
-                base_dir = os.path.basename(source)
-                dest_dir = os.path.join(dest, base_dir)
-                shutil.copystat(source, dest_dir)
 
         if not cancel_flag:
             progress_queue.put(("complete", "Copying completed."))
