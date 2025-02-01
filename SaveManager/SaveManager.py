@@ -231,6 +231,7 @@ def copy_thread(valid_entries, total_bytes):
 def copy_all_callback(sender, app_data):
     global copy_folder_checkbox_state, file_size_limit, cancel_flag
     cancel_flag = False
+    dpg.delete_item("copy_log", children_only=True)
     dpg.set_value("speed_text", "")
     dpg.show_item("speed_text")
 
@@ -664,7 +665,7 @@ with dpg.window(tag="Primary Window"):
     # Progress Bar
     dpg.add_spacer(height=5)
     dpg.add_progress_bar(
-        tag="progress_bar", default_value=0.0, width=400, height=20, show=False
+        tag="progress_bar", default_value=0.0, width=-200, height=20, show=False
     )
     dpg.add_spacer(height=5)
     dpg.add_separator()
@@ -678,6 +679,7 @@ with dpg.window(tag="Primary Window"):
     dpg.add_spacer(height=5)
     dpg.add_text("", tag="status_text", color=(255, 140, 0), wrap=0)
     dpg.add_text("", tag="speed_text", color=(0, 255, 0), show=False, wrap=0)
+    dpg.add_text("Log:")
     with dpg.child_window(tag="copy_log", auto_resize_y=True):
         pass
 
