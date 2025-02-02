@@ -731,75 +731,80 @@ def setup_viewport():
     dpg.set_viewport_small_icon(resource_path("docs/icon.ico"))
 
 
-# Load entries on application start
-load_entries()
+def main():
+    # Load entries on application start
+    load_entries()
 
-with dpg.item_handler_registry(tag="window_handler") as handler:
-    dpg.add_item_resize_handler(callback=image_resize_callback)
+    with dpg.item_handler_registry(tag="window_handler") as handler:
+        dpg.add_item_resize_handler(callback=image_resize_callback)
 
-dpg.bind_item_handler_registry("Primary Window", "window_handler")
-dpg.bind_font(custom_font)
-setup_viewport()
-dpg.setup_dearpygui()
-dpg.show_viewport()
-dpg.set_primary_window("Primary Window", True)
+    dpg.bind_item_handler_registry("Primary Window", "window_handler")
+    dpg.bind_font(custom_font)
+    setup_viewport()
+    dpg.setup_dearpygui()
+    dpg.show_viewport()
+    dpg.set_primary_window("Primary Window", True)
 
-while dpg.is_dearpygui_running():
-    while not progress_queue.empty():
-        item_type, data = progress_queue.get()
-        if item_type == "start":
-            total_bytes_global = data
-            start_time_global = time.time()
-            last_update_time = start_time_global
-        elif item_type == "progress":
-            copied_bytes = data
-            if total_bytes_global > 0:
-                copied_gb = copied_bytes / (1024**3)
-                total_gb = total_bytes_global / (1024**3)
+    while dpg.is_dearpygui_running():
+        while not progress_queue.empty():
+            item_type, data = progress_queue.get()
+            if item_type == "start":
+                total_bytes_global = data
+                start_time_global = time.time()
+                last_update_time = start_time_global
+            elif item_type == "progress":
+                copied_bytes = data
+                if total_bytes_global > 0:
+                    copied_gb = copied_bytes / (1024**3)
+                    total_gb = total_bytes_global / (1024**3)
 
-                # Update progress bar overlay text
-                dpg.configure_item(
-                    "progress_bar",
-                    overlay=f"{copied_gb:.2f} GB / {total_gb:.2f} GB",
-                )
+                    # Update progress bar overlay text
+                    dpg.configure_item(
+                        "progress_bar",
+                        overlay=f"{copied_gb:.2f} GB / {total_gb:.2f} GB",
+                    )
 
-                progress_value = copied_bytes / total_bytes_global
-                dpg.set_value("progress_bar", progress_value)
+                    progress_value = copied_bytes / total_bytes_global
+                    dpg.set_value("progress_bar", progress_value)
 
-                # Calculate speed and time
-                current_time = time.time()
-                if current_time - last_update_time >= 0.5:
-                    elapsed = current_time - start_time_global
-                    if elapsed > 0:
-                        speed = copied_bytes / elapsed  # bytes/sec
-                        speed_mb = speed / (1024**2)
-                        remaining = (total_bytes_global - copied_bytes) / max(speed, 1)
-                        mins_remaining = remaining / 60
-                        dpg.set_value(
-                            "speed_text",
-                            f"Speed: {speed_mb:.1f} MB/s | ETA: {mins_remaining:.1f} mins",
-                        )
-                    last_update_time = current_time
-        elif item_type == "complete":
-            dpg.set_value("status_text", data)
-            dpg.hide_item("progress_bar")
-            dpg.hide_item("speed_text")
-        elif item_type == "cancel":
-            dpg.set_value("status_text", data)
-            dpg.hide_item("progress_bar")
-            dpg.hide_item("speed_text")
-        elif item_type == "error":
-            dpg.add_text(data, color=(229, 57, 53), wrap=0, parent="copy_log")
-            dpg.hide_item("progress_bar")
-            dpg.hide_item("speed_text")
+                    # Calculate speed and time
+                    current_time = time.time()
+                    if current_time - last_update_time >= 0.5:
+                        elapsed = current_time - start_time_global
+                        if elapsed > 0:
+                            speed = copied_bytes / elapsed  # bytes/sec
+                            speed_mb = speed / (1024**2)
+                            remaining = (total_bytes_global - copied_bytes) / max(
+                                speed, 1
+                            )
+                            mins_remaining = remaining / 60
+                            dpg.set_value(
+                                "speed_text",
+                                f"Speed: {speed_mb:.1f} MB/s | ETA: {mins_remaining:.1f} mins",
+                            )
+                        last_update_time = current_time
+            elif item_type == "complete":
+                dpg.set_value("status_text", data)
+                dpg.hide_item("progress_bar")
+                dpg.hide_item("speed_text")
+            elif item_type == "cancel":
+                dpg.set_value("status_text", data)
+                dpg.hide_item("progress_bar")
+                dpg.hide_item("speed_text")
+            elif item_type == "error":
+                dpg.add_text(data, color=(229, 57, 53), wrap=0, parent="copy_log")
+                dpg.hide_item("progress_bar")
+                dpg.hide_item("speed_text")
 
-    dpg.render_dearpygui_frame()
+        dpg.render_dearpygui_frame()
+
+    def cleanup():
+        global cancel_flag
+        cancel_flag = True
+
+    dpg.set_exit_callback(cleanup)
+    dpg.destroy_context()
 
 
-def cleanup():
-    global cancel_flag
-    cancel_flag = True
-
-
-dpg.set_exit_callback(cleanup)
-dpg.destroy_context()
+if __name__ == "__main__":
+    main()
