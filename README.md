@@ -1,8 +1,8 @@
 # SaveManager
 
 ## About
-A simple Python application to copy multiple folders and saving the folder pairs, which can be used for backing up game save files easily.
+A simple Python application to save multiple folder pairs and copy them with the click of a button.
 
 ## Installing
-1. Download correct file for your operating system
+1. Download the executable from releases
 2. Run the file
