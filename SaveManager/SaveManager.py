@@ -586,7 +586,7 @@ with dpg.window(tag="Primary Window"):
     with dpg.tab_bar():
         with dpg.tab(label="Copy Manager"):
             with dpg.child_window(
-                autosize_x=True, auto_resize_y=True, tag="copy_child_window"
+                autosize_x=True, auto_resize_y=True, tag="copy_manager_main_window"
             ):
                 dpg.add_text("Directory Copy Manager")
                 dpg.add_separator()
@@ -691,7 +691,9 @@ with dpg.window(tag="Primary Window"):
                     )
 
         with dpg.tab(label="Save Finder"):
-            with dpg.child_window(autosize_x=True, auto_resize_y=True):
+            with dpg.child_window(
+                autosize_x=True, auto_resize_y=True, tag="save_finder_main_window"
+            ):
                 dpg.add_text("Save File Finder")
                 dpg.add_separator()
                 dpg.add_spacer(height=10)
@@ -751,22 +753,21 @@ def main():
     with dpg.item_handler_registry(tag="window_handler") as handler:
         dpg.add_item_resize_handler(callback=image_resize_callback)
 
-    with dpg.theme() as main_window_theme:
+    with dpg.theme() as child_window_theme:
         with dpg.theme_component(dpg.mvChildWindow):
             dpg.add_theme_style(dpg.mvStyleVar_WindowPadding, 15, 10)
             dpg.add_theme_style(dpg.mvStyleVar_ChildRounding, 2, 2)
             dpg.add_theme_style(dpg.mvStyleVar_ChildBorderSize, 4, 4)
             dpg.add_theme_color(dpg.mvThemeCol_Border, (66, 66, 66))
 
-    with dpg.theme() as child_window_theme:
+    with dpg.theme() as main_window_theme:
         with dpg.theme_component(dpg.mvChildWindow):
-            dpg.add_theme_style(dpg.mvStyleVar_WindowPadding, 15, 10)
-            dpg.add_theme_style(dpg.mvStyleVar_ChildRounding, 2, 2)
-            dpg.add_theme_style(dpg.mvStyleVar_ChildBorderSize, 4, 4)
             dpg.add_theme_color(dpg.mvThemeCol_Border, (21, 101, 192))
 
-    dpg.bind_item_theme("Primary Window", main_window_theme)
-    dpg.bind_item_theme("copy_child_window", child_window_theme)
+    dpg.bind_item_theme("Primary Window", child_window_theme)
+    dpg.bind_item_theme("copy_manager_main_window", main_window_theme)
+    dpg.bind_item_theme("save_finder_main_window", main_window_theme)
+
     dpg.bind_item_handler_registry("Primary Window", "window_handler")
     dpg.bind_font(custom_font)
     setup_viewport()
