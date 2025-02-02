@@ -11,7 +11,7 @@ import time
 
 dpg.create_context()
 
-app_version = "1.9_Windows"
+app_version = "1.9.1_Windows"
 
 # Lists to store source, destination directories and names
 sources = []
@@ -645,7 +645,16 @@ with dpg.window(tag="Primary Window"):
                     # This will hold all entries
                     pass
 
+                dpg.add_spacer(height=5)
+                with dpg.group(horizontal=True):
+                    dpg.add_button(
+                        label="Clear all pairs", callback=clear_entries_callback
+                    )
+                    dpg.add_button(label="Save pairs", callback=save_entries)
+
                 # Button to copy all entries
+                dpg.add_spacer(height=5)
+                dpg.add_separator()
                 dpg.add_spacer(height=5)
                 with dpg.group(horizontal=True):
                     dpg.add_button(
@@ -657,33 +666,26 @@ with dpg.window(tag="Primary Window"):
                         tag="cancel_button",
                     )
 
+                dpg.add_spacer(height=5)
+                dpg.add_text("", tag="status_text", color=(255, 140, 0), wrap=0)
+
                 # Progress Bar
                 dpg.add_spacer(height=5)
                 dpg.add_progress_bar(
                     tag="progress_bar",
                     default_value=0.0,
                     width=-200,
-                    height=20,
+                    height=30,
                     show=False,
                     overlay="0.00 GB / 0.00 GB",
                 )
-                dpg.add_spacer(height=5)
-                dpg.add_separator()
-
-                # Horizontal group for Save and Clear All buttons
-                dpg.add_spacer(height=5)
-                with dpg.group(horizontal=True):
-                    dpg.add_button(
-                        label="Clear all entries", callback=clear_entries_callback
-                    )
-                    dpg.add_button(label="Save entries to JSON", callback=save_entries)
 
                 dpg.add_spacer(height=5)
-                dpg.add_text("", tag="status_text", color=(255, 140, 0), wrap=0)
                 dpg.add_text(
                     "", tag="speed_text", color=(0, 255, 0), show=False, wrap=0
                 )
 
+                dpg.add_spacer(height=5)
                 with dpg.collapsing_header(label="Log"):
                     dpg.add_text("Log:")
                     with dpg.child_window(tag="copy_log", auto_resize_y=True):
