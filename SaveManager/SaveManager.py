@@ -36,7 +36,7 @@ progress_queue = queue.Queue()
 
 
 def resource_path(relative_path):
-    """Get the absolute path to the resource, works for dev and for PyInstaller"""
+    # Get the absolute path to the resource, works for dev and for PyInstaller
     if getattr(sys, "frozen", False):
         # If the application is frozen (i.e., running as a .exe)
         base_path = sys._MEIPASS
@@ -554,7 +554,7 @@ def image_resize_callback():
         image_enabled = True
     if image_enabled == True:
         window_width = dpg.get_item_width("Primary Window")
-        new_x = window_width - 220
+        new_x = window_width - 240
         new_y = 20
         dpg.set_item_pos(img_id, (new_x, new_y))
 
@@ -596,7 +596,11 @@ with dpg.window(tag="Primary Window"):
                 dpg.add_spacer(height=10)
 
                 with dpg.collapsing_header(label="Add folder pairs"):
-                    with dpg.child_window(autosize_x=True, auto_resize_y=True):
+                    with dpg.child_window(
+                        autosize_x=True,
+                        auto_resize_y=True,
+                        tag="copy_manager_add_folder_window",
+                    ):
                         # Input for the name
                         dpg.add_spacer(height=5)
                         dpg.add_input_text(label="Name", tag="name_input", width=-300)
@@ -761,15 +765,20 @@ def main():
             dpg.add_theme_style(dpg.mvStyleVar_WindowPadding, 15, 10)
             dpg.add_theme_style(dpg.mvStyleVar_ChildRounding, 2, 2)
             dpg.add_theme_style(dpg.mvStyleVar_ChildBorderSize, 4, 4)
-            dpg.add_theme_color(dpg.mvThemeCol_Border, (66, 66, 66))
+            dpg.add_theme_color(dpg.mvThemeCol_Border, (93, 64, 55))
 
     with dpg.theme() as main_window_theme:
         with dpg.theme_component(dpg.mvChildWindow):
             dpg.add_theme_color(dpg.mvThemeCol_Border, (21, 101, 192))
 
+    with dpg.theme() as main_window_add_folder_theme:
+        with dpg.theme_component(dpg.mvChildWindow):
+            dpg.add_theme_color(dpg.mvThemeCol_ChildBg, (43, 35, 32))
+
     dpg.bind_item_theme("Primary Window", child_window_theme)
     dpg.bind_item_theme("copy_manager_main_window", main_window_theme)
     dpg.bind_item_theme("save_finder_main_window", main_window_theme)
+    dpg.bind_item_theme("copy_manager_add_folder_window", main_window_add_folder_theme)
 
     dpg.bind_item_handler_registry("Primary Window", "window_handler")
     dpg.bind_font(custom_font)
