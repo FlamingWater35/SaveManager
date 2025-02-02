@@ -217,6 +217,8 @@ def copy_thread(valid_entries, total_bytes):
                         wrap=0,
                         parent="copy_log",
                     )
+                    total_bytes -= size  # Subtract the size of the skipped file
+                    progress_queue.put(("adjust_total", total_bytes))
                     continue  # Skip this file
 
                 with open(src_path, "rb") as f_src, open(dest_path, "wb") as f_dst:
@@ -827,6 +829,8 @@ def main():
                                 f"Speed: {speed_mb:.1f} MB/s | ETA: {mins_remaining:.1f} mins",
                             )
                         last_update_time = current_time
+            elif item_type == "adjust_total":
+                total_bytes_global = data
             elif item_type == "complete":
                 dpg.set_value("status_text", data)
                 dpg.hide_item("progress_bar")
