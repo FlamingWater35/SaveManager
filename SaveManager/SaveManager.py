@@ -11,7 +11,7 @@ import time
 
 dpg.create_context()
 
-app_version = "1.9.4_Windows"
+app_version = "1.9.5_Windows"
 
 # Lists to store source, destination directories and names
 sources = []
@@ -656,12 +656,9 @@ with dpg.window(tag="Primary Window"):
                     "Directories containing .sav and .save files will be listed below (click to copy to clipboard).",
                     wrap=0,
                 )
-
-                with dpg.group(tag="directory_list"):
+                dpg.add_spacer(height=10)
+                with dpg.child_window(tag="directory_list", auto_resize_y=True):
                     pass
-
-                dpg.add_separator()
-                dpg.add_spacer(height=20)
 
         with dpg.tab(label="Settings"):
             with dpg.child_window(
