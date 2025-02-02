@@ -11,6 +11,8 @@ import time
 
 dpg.create_context()
 
+app_version = "1.9_Windows"
+
 # Lists to store source, destination directories and names
 sources = []
 destinations = []
@@ -577,8 +579,9 @@ with dpg.texture_registry():
 
 with dpg.window(tag="Primary Window"):
     with dpg.menu_bar():
-        with dpg.menu(label="Tools"):
-            dpg.add_menu_item(label="Save Finder")
+        with dpg.menu(label="About"):
+            with dpg.menu(label="Information"):
+                dpg.add_text(f"Version: {app_version}")
         with dpg.menu(label="Settings"):
             dpg.add_menu_item(label="Display options", callback=open_settings)
             dpg.add_menu_item(label="Save window pos", callback=save_window_positions)
