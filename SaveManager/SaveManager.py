@@ -411,63 +411,6 @@ def start_search_thread():
     threading.Thread(target=search_files).start()
 
 
-def open_save_finder():
-    viewport_width = dpg.get_viewport_width()
-    viewport_height = dpg.get_viewport_height()
-
-    save_height = load_settings("Window", "save_finder_height")
-    save_width = load_settings("Window", "save_finder_width")
-
-    # Set maximum width and height for the window
-
-    if save_height != None:
-        max_width = save_width
-        max_height = save_height
-    else:
-        max_width = 800
-        max_height = 500
-
-    # Calculate position to center within the viewport
-    pos_x = max(0, (viewport_width - max_width) // 2)
-    pos_y = max(0, (viewport_height - max_height) // 2)
-
-    if not dpg.does_item_exist("save_finder_window"):
-        with dpg.window(
-            label="Save Finder",
-            modal=True,
-            width=max_width,
-            height=max_height,
-            no_collapse=True,
-            no_resize=False,  # Change to true when needed
-            no_move=False,  # Change to true when needed
-            pos=[pos_x, pos_y - 30],
-            tag="save_finder_window",
-        ):
-            dpg.add_button(label="Search for files", callback=start_search_thread)
-            dpg.add_spacer(height=5)
-            dpg.add_progress_bar(
-                tag="finder_progress_bar",
-                default_value=0.0,
-                width=400,
-                height=20,
-                show=False,
-            )
-            dpg.add_text("", tag="finder_text", show=False)
-            dpg.add_separator()
-            dpg.add_text(
-                "Directories containing .sav and .save files will be listed below (click to copy to clipboard).",
-                wrap=0,
-            )
-
-            with dpg.group(tag="directory_list"):
-                pass
-
-            dpg.add_separator()
-            dpg.add_spacer(height=20)
-    else:
-        dpg.show_item("save_finder_window")
-
-
 # File Dialog for selecting source directory
 dpg.add_file_dialog(
     directory_selector=True,
@@ -622,13 +565,13 @@ with dpg.texture_registry():
 with dpg.window(tag="Primary Window"):
     with dpg.menu_bar():
         with dpg.menu(label="Tools"):
-            dpg.add_menu_item(label="Save Finder", callback=open_save_finder)
+            dpg.add_menu_item(label="Save Finder")
         with dpg.menu(label="Settings"):
             dpg.add_menu_item(label="Display options", callback=open_settings)
             dpg.add_menu_item(label="Save window pos", callback=save_window_positions)
 
     with dpg.tab_bar():
-        with dpg.tab(label="Copy"):
+        with dpg.tab(label="Copy Manager"):
             dpg.add_text("Directory Copy Manager")
             dpg.add_separator()
             dpg.add_spacer(height=10)
@@ -716,6 +659,30 @@ with dpg.window(tag="Primary Window"):
                     pass
 
             img_id = dpg.add_image("cute_image", pos=(0, 0), width=250, height=200)
+
+        with dpg.tab(label="Save Finder"):
+            with dpg.child_window(autosize_x=True, auto_resize_y=True):
+                dpg.add_button(label="Search for files", callback=start_search_thread)
+                dpg.add_spacer(height=5)
+                dpg.add_progress_bar(
+                    tag="finder_progress_bar",
+                    default_value=0.0,
+                    width=400,
+                    height=20,
+                    show=False,
+                )
+                dpg.add_text("", tag="finder_text", show=False)
+                dpg.add_separator()
+                dpg.add_text(
+                    "Directories containing .sav and .save files will be listed below (click to copy to clipboard).",
+                    wrap=0,
+                )
+
+                with dpg.group(tag="directory_list"):
+                    pass
+
+                dpg.add_separator()
+                dpg.add_spacer(height=20)
 
 
 def setup_viewport():
