@@ -19,6 +19,8 @@ names = []
 copy_folder_checkbox_state = False
 file_size_limit = 5
 cancel_flag = False
+image_enabled = True
+
 start_time_global = 0
 total_bytes_global = 0
 last_update_time = 0
@@ -462,8 +464,16 @@ def file_size_limit_callback(sender, app_data):
         file_size_limit = 5
 
 
+def show_image_checkbox_callback(sender, app_data):
+    global image_enabled
+    save_settings("DisplayOptions", "show_image_status", app_data)
+    image_enabled = load_settings("DisplayOptions", "show_image_status")
+    if image_enabled == None:
+        image_enabled = True
+
+
 def open_settings():
-    global copy_folder_checkbox_state
+    global copy_folder_checkbox_state, image_enabled
 
     viewport_width = dpg.get_viewport_width()
     viewport_height = dpg.get_viewport_height()
@@ -526,25 +536,28 @@ def open_settings():
                         width=-100,
                         callback=file_size_limit_callback,
                     )
+                with dpg.group(horizontal=True):
+                    dpg.add_text("Show image")
+                    dpg.add_checkbox(
+                        default_value=image_enabled,
+                        callback=show_image_checkbox_callback,
+                    )
     else:
         dpg.show_item("settings_window")
 
 
 def image_resize_callback():
-    window_width = dpg.get_item_width("Primary Window")
-    new_x = window_width - 220
-    new_y = 20
-    dpg.set_item_pos(img_id, (new_x, new_y))
+    image_enabled = load_settings("DisplayOptions", "show_image_status")
+    if image_enabled != True and image_enabled != False:
+        image_enabled = True
+    if image_enabled == True:
+        window_width = dpg.get_item_width("Primary Window")
+        new_x = window_width - 220
+        new_y = 20
+        dpg.set_item_pos(img_id, (new_x, new_y))
 
 
 def save_window_positions():
-    if dpg.does_item_exist("save_finder_window"):
-        save_settings(
-            "Window", "save_finder_height", dpg.get_item_height("save_finder_window")
-        )
-        save_settings(
-            "Window", "save_finder_width", dpg.get_item_width("save_finder_window")
-        )
     save_settings("Window", "main_height", dpg.get_item_height("Primary Window"))
     save_settings("Window", "main_width", dpg.get_item_width("Primary Window"))
 
@@ -658,7 +671,11 @@ with dpg.window(tag="Primary Window"):
                 with dpg.child_window(tag="copy_log", auto_resize_y=True):
                     pass
 
-            img_id = dpg.add_image("cute_image", pos=(0, 0), width=250, height=200)
+            image_enabled = load_settings("DisplayOptions", "show_image_status")
+            if image_enabled != True and image_enabled != False:
+                image_enabled = True
+            if image_enabled == True:
+                img_id = dpg.add_image("cute_image", pos=(0, 0), width=250, height=200)
 
         with dpg.tab(label="Save Finder"):
             with dpg.child_window(autosize_x=True, auto_resize_y=True):
@@ -686,8 +703,8 @@ with dpg.window(tag="Primary Window"):
 
 
 def setup_viewport():
-    global copy_folder_checkbox_state
-    global file_size_limit
+    global copy_folder_checkbox_state, file_size_limit
+
     main_height = load_settings("Window", "main_height")
     main_width = load_settings("Window", "main_width")
 
