@@ -620,10 +620,6 @@ with dpg.texture_registry():
     )
 
 with dpg.window(tag="Primary Window"):
-    dpg.add_text("Directory Copy Manager")
-    dpg.add_separator()
-    dpg.add_spacer(height=10)
-
     with dpg.menu_bar():
         with dpg.menu(label="Tools"):
             dpg.add_menu_item(label="Save Finder", callback=open_save_finder)
@@ -631,78 +627,95 @@ with dpg.window(tag="Primary Window"):
             dpg.add_menu_item(label="Display options", callback=open_settings)
             dpg.add_menu_item(label="Save window pos", callback=save_window_positions)
 
-    # Input for the name
-    dpg.add_input_text(label="Name", tag="name_input", width=-300)
-    dpg.add_spacer(height=5)
+    with dpg.tab_bar():
+        with dpg.tab(label="Copy"):
+            dpg.add_text("Directory Copy Manager")
+            dpg.add_separator()
+            dpg.add_spacer(height=10)
 
-    # Button to select source directory
-    dpg.add_button(
-        label="Select Source Directory",
-        callback=lambda: dpg.show_item("source_file_dialog"),
-    )
-    dpg.add_text("", tag="source_display")  # Display for source path
-    dpg.add_spacer(height=5)
+            with dpg.collapsing_header(label="Add folder pairs"):
+                with dpg.child_window(autosize_x=True, auto_resize_y=True):
+                    # Input for the name
+                    dpg.add_spacer(height=5)
+                    dpg.add_input_text(label="Name", tag="name_input", width=-300)
+                    dpg.add_spacer(height=5)
 
-    # Button to select destination directory
-    dpg.add_button(
-        label="Select Destination Directory",
-        callback=lambda: dpg.show_item("destination_file_dialog"),
-    )
-    dpg.add_text("", tag="destination_display")  # Display for destination path
-    dpg.add_spacer(height=5)
+                    # Button to select source directory
+                    dpg.add_button(
+                        label="Select Source Directory",
+                        callback=lambda: dpg.show_item("source_file_dialog"),
+                    )
+                    dpg.add_text("", tag="source_display")  # Display for source path
+                    dpg.add_spacer(height=5)
 
-    # Button to add the entry
-    dpg.add_button(label="Add Entry", callback=add_entry_callback)
-    dpg.add_spacer(height=5)
-    dpg.add_separator()
+                    # Button to select destination directory
+                    dpg.add_button(
+                        label="Select Destination Directory",
+                        callback=lambda: dpg.show_item("destination_file_dialog"),
+                    )
+                    dpg.add_text(
+                        "", tag="destination_display"
+                    )  # Display for destination path
+                    dpg.add_spacer(height=5)
 
-    # Container for displaying entries
-    dpg.add_text(
-        "Entries will appear below (click or double click to copy to clipboard):",
-        wrap=0,
-    )
+                    # Button to add the entry
+                    dpg.add_button(label="Add folder pair", callback=add_entry_callback)
+                    dpg.add_spacer(height=5)
 
-    with dpg.child_window(tag="entry_list", auto_resize_y=True):
-        # This will hold all entries
-        pass
+            dpg.add_spacer(height=5)
+            dpg.add_separator()
 
-    # Button to copy all entries
-    dpg.add_spacer(height=5)
-    with dpg.group(horizontal=True):
-        dpg.add_button(label="Run Copy Operation", callback=copy_all_callback)
-        dpg.add_button(
-            label="Cancel Copy",
-            callback=set_cancel_to_true,
-            tag="cancel_button",
-        )
+            # Container for displaying entries
+            dpg.add_text(
+                "Folder pairs will appear below (click or double click to copy to clipboard):",
+                wrap=0,
+            )
 
-    # Progress Bar
-    dpg.add_spacer(height=5)
-    dpg.add_progress_bar(
-        tag="progress_bar",
-        default_value=0.0,
-        width=-200,
-        height=20,
-        show=False,
-        overlay="0.00 GB / 0.00 GB",
-    )
-    dpg.add_spacer(height=5)
-    dpg.add_separator()
+            with dpg.child_window(tag="entry_list", auto_resize_y=True):
+                # This will hold all entries
+                pass
 
-    # Horizontal group for Save and Clear All buttons
-    dpg.add_spacer(height=5)
-    with dpg.group(horizontal=True):
-        dpg.add_button(label="Clear all entries", callback=clear_entries_callback)
-        dpg.add_button(label="Save entries to JSON", callback=save_entries)
+            # Button to copy all entries
+            dpg.add_spacer(height=5)
+            with dpg.group(horizontal=True):
+                dpg.add_button(label="Run Copy Operation", callback=copy_all_callback)
+                dpg.add_button(
+                    label="Cancel Copy",
+                    callback=set_cancel_to_true,
+                    tag="cancel_button",
+                )
 
-    dpg.add_spacer(height=5)
-    dpg.add_text("", tag="status_text", color=(255, 140, 0), wrap=0)
-    dpg.add_text("", tag="speed_text", color=(0, 255, 0), show=False, wrap=0)
-    dpg.add_text("Log:")
-    with dpg.child_window(tag="copy_log", auto_resize_y=True):
-        pass
+            # Progress Bar
+            dpg.add_spacer(height=5)
+            dpg.add_progress_bar(
+                tag="progress_bar",
+                default_value=0.0,
+                width=-200,
+                height=20,
+                show=False,
+                overlay="0.00 GB / 0.00 GB",
+            )
+            dpg.add_spacer(height=5)
+            dpg.add_separator()
 
-    img_id = dpg.add_image("cute_image", pos=(0, 0), width=250, height=200)
+            # Horizontal group for Save and Clear All buttons
+            dpg.add_spacer(height=5)
+            with dpg.group(horizontal=True):
+                dpg.add_button(
+                    label="Clear all entries", callback=clear_entries_callback
+                )
+                dpg.add_button(label="Save entries to JSON", callback=save_entries)
+
+            dpg.add_spacer(height=5)
+            dpg.add_text("", tag="status_text", color=(255, 140, 0), wrap=0)
+            dpg.add_text("", tag="speed_text", color=(0, 255, 0), show=False, wrap=0)
+
+            with dpg.collapsing_header(label="Log"):
+                dpg.add_text("Log:")
+                with dpg.child_window(tag="copy_log", auto_resize_y=True):
+                    pass
+
+            img_id = dpg.add_image("cute_image", pos=(0, 0), width=250, height=200)
 
 
 def setup_viewport():
