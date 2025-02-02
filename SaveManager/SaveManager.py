@@ -749,6 +749,12 @@ def main():
     with dpg.item_handler_registry(tag="window_handler") as handler:
         dpg.add_item_resize_handler(callback=image_resize_callback)
 
+    with dpg.theme() as window_theme:
+        with dpg.theme_component(dpg.mvChildWindow):
+            dpg.add_theme_style(dpg.mvStyleVar_WindowPadding, 15, 10)
+            # dpg.add_theme_style(dpg.mvStyleVar_WindowRounding, 30, 30)
+
+    dpg.bind_item_theme("Primary Window", window_theme)
     dpg.bind_item_handler_registry("Primary Window", "window_handler")
     dpg.bind_font(custom_font)
     setup_viewport()
