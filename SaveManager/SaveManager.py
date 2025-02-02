@@ -11,7 +11,7 @@ import time
 
 dpg.create_context()
 
-app_version = "1.9.2_Windows"
+app_version = "1.9.3_Windows"
 
 # Lists to store source, destination directories and names
 sources = []
@@ -22,6 +22,7 @@ copy_folder_checkbox_state: bool
 file_size_limit: int
 cancel_flag: bool
 image_enabled: bool
+remember_window_pos: bool
 
 start_time_global = 0
 total_bytes_global = 0
@@ -476,6 +477,14 @@ def show_image_checkbox_callback(sender, app_data):
         image_enabled = True
 
 
+def remember_window_pos_checkbox_callback(sender, app_data):
+    global remember_window_pos
+    save_settings("DisplayOptions", "remember_window_pos", app_data)
+    remember_window_pos = load_settings("DisplayOptions", "remember_window_pos")
+    if remember_window_pos == None:
+        remember_window_pos = True
+
+
 def image_resize_callback():
     image_enabled = load_settings("DisplayOptions", "show_image_status")
     if image_enabled != True and image_enabled != False:
@@ -510,8 +519,6 @@ with dpg.window(tag="Primary Window"):
         with dpg.menu(label="About"):
             with dpg.menu(label="Information"):
                 dpg.add_text(f"Version: {app_version}")
-        with dpg.menu(label="Settings"):
-            dpg.add_menu_item(label="Save window pos", callback=save_window_positions)
 
     with dpg.tab_bar():
         with dpg.tab(label="Copy Manager"):
@@ -673,7 +680,7 @@ with dpg.window(tag="Primary Window"):
 
 
 def setup_viewport():
-    global copy_folder_checkbox_state, file_size_limit
+    global copy_folder_checkbox_state, file_size_limit, remember_window_pos, font_size
 
     main_height = load_settings("Window", "main_height")
     main_width = load_settings("Window", "main_width")
@@ -686,6 +693,10 @@ def setup_viewport():
     if file_size_limit == None:
         file_size_limit = 5
 
+    remember_window_pos = load_settings("DisplayOptions", "remember_window_pos")
+    if remember_window_pos != True and remember_window_pos != False:
+        remember_window_pos = True
+
     # Set maximum width and height for the window
     if main_height != None:
         max_width = main_width
@@ -697,6 +708,7 @@ def setup_viewport():
     dpg.create_viewport(title="Save Manager", width=max_width, height=max_height)
     dpg.set_viewport_small_icon(resource_path("docs/icon.ico"))
 
+    dpg.add_spacer(height=10, parent="settings_child_window")
     with dpg.group(horizontal=True, parent="settings_child_window"):
         dpg.add_text("Font size")
         dpg.add_slider_int(
@@ -727,12 +739,24 @@ def setup_viewport():
             width=-100,
             callback=file_size_limit_callback,
         )
+    dpg.add_spacer(height=20, parent="settings_child_window")
+    with dpg.group(horizontal=True, parent="settings_child_window"):
+        dpg.add_text(
+            "Remember window position",
+            wrap=0,
+        )
+        dpg.add_checkbox(
+            default_value=remember_window_pos,
+            callback=remember_window_pos_checkbox_callback,
+        )
+    dpg.add_spacer(height=20, parent="settings_child_window")
     with dpg.group(horizontal=True, parent="settings_child_window"):
         dpg.add_text("Show image")
         dpg.add_checkbox(
             default_value=image_enabled,
             callback=show_image_checkbox_callback,
         )
+    dpg.add_spacer(height=10, parent="settings_child_window")
 
 
 def main():
@@ -825,8 +849,10 @@ def main():
         dpg.render_dearpygui_frame()
 
     def cleanup():
-        global cancel_flag
+        global cancel_flag, remember_window_pos
         cancel_flag = True
+        if remember_window_pos == True:
+            save_window_positions()
 
     dpg.set_exit_callback(cleanup)
     dpg.destroy_context()
