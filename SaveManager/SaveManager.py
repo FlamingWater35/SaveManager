@@ -11,17 +11,17 @@ import time
 
 dpg.create_context()
 
-app_version = "1.9.1_Windows"
+app_version = "1.9.2_Windows"
 
 # Lists to store source, destination directories and names
 sources = []
 destinations = []
 names = []
 
-copy_folder_checkbox_state = False
-file_size_limit = 5
-cancel_flag = False
-image_enabled = True
+copy_folder_checkbox_state: bool
+file_size_limit: int
+cancel_flag: bool
+image_enabled: bool
 
 start_time_global = 0
 total_bytes_global = 0
@@ -476,80 +476,6 @@ def show_image_checkbox_callback(sender, app_data):
         image_enabled = True
 
 
-def open_settings():
-    global copy_folder_checkbox_state, image_enabled
-
-    viewport_width = dpg.get_viewport_width()
-    viewport_height = dpg.get_viewport_height()
-
-    # Set maximum width and height for the window
-    max_width = 800
-    max_height = 500
-
-    # Calculate position to center within the viewport
-    pos_x = max(0, (viewport_width - max_width) // 2)
-    pos_y = max(0, (viewport_height - max_height) // 2)
-
-    if not dpg.does_item_exist("settings_window"):
-        with dpg.window(
-            label="Settings",
-            modal=True,
-            width=max_width,
-            height=max_height,
-            no_collapse=True,
-            no_resize=False,  # Change to true when needed
-            no_move=False,  # Change to true when needed
-            pos=[pos_x, pos_y - 30],
-            tag="settings_window",
-        ):
-            dpg.add_text(
-                "Changes to font size will be applied after application restart",
-                wrap=0,
-            )
-            dpg.add_separator()
-            dpg.add_spacer(height=10)
-
-            with dpg.child_window(auto_resize_x=True, width=-1):
-                with dpg.group(horizontal=True):
-                    dpg.add_text("Font size")
-                    dpg.add_slider_int(
-                        min_value=8,
-                        max_value=40,
-                        default_value=font_size,
-                        width=-100,
-                        callback=change_font_size,
-                    )
-                dpg.add_spacer(height=20)
-                with dpg.group(horizontal=True):
-                    dpg.add_text(
-                        "Copy entire source folder to destination (if disabled, only files inside selected folder)",
-                        wrap=0,
-                    )
-                    dpg.add_checkbox(
-                        default_value=copy_folder_checkbox_state,
-                        callback=copy_folder_checkbox_callback,
-                    )
-                dpg.add_spacer(height=20)
-                with dpg.group(horizontal=True):
-                    dpg.add_text("Size limit")
-                    dpg.add_slider_int(
-                        label="GB",
-                        min_value=1,
-                        max_value=500,
-                        default_value=file_size_limit,
-                        width=-100,
-                        callback=file_size_limit_callback,
-                    )
-                with dpg.group(horizontal=True):
-                    dpg.add_text("Show image")
-                    dpg.add_checkbox(
-                        default_value=image_enabled,
-                        callback=show_image_checkbox_callback,
-                    )
-    else:
-        dpg.show_item("settings_window")
-
-
 def image_resize_callback():
     image_enabled = load_settings("DisplayOptions", "show_image_status")
     if image_enabled != True and image_enabled != False:
@@ -585,7 +511,6 @@ with dpg.window(tag="Primary Window"):
             with dpg.menu(label="Information"):
                 dpg.add_text(f"Version: {app_version}")
         with dpg.menu(label="Settings"):
-            dpg.add_menu_item(label="Display options", callback=open_settings)
             dpg.add_menu_item(label="Save window pos", callback=save_window_positions)
 
     with dpg.tab_bar():
@@ -730,6 +655,22 @@ with dpg.window(tag="Primary Window"):
                 dpg.add_separator()
                 dpg.add_spacer(height=20)
 
+        with dpg.tab(label="Settings"):
+            with dpg.child_window(
+                autosize_x=True, auto_resize_y=True, tag="settings_main_window"
+            ):
+                dpg.add_text(
+                    "Changes to font size and size limit will be applied after application restart",
+                    wrap=0,
+                )
+                dpg.add_separator()
+                dpg.add_spacer(height=10)
+
+                with dpg.child_window(
+                    autosize_x=True, auto_resize_y=True, tag="settings_child_window"
+                ):
+                    pass
+
 
 def setup_viewport():
     global copy_folder_checkbox_state, file_size_limit
@@ -756,10 +697,48 @@ def setup_viewport():
     dpg.create_viewport(title="Save Manager", width=max_width, height=max_height)
     dpg.set_viewport_small_icon(resource_path("docs/icon.ico"))
 
+    with dpg.group(horizontal=True, parent="settings_child_window"):
+        dpg.add_text("Font size")
+        dpg.add_slider_int(
+            min_value=8,
+            max_value=40,
+            default_value=font_size,
+            width=-100,
+            callback=change_font_size,
+        )
+    dpg.add_spacer(height=20, parent="settings_child_window")
+    with dpg.group(horizontal=True, parent="settings_child_window"):
+        dpg.add_text(
+            "Copy entire source folder to destination (if disabled, only files inside selected folder)",
+            wrap=0,
+        )
+        dpg.add_checkbox(
+            default_value=copy_folder_checkbox_state,
+            callback=copy_folder_checkbox_callback,
+        )
+    dpg.add_spacer(height=20, parent="settings_child_window")
+    with dpg.group(horizontal=True, parent="settings_child_window"):
+        dpg.add_text("Size limit")
+        dpg.add_slider_int(
+            label="GB",
+            min_value=1,
+            max_value=500,
+            default_value=file_size_limit,
+            width=-100,
+            callback=file_size_limit_callback,
+        )
+    with dpg.group(horizontal=True, parent="settings_child_window"):
+        dpg.add_text("Show image")
+        dpg.add_checkbox(
+            default_value=image_enabled,
+            callback=show_image_checkbox_callback,
+        )
+
 
 def main():
     # Load entries on application start
     load_entries()
+    setup_viewport()
 
     with dpg.item_handler_registry(tag="window_handler") as handler:
         dpg.add_item_resize_handler(callback=image_resize_callback)
@@ -786,7 +765,6 @@ def main():
 
     dpg.bind_item_handler_registry("Primary Window", "window_handler")
     dpg.bind_font(custom_font)
-    setup_viewport()
     dpg.setup_dearpygui()
     dpg.show_viewport()
     dpg.set_primary_window("Primary Window", True)
