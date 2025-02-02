@@ -11,7 +11,7 @@ import time
 
 dpg.create_context()
 
-app_version = "1.9.3_Windows"
+app_version = "1.9.4_Windows"
 
 # Lists to store source, destination directories and names
 sources = []
@@ -499,6 +499,7 @@ def image_resize_callback():
 def save_window_positions():
     save_settings("Window", "main_height", dpg.get_item_height("Primary Window"))
     save_settings("Window", "main_width", dpg.get_item_width("Primary Window"))
+    save_settings("Window", "main_pos", dpg.get_viewport_pos())
 
 
 def text_click_handler(sender, app_data, user_data):
@@ -684,6 +685,7 @@ def setup_viewport():
 
     main_height = load_settings("Window", "main_height")
     main_width = load_settings("Window", "main_width")
+    main_pos = load_settings("Window", "main_pos")
 
     copy_folder_checkbox_state = load_settings("DisplayOptions", "copy_folder_status")
     if copy_folder_checkbox_state != True and copy_folder_checkbox_state != False:
@@ -706,6 +708,8 @@ def setup_viewport():
         max_height = 600
 
     dpg.create_viewport(title="Save Manager", width=max_width, height=max_height)
+    if main_pos != None:
+        dpg.set_viewport_pos(main_pos)
     dpg.set_viewport_small_icon(resource_path("docs/icon.ico"))
 
     dpg.add_spacer(height=10, parent="settings_child_window")
