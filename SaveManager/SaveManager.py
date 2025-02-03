@@ -9,11 +9,12 @@ import queue
 import time
 import ctypes
 import webbrowser
+import requests
 
 
 dpg.create_context()
 
-app_version = "2.0.1_Windows"
+app_version = "2.0.2_Windows"
 release_date = "3/2025"
 
 # Lists to store source, destination directories and names
@@ -425,6 +426,51 @@ def start_search_thread():
     threading.Thread(target=search_files).start()
 
 
+def check_for_updates(sender, app_data):
+    threading.Thread(target=check_for_updates_thread).start()
+
+
+def compare_versions(current, latest):
+    current_parts = list(map(int, current.split(".")))
+    latest_parts = list(map(int, latest.split(".")))
+
+    for c, l in zip(current_parts, latest_parts):
+        if c < l:
+            return -1
+        elif c > l:
+            return 1
+
+    if len(current_parts) < len(latest_parts):
+        return -1
+    elif len(current_parts) > len(latest_parts):
+        return 1
+    return 0
+
+
+def check_for_updates_thread():
+    try:
+        repo_owner = "FlamingWater35"
+        repo_name = "SaveManager"
+        api_url = (
+            f"https://api.github.com/repos/{repo_owner}/{repo_name}/releases/latest"
+        )
+
+        response = requests.get(api_url)
+        response.raise_for_status()
+        release_data = response.json()
+
+        latest_version = release_data["tag_name"].lstrip("v")
+        current_version = app_version.split("_")[0].lstrip("v")
+
+        if compare_versions(current_version, latest_version) < 0:
+            progress_queue.put(("update", f"New version {latest_version} available!"))
+            progress_queue.put(("open_url", release_data["html_url"]))
+        else:
+            progress_queue.put(("update", "You have the latest version"))
+    except Exception as e:
+        progress_queue.put(("update", f"Update check failed: {str(e)}"))
+
+
 # File Dialog for selecting source directory
 dpg.add_file_dialog(
     directory_selector=True,
@@ -651,6 +697,7 @@ with dpg.window(tag="Primary Window"):
                         ),
                         small=True,
                     )
+            dpg.add_menu_item(label="Check For Updates", callback=check_for_updates)
         with dpg.menu(label="Debug"):
             dpg.add_menu_item(
                 label="Show Metrics", callback=lambda: dpg.show_tool(dpg.mvTool_Metrics)
@@ -1063,6 +1110,10 @@ def main():
                 dpg.add_text(data, color=(229, 57, 53), wrap=0, parent="copy_log")
                 dpg.hide_item("progress_bar")
                 dpg.hide_item("speed_text")
+            elif item_type == "update":
+                dpg.set_value("status_text", data)
+            elif item_type == "open_url":
+                webbrowser.open(data)
 
         dpg.render_dearpygui_frame()
 
