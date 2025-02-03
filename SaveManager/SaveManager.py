@@ -13,7 +13,7 @@ import webbrowser
 
 dpg.create_context()
 
-app_version = "1.9.9_Windows"
+app_version = "1.9.9.1_Windows"
 release_date = "3/2025"
 
 # Lists to store source, destination directories and names
@@ -694,8 +694,25 @@ with dpg.window(tag="Primary Window"):
                 dpg.add_separator()
                 dpg.add_spacer(height=10)
 
+                dpg.add_text("Display", wrap=0)
                 with dpg.child_window(
-                    autosize_x=True, auto_resize_y=True, tag="settings_child_window"
+                    autosize_x=True,
+                    auto_resize_y=True,
+                    tag="display_settings_child_window",
+                ):
+                    pass
+                dpg.add_text("Copy Manager", wrap=0)
+                with dpg.child_window(
+                    autosize_x=True,
+                    auto_resize_y=True,
+                    tag="copy_manager_settings_child_window",
+                ):
+                    pass
+                dpg.add_text("Save Finder", wrap=0)
+                with dpg.child_window(
+                    autosize_x=True,
+                    auto_resize_y=True,
+                    tag="save_finder_settings_child_window",
                 ):
                     pass
 
@@ -756,8 +773,8 @@ def setup_viewport():
     save_settings("DisplayOptions", "launched", True)
     dpg.set_viewport_small_icon(resource_path("docs/icon.ico"))
 
-    dpg.add_spacer(height=10, parent="settings_child_window")
-    with dpg.group(horizontal=True, parent="settings_child_window"):
+    dpg.add_spacer(height=10, parent="display_settings_child_window")
+    with dpg.group(horizontal=True, parent="display_settings_child_window"):
         dpg.add_text("Font size")
         dpg.add_input_int(
             min_value=8,
@@ -768,33 +785,8 @@ def setup_viewport():
             width=200,
             callback=change_font_size,
         )
-    dpg.add_spacer(height=20, parent="settings_child_window")
-    with dpg.group(horizontal=True, parent="settings_child_window"):
-        dpg.add_text(
-            "Copy source folder to destination (if disabled, only files inside it)",
-            wrap=0,
-        )
-        dpg.add_checkbox(
-            default_value=copy_folder_checkbox_state,
-            callback=settings_change_callback,
-            user_data="copy_folder",
-        )
-    dpg.add_spacer(height=20, parent="settings_child_window")
-    with dpg.group(horizontal=True, parent="settings_child_window"):
-        dpg.add_text("Folder size limit")
-        dpg.add_input_int(
-            label="GB",
-            min_value=1,
-            max_value=500,
-            default_value=file_size_limit,
-            step=2,
-            step_fast=2,
-            width=200,
-            callback=settings_change_callback,
-            user_data="file_size_limit",
-        )
-    dpg.add_spacer(height=20, parent="settings_child_window")
-    with dpg.group(horizontal=True, parent="settings_child_window"):
+    dpg.add_spacer(height=20, parent="display_settings_child_window")
+    with dpg.group(horizontal=True, parent="display_settings_child_window"):
         dpg.add_text(
             "Remember window position",
             wrap=0,
@@ -804,8 +796,42 @@ def setup_viewport():
             callback=settings_change_callback,
             user_data="remember_window_pos",
         )
-    dpg.add_spacer(height=20, parent="settings_child_window")
-    with dpg.group(horizontal=True, parent="settings_child_window"):
+    dpg.add_spacer(height=20, parent="display_settings_child_window")
+    with dpg.group(horizontal=True, parent="display_settings_child_window"):
+        dpg.add_text("Show image")
+        dpg.add_checkbox(
+            default_value=image_enabled,
+            callback=settings_change_callback,
+            user_data="show_image",
+        )
+    dpg.add_spacer(height=10, parent="display_settings_child_window")
+    dpg.add_spacer(height=20, parent="copy_manager_settings_child_window")
+    with dpg.group(horizontal=True, parent="copy_manager_settings_child_window"):
+        dpg.add_text(
+            "Copy source folder to destination (if disabled, only files inside it)",
+            wrap=0,
+        )
+        dpg.add_checkbox(
+            default_value=copy_folder_checkbox_state,
+            callback=settings_change_callback,
+            user_data="copy_folder",
+        )
+    dpg.add_spacer(height=20, parent="copy_manager_settings_child_window")
+    with dpg.group(horizontal=True, parent="copy_manager_settings_child_window"):
+        dpg.add_text("Folder size limit")
+        dpg.add_input_int(
+            label="GB",
+            min_value=1,
+            max_value=500,
+            default_value=file_size_limit,
+            step=1,
+            step_fast=1,
+            width=200,
+            callback=settings_change_callback,
+            user_data="file_size_limit",
+        )
+    dpg.add_spacer(height=20, parent="copy_manager_settings_child_window")
+    with dpg.group(horizontal=True, parent="copy_manager_settings_child_window"):
         dpg.add_text(
             "Skip existing files",
             wrap=0,
@@ -815,15 +841,7 @@ def setup_viewport():
             callback=settings_change_callback,
             user_data="skip_existing_files",
         )
-    dpg.add_spacer(height=20, parent="settings_child_window")
-    with dpg.group(horizontal=True, parent="settings_child_window"):
-        dpg.add_text("Show image")
-        dpg.add_checkbox(
-            default_value=image_enabled,
-            callback=settings_change_callback,
-            user_data="show_image",
-        )
-    dpg.add_spacer(height=10, parent="settings_child_window")
+    dpg.add_spacer(height=10, parent="copy_manager_settings_child_window")
 
 
 def main():
