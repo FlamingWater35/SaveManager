@@ -11,6 +11,7 @@ import ctypes
 import webbrowser
 import requests
 from PIL import Image
+import numpy as np
 
 
 dpg.create_context()
@@ -490,12 +491,12 @@ def open_image(sender, app_data):
         return
 
     width, height = image.size
-    image_bytes = image.tobytes()
-    image_data = [b / 255.0 for b in image_bytes]  # Normalize to 0.0-1.0
+    image_array = np.array(image).astype(np.float32) / 255.0
+    image_data = image_array.flatten().tolist()
 
     # Clean up previous resources
     if texture_tag:
-        #dpg.remove_alias(texture_tag)
+        # dpg.remove_alias(texture_tag)
         pass
     if drawlist_tag:
         dpg.delete_item(drawlist_tag)
@@ -508,7 +509,10 @@ def open_image(sender, app_data):
     # Create new drawlist with image and sizing rectangle
     drawlist_tag = dpg.generate_uuid()
     with dpg.drawlist(
-        dpg.get_viewport_width() / 1.3, dpg.get_viewport_height() / 1.3, tag=drawlist_tag, parent="image_viewer_child_window"
+        dpg.get_viewport_width() / 1.3,
+        dpg.get_viewport_height() / 1.3,
+        tag=drawlist_tag,
+        parent="image_viewer_child_window",
     ):
         dpg.draw_image(texture_tag, (0, 0), (width, height))
         dpg.draw_rectangle(
@@ -920,11 +924,11 @@ with dpg.window(tag="Primary Window"):
                     callback=lambda: dpg.show_item("open_image_dialog"),
                 )
                 with dpg.child_window(
-                    autosize_x=True,
-                    auto_resize_y=True,
+                    width=1000,
+                    height=700,
                     tag="image_viewer_child_window",
                     horizontal_scrollbar=True,
-                    border=False,
+                    # border=False,
                 ):
                     pass
                 with dpg.group(horizontal=True):
