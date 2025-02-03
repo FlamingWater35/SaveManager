@@ -805,8 +805,8 @@ with dpg.window(tag="Primary Window"):
                     wrap=0,
                 )
                 dpg.add_separator()
-                dpg.add_spacer(height=10)
 
+                dpg.add_spacer(height=10)
                 dpg.add_text("Display", wrap=0)
                 with dpg.child_window(
                     autosize_x=True,
@@ -814,6 +814,7 @@ with dpg.window(tag="Primary Window"):
                     tag="display_settings_child_window",
                 ):
                     pass
+                dpg.add_spacer(height=10)
                 dpg.add_text("Copy Manager", wrap=0)
                 with dpg.child_window(
                     autosize_x=True,
@@ -821,6 +822,7 @@ with dpg.window(tag="Primary Window"):
                     tag="copy_manager_settings_child_window",
                 ):
                     pass
+                dpg.add_spacer(height=10)
                 dpg.add_text("File Finder", wrap=0)
                 with dpg.child_window(
                     autosize_x=True,
