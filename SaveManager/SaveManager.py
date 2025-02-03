@@ -508,7 +508,7 @@ def open_image(sender, app_data):
     # Create new drawlist with image and sizing rectangle
     drawlist_tag = dpg.generate_uuid()
     with dpg.drawlist(
-        width, height, tag=drawlist_tag, parent="image_viewer_child_window"
+        dpg.get_viewport_width() / 1.3, dpg.get_viewport_height() / 1.3, tag=drawlist_tag, parent="image_viewer_child_window"
     ):
         dpg.draw_image(texture_tag, (0, 0), (width, height))
         dpg.draw_rectangle(
