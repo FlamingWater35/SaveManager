@@ -327,6 +327,7 @@ def search_files():
     ]
 
     sav_directories = set()
+    file_extensions_tuple = tuple(file_extensions)
 
     dpg.set_value("finder_progress_bar", 0.0)
     dpg.show_item("finder_progress_bar")
@@ -358,7 +359,7 @@ def search_files():
 
                 # Add files that match extensions
                 for file in files:
-                    if file.endswith(file_extensions):
+                    if file.endswith(file_extensions_tuple):
                         sav_directories.add(root)
                         total_files += 1
 
@@ -447,25 +448,104 @@ dpg.add_file_dialog(
 )
 
 
+def remove_current_extension(sender, app_data):
+    global file_extensions
+
+    file_extensions.remove(dpg.get_item_user_data(sender))
+    save_settings("SaveFinderOptions", "file_extensions", file_extensions)
+    dpg.set_value(
+        "save_finder_text",
+        f"Directories containing {file_extensions} files will be listed below (click to copy to clipboard).",
+    )
+
+    dpg.delete_item("extension_list", children_only=True)
+    for index, extension in enumerate(file_extensions, start=1):
+        dpg.add_text(f"{index}: {extension}", parent="extension_list")
+    dpg.hide_item("select_extension_text")
+    dpg.show_item("extension_remove_button")
+    dpg.show_item("extension_add_button")
+
+
 def remove_extensions():
     global file_extensions
 
     dpg.delete_item("extension_list", children_only=True)
     for index, extension in enumerate(file_extensions, start=1):
-        dpg.add_selectable(label=f"{index}: {extension}", parent="extension_list")
+        dpg.add_selectable(
+            label=f"{index}: {extension}",
+            parent="extension_list",
+            callback=remove_current_extension,
+            user_data=extension,
+        )
+    dpg.show_item("select_extension_text")
+    dpg.hide_item("extension_remove_button")
+    dpg.hide_item("extension_add_button")
+
+
+def add_extension():
+    dpg.show_item("add_extension_group")
+    dpg.show_item("comfirm_add_extension")
+    dpg.hide_item("extension_remove_button")
+    dpg.hide_item("extension_add_button")
+
+
+def add_current_extension():
+    global file_extensions
+
+    extension = dpg.get_value("add_extension_input")
+    if extension != "":
+        file_extensions.append(extension)
+        save_settings("SaveFinderOptions", "file_extensions", file_extensions)
+        dpg.set_value(
+            "save_finder_text",
+            f"Directories containing {file_extensions} files will be listed below (click to copy to clipboard).",
+        )
+
+        dpg.delete_item("extension_list", children_only=True)
+        for index, extension in enumerate(file_extensions, start=1):
+            dpg.add_text(f"{index}: {extension}", parent="extension_list")
+        dpg.hide_item("add_extension_group")
+        dpg.hide_item("comfirm_add_extension")
+        dpg.show_item("extension_remove_button")
+        dpg.show_item("extension_add_button")
 
 
 def open_file_extension_menu():
     global file_extensions
 
+    if dpg.does_item_exist("extension_manager_window"):
+        dpg.delete_item("extension_manager_window")
     with dpg.window(
-        label="Manage extensions", modal=True, no_collapse=True, autosize=True
+        label="Manage extensions",
+        tag="extension_manager_window",
+        modal=True,
+        no_collapse=True,
+        width=400,
+        height=500,
     ):
         with dpg.group(horizontal=True):
-            dpg.add_button(label="Add")
-            dpg.add_button(label="Remove", callback=remove_extensions)
+            dpg.add_button(
+                label="Add", callback=add_extension, tag="extension_add_button"
+            )
+            dpg.add_button(
+                label="Remove",
+                callback=remove_extensions,
+                tag="extension_remove_button",
+            )
+            dpg.add_button(
+                label="Comfirm",
+                tag="comfirm_add_extension",
+                show=False,
+                callback=add_current_extension,
+            )
+        with dpg.group(horizontal=True, show=False, tag="add_extension_group"):
+            dpg.add_text("Extension name")
+            dpg.add_input_text(width=-1, tag="add_extension_input")
+        dpg.add_text(
+            "Select an item to remove:", tag="select_extension_text", show=False
+        )
         with dpg.child_window(
-            auto_resize_x=True, auto_resize_y=True, tag="extension_list"
+            autosize_x=True, auto_resize_y=True, tag="extension_list"
         ):
             for index, extension in enumerate(file_extensions, start=1):
                 dpg.add_text(f"{index}: {extension}")
@@ -702,7 +782,8 @@ with dpg.window(tag="Primary Window"):
                 dpg.add_text("", tag="finder_text", show=False)
                 dpg.add_separator()
                 dpg.add_text(
-                    "Directories containing .sav and .save files will be listed below (click to copy to clipboard).",
+                    "Directories containing specified files will be listed below (click to copy to clipboard).",
+                    tag="save_finder_text",
                     wrap=0,
                 )
                 dpg.add_spacer(height=10)
@@ -771,6 +852,10 @@ def setup_viewport():
     file_extensions = load_settings("SaveFinderOptions", "file_extensions")
     if file_extensions == None:
         file_extensions = [".sav", ".save"]
+    dpg.set_value(
+        "save_finder_text",
+        f"Directories containing {file_extensions} files will be listed below (click to copy to clipboard).",
+    )
 
     launched = load_settings("DisplayOptions", "launched")
     if launched == None:
@@ -880,6 +965,7 @@ def setup_viewport():
         )
         dpg.add_spacer(width=10)
         dpg.add_button(label="Manage extensions", callback=open_file_extension_menu)
+    dpg.add_spacer(height=10, parent="save_finder_settings_child_window")
 
 
 def main():
