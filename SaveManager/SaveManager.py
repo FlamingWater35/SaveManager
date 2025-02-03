@@ -782,12 +782,14 @@ def setup_viewport():
     dpg.add_spacer(height=20, parent="settings_child_window")
     with dpg.group(horizontal=True, parent="settings_child_window"):
         dpg.add_text("Folder size limit")
-        dpg.add_slider_int(
+        dpg.add_input_int(
             label="GB",
             min_value=1,
             max_value=500,
             default_value=file_size_limit,
-            width=-100,
+            step=2,
+            step_fast=2,
+            width=300,
             callback=settings_change_callback,
             user_data="file_size_limit",
         )
