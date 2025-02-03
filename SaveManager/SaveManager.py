@@ -508,7 +508,7 @@ def open_image(sender, app_data):
         dpg.delete_item(drawlist_tag)
 
     # Create new texture, change to dynamic texture if needed
-    texture_tag = dpg.add_dynamic_texture(
+    texture_tag = dpg.add_static_texture(
         width, height, image_data, parent="image_registry"
     )
 
@@ -531,8 +531,8 @@ def update_image_display():
 
     drawlist_tag = dpg.generate_uuid()
     with dpg.drawlist(
-        dpg.get_viewport_width() / 1.3,
-        dpg.get_viewport_height() / 1.3,
+        dpg.get_viewport_width(),
+        dpg.get_viewport_height() / 1.4,
         tag=drawlist_tag,
         parent="image_viewer_child_window",
     ):
@@ -583,7 +583,7 @@ def zoom_callback(sender, app_data):
 
 def start_drag():
     global drag_start_pos, pan_offset, is_dragging
-    if dpg.is_item_hovered("image_viewer_child_window"):
+    if not dpg.is_item_hovered("image_viewer_child_window"):
         is_dragging = True
         mouse_pos = dpg.get_mouse_pos(local=False)
         drag_start_pos = (mouse_pos[0] - pan_offset[0], mouse_pos[1] - pan_offset[1])
@@ -1016,7 +1016,6 @@ with dpg.window(tag="Primary Window"):
                     autosize_x=True,
                     auto_resize_y=True,
                     tag="image_viewer_child_window",
-                    horizontal_scrollbar=True,
                     # border=False,
                 ):
                     pass
