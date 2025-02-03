@@ -498,8 +498,8 @@ def image_resize_callback():
 
 
 def save_window_positions():
-    save_settings("Window", "main_height", dpg.get_item_height("Primary Window"))
-    save_settings("Window", "main_width", dpg.get_item_width("Primary Window"))
+    save_settings("Window", "main_height", dpg.get_viewport_height())
+    save_settings("Window", "main_width", dpg.get_viewport_width())
     save_settings("Window", "main_pos", dpg.get_viewport_pos())
 
 
