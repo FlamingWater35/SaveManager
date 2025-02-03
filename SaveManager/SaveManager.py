@@ -842,6 +842,12 @@ def setup_viewport():
             user_data="skip_existing_files",
         )
     dpg.add_spacer(height=10, parent="copy_manager_settings_child_window")
+    dpg.add_spacer(height=10, parent="save_finder_settings_child_window")
+    with dpg.group(horizontal=True, parent="save_finder_settings_child_window"):
+        dpg.add_text(
+            "File extensions to search",
+            wrap=0,
+        )
 
 
 def main():
