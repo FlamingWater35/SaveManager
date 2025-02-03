@@ -345,7 +345,6 @@ def search_files():
     total_files = 0  # Count total files found
 
     def process_directory(directory):
-        global cancel_flag
         nonlocal processed_dirs, total_files
         try:
             for root, dirs, files in os.walk(directory):
@@ -354,8 +353,6 @@ def search_files():
 
                 # Add files that match extensions
                 for file in files:
-                    if cancel_flag == True:
-                        break
                     if file.endswith(file_extensions):
                         sav_directories.add(root)
                         total_files += 1
@@ -369,12 +366,8 @@ def search_files():
 
     # Use threading to prevent UI freezing
     def thread_target():
-        global cancel_flag
-        
         for directory in directories_to_search:
             process_directory(directory)
-            if cancel_flag == True:
-                break
 
         # Final UI update
         dpg.set_value("finder_progress_bar", 1.0)
