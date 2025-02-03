@@ -13,7 +13,7 @@ import webbrowser
 
 dpg.create_context()
 
-app_version = "1.9.9.2_Windows"
+app_version = "2.0.0_Windows"
 release_date = "3/2025"
 
 # Lists to store source, destination directories and names
@@ -515,13 +515,19 @@ def open_file_extension_menu():
 
     if dpg.does_item_exist("extension_manager_window"):
         dpg.delete_item("extension_manager_window")
+    window_width = dpg.get_viewport_width() / 3
+    window_height = dpg.get_viewport_height() / 2
     with dpg.window(
         label="Manage extensions",
         tag="extension_manager_window",
         modal=True,
         no_collapse=True,
-        width=400,
-        height=500,
+        width=window_width,
+        height=window_height,
+        pos=[
+            (dpg.get_viewport_width() / 2) - (window_width / 2),
+            (dpg.get_viewport_height() / 2) - (window_height / 2),
+        ],
     ):
         with dpg.group(horizontal=True):
             dpg.add_button(
