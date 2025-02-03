@@ -924,8 +924,8 @@ with dpg.window(tag="Primary Window"):
                     callback=lambda: dpg.show_item("open_image_dialog"),
                 )
                 with dpg.child_window(
-                    width=1000,
-                    height=700,
+                    autosize_x=True,
+                    auto_resize_y=True,
                     tag="image_viewer_child_window",
                     horizontal_scrollbar=True,
                     # border=False,
