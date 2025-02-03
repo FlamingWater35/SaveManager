@@ -13,7 +13,7 @@ import webbrowser
 
 dpg.create_context()
 
-app_version = "1.9.8_Windows"
+app_version = "1.9.9_Windows"
 release_date = "3/2025"
 
 # Lists to store source, destination directories and names
@@ -765,13 +765,13 @@ def setup_viewport():
             default_value=font_size,
             step=2,
             step_fast=2,
-            width=300,
+            width=200,
             callback=change_font_size,
         )
     dpg.add_spacer(height=20, parent="settings_child_window")
     with dpg.group(horizontal=True, parent="settings_child_window"):
         dpg.add_text(
-            "Copy entire source folder to destination (if disabled, only files inside selected folder)",
+            "Copy source folder to destination (if disabled, only files inside it)",
             wrap=0,
         )
         dpg.add_checkbox(
@@ -789,7 +789,7 @@ def setup_viewport():
             default_value=file_size_limit,
             step=2,
             step_fast=2,
-            width=300,
+            width=200,
             callback=settings_change_callback,
             user_data="file_size_limit",
         )
