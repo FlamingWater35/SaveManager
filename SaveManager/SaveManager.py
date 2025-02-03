@@ -13,7 +13,7 @@ import webbrowser
 
 dpg.create_context()
 
-app_version = "1.9.7_Windows"
+app_version = "1.9.8_Windows"
 release_date = "3/2025"
 
 # Lists to store source, destination directories and names
@@ -539,6 +539,10 @@ with dpg.window(tag="Primary Window"):
                         ),
                         small=True,
                     )
+        with dpg.menu(label="Debug"):
+            dpg.add_menu_item(
+                label="Show Metrics", callback=lambda: dpg.show_tool(dpg.mvTool_Metrics)
+            )
 
     with dpg.tab_bar():
         with dpg.tab(label="Copy Manager"):
@@ -755,11 +759,13 @@ def setup_viewport():
     dpg.add_spacer(height=10, parent="settings_child_window")
     with dpg.group(horizontal=True, parent="settings_child_window"):
         dpg.add_text("Font size")
-        dpg.add_slider_int(
+        dpg.add_input_int(
             min_value=8,
             max_value=40,
             default_value=font_size,
-            width=-100,
+            step=2,
+            step_fast=2,
+            width=300,
             callback=change_font_size,
         )
     dpg.add_spacer(height=20, parent="settings_child_window")
@@ -775,7 +781,7 @@ def setup_viewport():
         )
     dpg.add_spacer(height=20, parent="settings_child_window")
     with dpg.group(horizontal=True, parent="settings_child_window"):
-        dpg.add_text("Size limit")
+        dpg.add_text("Folder size limit")
         dpg.add_slider_int(
             label="GB",
             min_value=1,
