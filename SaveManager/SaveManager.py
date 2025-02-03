@@ -16,8 +16,8 @@ import numpy as np
 
 dpg.create_context()
 
-app_version = "2.0.4_Windows"
-release_date = "3/2025"
+app_version = "2.1.0_Windows"
+release_date = "2/3/2025"
 
 # Lists to store source, destination directories and names
 sources = []
@@ -518,8 +518,8 @@ def open_image(sender, app_data):
     update_image_display()
 
     dpg.set_value(
-        "status_text",
-        f"Loaded: {os.path.basename(file_path)} ({width}x{height}) | Zoom: {zoom_level*100:.0f}%",
+        "image_information",
+        f"Loaded: {os.path.basename(file_path)} ({width}x{height})",
     )
 
 
@@ -1008,10 +1008,14 @@ with dpg.window(tag="Primary Window"):
                 dpg.add_text("Image viewer")
                 dpg.add_separator()
                 dpg.add_spacer(height=10)
-                dpg.add_button(
-                    label="Open Image",
-                    callback=lambda: dpg.show_item("open_image_dialog"),
-                )
+                with dpg.group(horizontal=True):
+                    dpg.add_button(
+                        label="Open Image",
+                        callback=lambda: dpg.show_item("open_image_dialog"),
+                    )
+                    dpg.add_spacer(width=10)
+                    dpg.add_text("", tag="image_information")
+                dpg.add_spacer(height=10)
                 with dpg.child_window(
                     autosize_x=True,
                     auto_resize_y=True,
