@@ -38,6 +38,11 @@ last_update_time = 0
 
 texture_tag = None
 drawlist_tag = None
+zoom_level = 1.0
+pan_offset = [0, 0]
+drag_start_pos = None
+img_size = (0, 0)
+is_dragging = False
 
 # File path for the JSON file
 json_file_path = "save_folders.json"
@@ -477,7 +482,7 @@ def check_for_updates_thread():
 
 
 def open_image(sender, app_data):
-    global texture_tag, drawlist_tag
+    global texture_tag, drawlist_tag, zoom_level, pan_offset, img_size
 
     file_path = app_data["file_path_name"]
     if not os.path.exists(file_path):
@@ -491,6 +496,7 @@ def open_image(sender, app_data):
         return
 
     width, height = image.size
+    img_size = (width, height)
     image_array = np.array(image).astype(np.float32) / 255.0
     image_data = image_array.flatten().tolist()
 
@@ -502,11 +508,27 @@ def open_image(sender, app_data):
         dpg.delete_item(drawlist_tag)
 
     # Create new texture, change to dynamic texture if needed
-    texture_tag = dpg.add_static_texture(
+    texture_tag = dpg.add_dynamic_texture(
         width, height, image_data, parent="image_registry"
     )
 
-    # Create new drawlist with image and sizing rectangle
+    # Reset view parameters
+    zoom_level = 1.0
+    pan_offset = [0, 0]
+    update_image_display()
+
+    dpg.set_value(
+        "status_text",
+        f"Loaded: {os.path.basename(file_path)} ({width}x{height}) | Zoom: {zoom_level*100:.0f}%",
+    )
+
+
+def update_image_display():
+    global drawlist_tag, texture_tag, zoom_level, pan_offset, img_size
+
+    if drawlist_tag and dpg.does_item_exist(drawlist_tag):
+        dpg.delete_item(drawlist_tag)
+
     drawlist_tag = dpg.generate_uuid()
     with dpg.drawlist(
         dpg.get_viewport_width() / 1.3,
@@ -514,15 +536,82 @@ def open_image(sender, app_data):
         tag=drawlist_tag,
         parent="image_viewer_child_window",
     ):
-        dpg.draw_image(texture_tag, (0, 0), (width, height))
-        dpg.draw_rectangle(
-            (0, 0), (width, height), color=(0, 0, 0, 0), fill=(0, 0, 0, 0)
-        )
+        if texture_tag:
+            # Calculate scaled dimensions
+            scaled_width = img_size[0] * zoom_level
+            scaled_height = img_size[1] * zoom_level
 
+            # Draw image with current zoom and pan
+            dpg.draw_image(
+                texture_tag,
+                (pan_offset[0], pan_offset[1]),
+                (pan_offset[0] + scaled_width, pan_offset[1] + scaled_height),
+                uv_min=(0, 0),
+                uv_max=(1, 1),
+            )
+
+
+def zoom_callback(sender, app_data):
+    global zoom_level, pan_offset
+
+    # Get mouse position relative to image
+    mouse_pos = dpg.get_mouse_pos(local=False)
+    canvas_pos = dpg.get_item_pos("image_viewer_child_window")
+    img_pos = [
+        mouse_pos[0] - canvas_pos[0] - pan_offset[0],
+        mouse_pos[1] - canvas_pos[1] - pan_offset[1],
+    ]
+
+    # Zoom speed
+    delta = app_data
+    zoom_factor = 1.1 if delta > 0 else 0.9
+    new_zoom = zoom_level * zoom_factor
+
+    # Limit zoom levels
+    if 0.1 <= new_zoom <= 10:
+        # Adjust pan offset to zoom around mouse
+        pan_offset[0] = pan_offset[0] * zoom_factor + (img_pos[0] * (zoom_factor - 1))
+        pan_offset[1] = pan_offset[1] * zoom_factor + (img_pos[1] * (zoom_factor - 1))
+        zoom_level = new_zoom
+
+    update_image_display()
     dpg.set_value(
         "image_viewer_status_text",
-        f"Loaded: {os.path.basename(file_path)} ({width}x{height})",
+        f"Zoom: {zoom_level*100:.0f}% | Use mouse wheel to zoom, click+drag to pan",
     )
+
+
+def start_drag():
+    global drag_start_pos, pan_offset, is_dragging
+    if dpg.is_item_hovered("image_viewer_child_window"):
+        is_dragging = True
+        mouse_pos = dpg.get_mouse_pos(local=False)
+        drag_start_pos = (mouse_pos[0] - pan_offset[0], mouse_pos[1] - pan_offset[1])
+
+
+def end_drag():
+    global is_dragging
+    is_dragging = False
+
+
+def handle_drag():
+    global drag_start_pos, pan_offset, is_dragging
+    if is_dragging and drag_start_pos is not None:
+        mouse_pos = dpg.get_mouse_pos(local=False)
+        pan_offset[0] = mouse_pos[0] - drag_start_pos[0]
+        pan_offset[1] = mouse_pos[1] - drag_start_pos[1]
+        update_image_display()
+
+
+# Add mouse drag handler
+with dpg.handler_registry():
+    # Mouse wheel for zoom
+    dpg.add_mouse_wheel_handler(callback=zoom_callback)
+
+    # Mouse drag for panning
+    dpg.add_mouse_down_handler(button=dpg.mvMouseButton_Left, callback=start_drag)
+    dpg.add_mouse_release_handler(button=dpg.mvMouseButton_Left, callback=end_drag)
+    dpg.add_mouse_move_handler(callback=handle_drag)
 
 
 # File Dialog for selecting source directory
