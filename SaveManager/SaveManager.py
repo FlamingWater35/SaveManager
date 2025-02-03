@@ -13,7 +13,7 @@ import webbrowser
 
 dpg.create_context()
 
-app_version = "1.9.9.1_Windows"
+app_version = "1.9.9.2_Windows"
 release_date = "3/2025"
 
 # Lists to store source, destination directories and names
@@ -445,6 +445,15 @@ dpg.add_file_dialog(
 )
 
 
+def open_file_extension_menu():
+    with dpg.window(label="Manage extensions", modal=True, no_collapse=True, width=400):
+        with dpg.group(horizontal=True):
+            dpg.add_button(label="Add")
+            dpg.add_button(label="Remove")
+        with dpg.child_window():
+            pass
+
+
 with dpg.font_registry():
     # Add font file and size
     font_size = load_settings("DisplayOptions", "font_size")
@@ -848,6 +857,8 @@ def setup_viewport():
             "File extensions to search",
             wrap=0,
         )
+        dpg.add_spacer(width=10)
+        dpg.add_button(label="Manage extensions", callback=open_file_extension_menu)
 
 
 def main():
