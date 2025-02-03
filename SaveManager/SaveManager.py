@@ -14,7 +14,7 @@ import requests
 
 dpg.create_context()
 
-app_version = "2.0.2_Windows"
+app_version = "2.0.3_Windows"
 release_date = "3/2025"
 
 # Lists to store source, destination directories and names
@@ -843,6 +843,14 @@ with dpg.window(tag="Primary Window"):
                 with dpg.child_window(tag="directory_list", auto_resize_y=True):
                     pass
 
+        with dpg.tab(label="Image viewer"):
+            with dpg.child_window(
+                autosize_x=True, auto_resize_y=True, tag="image_viewer_main_window"
+            ):
+                dpg.add_text("Image viewer")
+                dpg.add_separator()
+                dpg.add_spacer(height=10)
+
         with dpg.tab(label="Settings"):
             with dpg.child_window(
                 autosize_x=True, auto_resize_y=True, tag="settings_main_window"
@@ -1049,6 +1057,7 @@ def main():
     dpg.bind_item_theme("Primary Window", child_window_theme)
     dpg.bind_item_theme("copy_manager_main_window", main_window_theme)
     dpg.bind_item_theme("save_finder_main_window", main_window_theme)
+    dpg.bind_item_theme("image_viewer_main_window", main_window_theme)
     dpg.bind_item_theme("settings_main_window", main_window_theme)
     dpg.bind_item_theme("copy_manager_add_folder_window", main_window_add_folder_theme)
 
