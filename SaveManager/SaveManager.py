@@ -10,11 +10,12 @@ import time
 import ctypes
 import webbrowser
 import requests
+from PIL import Image
 
 
 dpg.create_context()
 
-app_version = "2.0.3_Windows"
+app_version = "2.0.4_Windows"
 release_date = "3/2025"
 
 # Lists to store source, destination directories and names
@@ -33,6 +34,9 @@ file_extensions: list
 start_time_global = 0
 total_bytes_global = 0
 last_update_time = 0
+
+texture_tag = None
+drawlist_tag = None
 
 # File path for the JSON file
 json_file_path = "save_folders.json"
@@ -471,8 +475,54 @@ def check_for_updates_thread():
         progress_queue.put(("update", f"Update check failed: {str(e)}"))
 
 
+def open_image(sender, app_data):
+    global texture_tag, drawlist_tag
+
+    file_path = app_data["file_path_name"]
+    if not os.path.exists(file_path):
+        dpg.set_value("image_viewer_status_text", "File not found!")
+        return
+
+    try:
+        image = Image.open(file_path).convert("RGBA")
+    except Exception as e:
+        dpg.set_value("image_viewer_status_text", f"Error loading image: {e}")
+        return
+
+    width, height = image.size
+    image_bytes = image.tobytes()
+    image_data = [b / 255.0 for b in image_bytes]  # Normalize to 0.0-1.0
+
+    # Clean up previous resources
+    if texture_tag:
+        #dpg.remove_alias(texture_tag)
+        pass
+    if drawlist_tag:
+        dpg.delete_item(drawlist_tag)
+
+    # Create new texture, change to dynamic texture if needed
+    texture_tag = dpg.add_static_texture(
+        width, height, image_data, parent="image_registry"
+    )
+
+    # Create new drawlist with image and sizing rectangle
+    drawlist_tag = dpg.generate_uuid()
+    with dpg.drawlist(
+        width, height, tag=drawlist_tag, parent="image_viewer_child_window"
+    ):
+        dpg.draw_image(texture_tag, (0, 0), (width, height))
+        dpg.draw_rectangle(
+            (0, 0), (width, height), color=(0, 0, 0, 0), fill=(0, 0, 0, 0)
+        )
+
+    dpg.set_value(
+        "image_viewer_status_text",
+        f"Loaded: {os.path.basename(file_path)} ({width}x{height})",
+    )
+
+
 # File Dialog for selecting source directory
-dpg.add_file_dialog(
+with dpg.file_dialog(
     directory_selector=True,
     show=False,
     callback=source_callback,
@@ -480,10 +530,11 @@ dpg.add_file_dialog(
     cancel_callback=cancel_callback,
     width=800,
     height=450,
-)
+):
+    pass  # Just add some settings or extension filters
 
 # File Dialog for selecting destination directory
-dpg.add_file_dialog(
+with dpg.file_dialog(
     directory_selector=True,
     show=False,
     callback=destination_callback,
@@ -491,7 +542,21 @@ dpg.add_file_dialog(
     cancel_callback=cancel_callback,
     width=800,
     height=450,
-)
+):
+    pass
+
+with dpg.file_dialog(
+    directory_selector=False,
+    show=False,
+    callback=open_image,
+    tag="open_image_dialog",
+    width=800,
+    height=450,
+):
+    dpg.add_file_extension(
+        "Image files (*.png *.jpg *.jpeg *.bmp *.gif){.png,.jpg,.jpeg,.bmp,.gif}"
+    )
+    dpg.add_file_extension(".*")
 
 
 def remove_current_extension(sender, app_data):
@@ -676,7 +741,7 @@ def text_click_handler(sender, app_data, user_data):
     dpg.set_value("status_text", f"Copied to clipboard: {user_data}")
 
 
-with dpg.texture_registry():
+with dpg.texture_registry(tag="image_registry"):
     width, height, channels, data = dpg.load_image(resource_path("docs/cute_image.png"))
     dpg.add_static_texture(
         width=width, height=height, default_value=data, tag="cute_image"
@@ -850,6 +915,20 @@ with dpg.window(tag="Primary Window"):
                 dpg.add_text("Image viewer")
                 dpg.add_separator()
                 dpg.add_spacer(height=10)
+                dpg.add_button(
+                    label="Open Image",
+                    callback=lambda: dpg.show_item("open_image_dialog"),
+                )
+                with dpg.child_window(
+                    autosize_x=True,
+                    auto_resize_y=True,
+                    tag="image_viewer_child_window",
+                    horizontal_scrollbar=True,
+                    border=False,
+                ):
+                    pass
+                with dpg.group(horizontal=True):
+                    dpg.add_text("Ready", tag="image_viewer_status_text")
 
         with dpg.tab(label="Settings"):
             with dpg.child_window(
