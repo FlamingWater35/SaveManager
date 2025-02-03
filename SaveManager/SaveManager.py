@@ -805,7 +805,7 @@ def setup_viewport():
             user_data="show_image",
         )
     dpg.add_spacer(height=10, parent="display_settings_child_window")
-    dpg.add_spacer(height=20, parent="copy_manager_settings_child_window")
+    dpg.add_spacer(height=10, parent="copy_manager_settings_child_window")
     with dpg.group(horizontal=True, parent="copy_manager_settings_child_window"):
         dpg.add_text(
             "Copy source folder to destination (if disabled, only files inside it)",
