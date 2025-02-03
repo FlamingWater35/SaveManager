@@ -699,6 +699,10 @@ def setup_viewport():
     if remember_window_pos != True and remember_window_pos != False:
         remember_window_pos = True
 
+    launched = load_settings("DisplayOptions", "launched")
+    if launched == None:
+        launched = False
+
     # Set maximum width and height for the window
     if main_height != None:
         max_width = main_width
@@ -710,13 +714,15 @@ def setup_viewport():
     dpg.create_viewport(title="Save Manager", width=max_width, height=max_height)
     if main_pos != None and remember_window_pos == True:
         dpg.set_viewport_pos(main_pos)
-    elif main_pos != None and remember_window_pos == False:
+
+    if launched == False:
         dpg.set_viewport_pos(
             [
                 (screen_width / 2) - (dpg.get_viewport_width() / 2),
                 (screen_height / 2) - (dpg.get_viewport_height() / 2),
             ]
         )
+        save_settings("DisplayOptions", "launched", True)
     dpg.set_viewport_small_icon(resource_path("docs/icon.ico"))
 
     dpg.add_spacer(height=10, parent="settings_child_window")
