@@ -455,44 +455,39 @@ def change_font_size(sender, app_data):
     save_settings("DisplayOptions", "font_size", app_data)
 
 
-def copy_folder_checkbox_callback(sender, app_data):
-    global copy_folder_checkbox_state
-    save_settings("DisplayOptions", "copy_folder_status", app_data)
-    copy_folder_checkbox_state = load_settings("DisplayOptions", "copy_folder_status")
-    if copy_folder_checkbox_state == None:
-        copy_folder_checkbox_state = False
+def settings_change_callback(sender, app_data):
+    global copy_folder_checkbox_state, file_size_limit, image_enabled, remember_window_pos, skip_existing_files
 
-
-def file_size_limit_callback(sender, app_data):
-    global file_size_limit
-    save_settings("DisplayOptions", "file_size_limit", app_data)
-    file_size_limit = load_settings("DisplayOptions", "file_size_limit")
-    if file_size_limit == None:
-        file_size_limit = 5
-
-
-def show_image_checkbox_callback(sender, app_data):
-    global image_enabled
-    save_settings("DisplayOptions", "show_image_status", app_data)
-    image_enabled = load_settings("DisplayOptions", "show_image_status")
-    if image_enabled == None:
-        image_enabled = True
-
-
-def remember_window_pos_checkbox_callback(sender, app_data):
-    global remember_window_pos
-    save_settings("DisplayOptions", "remember_window_pos", app_data)
-    remember_window_pos = load_settings("DisplayOptions", "remember_window_pos")
-    if remember_window_pos == None:
-        remember_window_pos = True
-
-
-def skip_existing_files_checkbox_callback(sender, app_data):
-    global skip_existing_files
-    save_settings("DisplayOptions", "skip_existing_files", app_data)
-    skip_existing_files = load_settings("DisplayOptions", "skip_existing_files")
-    if skip_existing_files == None:
-        skip_existing_files = True
+    setting = dpg.get_item_user_data(sender)
+    if setting == "copy_folder":
+        save_settings("DisplayOptions", "copy_folder_status", app_data)
+        copy_folder_checkbox_state = load_settings(
+            "DisplayOptions", "copy_folder_status"
+        )
+        if copy_folder_checkbox_state == None:
+            copy_folder_checkbox_state = False
+    elif setting == "file_size_limit":
+        save_settings("DisplayOptions", "file_size_limit", app_data)
+        file_size_limit = load_settings("DisplayOptions", "file_size_limit")
+        if file_size_limit == None:
+            file_size_limit = 5
+    elif setting == "show_image":
+        save_settings("DisplayOptions", "show_image_status", app_data)
+        image_enabled = load_settings("DisplayOptions", "show_image_status")
+        if image_enabled == None:
+            image_enabled = True
+    elif setting == "remember_window_pos":
+        save_settings("DisplayOptions", "remember_window_pos", app_data)
+        remember_window_pos = load_settings("DisplayOptions", "remember_window_pos")
+        if remember_window_pos == None:
+            remember_window_pos = True
+    elif setting == "skip_existing_files":
+        save_settings("DisplayOptions", "skip_existing_files", app_data)
+        skip_existing_files = load_settings("DisplayOptions", "skip_existing_files")
+        if skip_existing_files == None:
+            skip_existing_files = True
+    else:
+        dpg.set_value("status_text", "Changing setting failed; user_data incorrect or missing")
 
 
 def image_resize_callback():
@@ -761,7 +756,8 @@ def setup_viewport():
         )
         dpg.add_checkbox(
             default_value=copy_folder_checkbox_state,
-            callback=copy_folder_checkbox_callback,
+            callback=settings_change_callback,
+            user_data="copy_folder",
         )
     dpg.add_spacer(height=20, parent="settings_child_window")
     with dpg.group(horizontal=True, parent="settings_child_window"):
@@ -772,7 +768,8 @@ def setup_viewport():
             max_value=500,
             default_value=file_size_limit,
             width=-100,
-            callback=file_size_limit_callback,
+            callback=settings_change_callback,
+            user_data="file_size_limit",
         )
     dpg.add_spacer(height=20, parent="settings_child_window")
     with dpg.group(horizontal=True, parent="settings_child_window"):
@@ -782,7 +779,8 @@ def setup_viewport():
         )
         dpg.add_checkbox(
             default_value=remember_window_pos,
-            callback=remember_window_pos_checkbox_callback,
+            callback=settings_change_callback,
+            user_data="remember_window_pos",
         )
     dpg.add_spacer(height=20, parent="settings_child_window")
     with dpg.group(horizontal=True, parent="settings_child_window"):
@@ -792,14 +790,16 @@ def setup_viewport():
         )
         dpg.add_checkbox(
             default_value=skip_existing_files,
-            callback=skip_existing_files_checkbox_callback,
+            callback=settings_change_callback,
+            user_data="skip_existing_files",
         )
     dpg.add_spacer(height=20, parent="settings_child_window")
     with dpg.group(horizontal=True, parent="settings_child_window"):
         dpg.add_text("Show image")
         dpg.add_checkbox(
             default_value=image_enabled,
-            callback=show_image_checkbox_callback,
+            callback=settings_change_callback,
+            user_data="show_image",
         )
     dpg.add_spacer(height=10, parent="settings_child_window")
 
