@@ -8,11 +8,13 @@ import pyperclip
 import queue
 import time
 import ctypes
+import webbrowser
 
 
 dpg.create_context()
 
-app_version = "1.9.6_Windows"
+app_version = "1.9.7_Windows"
+release_date = "3/2025"
 
 # Lists to store source, destination directories and names
 sources = []
@@ -487,7 +489,9 @@ def settings_change_callback(sender, app_data):
         if skip_existing_files == None:
             skip_existing_files = True
     else:
-        dpg.set_value("status_text", "Changing setting failed; user_data incorrect or missing")
+        dpg.set_value(
+            "status_text", "Changing setting failed; user_data incorrect or missing"
+        )
 
 
 def image_resize_callback():
@@ -525,6 +529,16 @@ with dpg.window(tag="Primary Window"):
         with dpg.menu(label="About"):
             with dpg.menu(label="Information"):
                 dpg.add_text(f"Version: {app_version}")
+                dpg.add_text(f"Released: {release_date}")
+                with dpg.group(horizontal=True):
+                    dpg.add_text(f"Creator: ")
+                    dpg.add_button(
+                        label="Flaming Water",
+                        callback=lambda: webbrowser.open(
+                            "https://github.com/FlamingWater69"
+                        ),
+                        small=True,
+                    )
 
     with dpg.tab_bar():
         with dpg.tab(label="Copy Manager"):
