@@ -24,6 +24,7 @@ file_size_limit: int
 cancel_flag: bool
 image_enabled: bool
 remember_window_pos: bool
+skip_existing_files: bool
 
 start_time_global = 0
 total_bytes_global = 0
@@ -180,7 +181,7 @@ def get_folder_size(folder):
 
 
 def copy_thread(valid_entries, total_bytes):
-    global cancel_flag
+    global cancel_flag, skip_existing_files
     try:
         progress_queue.put(("start", total_bytes))
         copied_bytes = 0
@@ -212,7 +213,7 @@ def copy_thread(valid_entries, total_bytes):
                 dest_path = os.path.join(dest, rel_path)
                 os.makedirs(os.path.dirname(dest_path), exist_ok=True)
 
-                if os.path.exists(dest_path):
+                if os.path.exists(dest_path) and skip_existing_files == True:
                     dpg.add_text(
                         f"Skipped (already exists): {rel_path}",
                         color=(139, 140, 0),  # Dark Orange
@@ -486,6 +487,14 @@ def remember_window_pos_checkbox_callback(sender, app_data):
         remember_window_pos = True
 
 
+def skip_existing_files_checkbox_callback(sender, app_data):
+    global skip_existing_files
+    save_settings("DisplayOptions", "skip_existing_files", app_data)
+    skip_existing_files = load_settings("DisplayOptions", "skip_existing_files")
+    if skip_existing_files == None:
+        skip_existing_files = True
+
+
 def image_resize_callback():
     image_enabled = load_settings("DisplayOptions", "show_image_status")
     if image_enabled != True and image_enabled != False:
@@ -679,7 +688,7 @@ with dpg.window(tag="Primary Window"):
 
 
 def setup_viewport():
-    global copy_folder_checkbox_state, file_size_limit, remember_window_pos, font_size
+    global copy_folder_checkbox_state, file_size_limit, remember_window_pos, font_size, skip_existing_files
 
     main_height = load_settings("Window", "main_height")
     main_width = load_settings("Window", "main_width")
@@ -698,6 +707,10 @@ def setup_viewport():
     remember_window_pos = load_settings("DisplayOptions", "remember_window_pos")
     if remember_window_pos != True and remember_window_pos != False:
         remember_window_pos = True
+
+    skip_existing_files = load_settings("DisplayOptions", "skip_existing_files")
+    if skip_existing_files != True and skip_existing_files != False:
+        skip_existing_files = True
 
     launched = load_settings("DisplayOptions", "launched")
     if launched == None:
@@ -719,7 +732,7 @@ def setup_viewport():
     if main_pos != None and remember_window_pos == True:
         dpg.set_viewport_pos(main_pos)
 
-    if launched == False:
+    if launched == False or remember_window_pos == False:
         dpg.set_viewport_pos(
             [
                 (screen_width / 2) - (dpg.get_viewport_width() / 2),
@@ -770,6 +783,16 @@ def setup_viewport():
         dpg.add_checkbox(
             default_value=remember_window_pos,
             callback=remember_window_pos_checkbox_callback,
+        )
+    dpg.add_spacer(height=20, parent="settings_child_window")
+    with dpg.group(horizontal=True, parent="settings_child_window"):
+        dpg.add_text(
+            "Skip existing files",
+            wrap=0,
+        )
+        dpg.add_checkbox(
+            default_value=skip_existing_files,
+            callback=skip_existing_files_checkbox_callback,
         )
     dpg.add_spacer(height=20, parent="settings_child_window")
     with dpg.group(horizontal=True, parent="settings_child_window"):
