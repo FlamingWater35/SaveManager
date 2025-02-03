@@ -13,7 +13,7 @@ import webbrowser
 
 dpg.create_context()
 
-app_version = "2.0.0_Windows"
+app_version = "2.0.1_Windows"
 release_date = "3/2025"
 
 # Lists to store source, destination directories and names
@@ -661,7 +661,7 @@ with dpg.window(tag="Primary Window"):
             with dpg.child_window(
                 autosize_x=True, auto_resize_y=True, tag="copy_manager_main_window"
             ):
-                dpg.add_text("Directory Copy Manager")
+                dpg.add_text("Copy Manager")
                 dpg.add_separator()
                 dpg.add_spacer(height=10)
 
@@ -769,11 +769,11 @@ with dpg.window(tag="Primary Window"):
                         "cute_image", pos=(0, 0), width=250, height=200
                     )
 
-        with dpg.tab(label="Save Finder"):
+        with dpg.tab(label="File Finder"):
             with dpg.child_window(
                 autosize_x=True, auto_resize_y=True, tag="save_finder_main_window"
             ):
-                dpg.add_text("Save File Finder")
+                dpg.add_text("File Finder")
                 dpg.add_separator()
                 dpg.add_spacer(height=10)
                 dpg.add_button(label="Search for files", callback=start_search_thread)
@@ -821,7 +821,7 @@ with dpg.window(tag="Primary Window"):
                     tag="copy_manager_settings_child_window",
                 ):
                     pass
-                dpg.add_text("Save Finder", wrap=0)
+                dpg.add_text("File Finder", wrap=0)
                 with dpg.child_window(
                     autosize_x=True,
                     auto_resize_y=True,
