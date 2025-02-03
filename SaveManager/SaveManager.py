@@ -1002,6 +1002,7 @@ def main():
     dpg.bind_item_theme("Primary Window", child_window_theme)
     dpg.bind_item_theme("copy_manager_main_window", main_window_theme)
     dpg.bind_item_theme("save_finder_main_window", main_window_theme)
+    dpg.bind_item_theme("settings_main_window", main_window_theme)
     dpg.bind_item_theme("copy_manager_add_folder_window", main_window_add_folder_theme)
 
     dpg.bind_item_handler_registry("Primary Window", "window_handler")
