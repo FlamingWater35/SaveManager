@@ -7,6 +7,7 @@ import configparser
 import pyperclip
 import queue
 import time
+import ctypes
 
 
 dpg.create_context()
@@ -683,6 +684,8 @@ def setup_viewport():
     main_height = load_settings("Window", "main_height")
     main_width = load_settings("Window", "main_width")
     main_pos = load_settings("Window", "main_pos")
+    user32 = ctypes.windll.user32
+    screen_width, screen_height = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
 
     copy_folder_checkbox_state = load_settings("DisplayOptions", "copy_folder_status")
     if copy_folder_checkbox_state != True and copy_folder_checkbox_state != False:
@@ -705,8 +708,15 @@ def setup_viewport():
         max_height = 600
 
     dpg.create_viewport(title="Save Manager", width=max_width, height=max_height)
-    if main_pos != None:
+    if main_pos != None and remember_window_pos == True:
         dpg.set_viewport_pos(main_pos)
+    elif main_pos != None and remember_window_pos == False:
+        dpg.set_viewport_pos(
+            [
+                (screen_width / 2) - (dpg.get_viewport_width() / 2),
+                (screen_height / 2) - (dpg.get_viewport_height() / 2),
+            ]
+        )
     dpg.set_viewport_small_icon(resource_path("docs/icon.ico"))
 
     dpg.add_spacer(height=10, parent="settings_child_window")
