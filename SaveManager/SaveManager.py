@@ -27,6 +27,7 @@ cancel_flag: bool
 image_enabled: bool
 remember_window_pos: bool
 skip_existing_files: bool
+file_extensions: list
 
 start_time_global = 0
 total_bytes_global = 0
@@ -313,6 +314,8 @@ def cancel_callback(sender, app_data):
 
 
 def search_files():
+    global file_extensions
+
     local_app_data = os.getenv("LOCALAPPDATA")
     documents_path = os.path.join(os.path.expanduser("~"), "Documents")
     public_documents_path = os.path.join("C:\\Users\\Public\\Documents")
@@ -323,7 +326,6 @@ def search_files():
         os.path.join(os.getenv("USERPROFILE"), "AppData", "Roaming"),
     ]
 
-    file_extensions = (".sav", ".save")
     sav_directories = set()
 
     dpg.set_value("finder_progress_bar", 0.0)
@@ -445,13 +447,28 @@ dpg.add_file_dialog(
 )
 
 
+def remove_extensions():
+    global file_extensions
+
+    dpg.delete_item("extension_list", children_only=True)
+    for index, extension in enumerate(file_extensions, start=1):
+        dpg.add_selectable(label=f"{index}: {extension}", parent="extension_list")
+
+
 def open_file_extension_menu():
-    with dpg.window(label="Manage extensions", modal=True, no_collapse=True, width=400):
+    global file_extensions
+
+    with dpg.window(
+        label="Manage extensions", modal=True, no_collapse=True, autosize=True
+    ):
         with dpg.group(horizontal=True):
             dpg.add_button(label="Add")
-            dpg.add_button(label="Remove")
-        with dpg.child_window():
-            pass
+            dpg.add_button(label="Remove", callback=remove_extensions)
+        with dpg.child_window(
+            auto_resize_x=True, auto_resize_y=True, tag="extension_list"
+        ):
+            for index, extension in enumerate(file_extensions, start=1):
+                dpg.add_text(f"{index}: {extension}")
 
 
 with dpg.font_registry():
@@ -727,7 +744,7 @@ with dpg.window(tag="Primary Window"):
 
 
 def setup_viewport():
-    global copy_folder_checkbox_state, file_size_limit, remember_window_pos, font_size, skip_existing_files
+    global copy_folder_checkbox_state, file_size_limit, remember_window_pos, font_size, skip_existing_files, file_extensions
 
     main_height = load_settings("Window", "main_height")
     main_width = load_settings("Window", "main_width")
@@ -750,6 +767,10 @@ def setup_viewport():
     skip_existing_files = load_settings("DisplayOptions", "skip_existing_files")
     if skip_existing_files != True and skip_existing_files != False:
         skip_existing_files = True
+
+    file_extensions = load_settings("SaveFinderOptions", "file_extensions")
+    if file_extensions == None:
+        file_extensions = [".sav", ".save"]
 
     launched = load_settings("DisplayOptions", "launched")
     if launched == None:
