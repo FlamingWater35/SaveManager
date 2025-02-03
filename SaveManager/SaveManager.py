@@ -535,7 +535,7 @@ with dpg.window(tag="Primary Window"):
                     dpg.add_button(
                         label="Flaming Water",
                         callback=lambda: webbrowser.open(
-                            "https://github.com/FlamingWater69"
+                            "https://github.com/FlamingWater35"
                         ),
                         small=True,
                     )
