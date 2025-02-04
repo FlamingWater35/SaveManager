@@ -1297,6 +1297,7 @@ def main():
             elif item_type == "update":
                 dpg.set_value("status_text", data)
             elif item_type == "open_url":
+                time.sleep(1)
                 webbrowser.open(data)
 
         dpg.render_dearpygui_frame()
