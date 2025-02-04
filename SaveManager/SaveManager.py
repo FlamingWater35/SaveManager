@@ -1024,7 +1024,7 @@ with dpg.window(tag="Primary Window"):
                 ):
                     pass
                 with dpg.group(horizontal=True):
-                    dpg.add_text("Ready", tag="image_viewer_status_text")
+                    dpg.add_text("", tag="image_viewer_status_text")
 
         with dpg.tab(label="Settings"):
             with dpg.child_window(
