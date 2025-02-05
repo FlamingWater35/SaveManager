@@ -17,7 +17,7 @@ import numpy as np
 dpg.create_context()
 
 app_version = "2.1.1_Windows"
-release_date = "2/3/2025"
+release_date = "2/5/2025"
 
 # Lists to store source, destination directories and names
 sources = []
@@ -510,7 +510,7 @@ def open_image(sender, app_data):
 
     # Create new texture, change to dynamic texture if needed
     texture_tag = dpg.add_static_texture(
-        width, height, image_data, parent="image_registry"
+        width, height, image_data, parent="image_registry", tag="image_viewer_img"
     )
 
     # Reset view parameters
@@ -553,9 +553,9 @@ def update_image_display():
 
 
 def zoom_callback(sender, app_data):
-    global zoom_level, pan_offset, drawlist_tag
+    global zoom_level, pan_offset
 
-    if not drawlist_tag and not dpg.does_item_exist(drawlist_tag):
+    if not dpg.does_item_exist("image_viewer_img"):
         return
 
     # Get mouse position relative to image
