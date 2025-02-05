@@ -1217,9 +1217,13 @@ def main():
     with dpg.theme() as child_window_theme:
         with dpg.theme_component(dpg.mvChildWindow):
             dpg.add_theme_style(dpg.mvStyleVar_WindowPadding, 15, 10)
-            dpg.add_theme_style(dpg.mvStyleVar_ChildRounding, 2, 2)
+            dpg.add_theme_style(dpg.mvStyleVar_ChildRounding, 3, 3)
             dpg.add_theme_style(dpg.mvStyleVar_ChildBorderSize, 4, 4)
             dpg.add_theme_color(dpg.mvThemeCol_Border, (93, 64, 55))
+        with dpg.theme_component(dpg.mvButton):
+            dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 8, 5)
+            dpg.add_theme_style(dpg.mvStyleVar_FrameRounding, 4, 4)
+            dpg.add_theme_style(dpg.mvStyleVar_FrameBorderSize, 2, 2)
 
     with dpg.theme() as main_window_theme:
         with dpg.theme_component(dpg.mvChildWindow):
