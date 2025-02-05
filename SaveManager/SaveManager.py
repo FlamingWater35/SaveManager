@@ -474,6 +474,7 @@ def check_for_updates_thread():
 
         if compare_versions(current_version, latest_version) < 0:
             progress_queue.put(("update", f"New version {latest_version} available!"))
+            time.sleep(1)
             progress_queue.put(("open_url", release_data["html_url"]))
         else:
             progress_queue.put(("update", "You have the latest version"))
@@ -1304,7 +1305,6 @@ def main():
             elif item_type == "update":
                 dpg.set_value("status_text", data)
             elif item_type == "open_url":
-                time.sleep(1)
                 webbrowser.open(data)
 
         dpg.render_dearpygui_frame()
