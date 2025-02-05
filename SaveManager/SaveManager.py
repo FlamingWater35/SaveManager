@@ -16,7 +16,7 @@ import numpy as np
 
 dpg.create_context()
 
-app_version = "2.1.0_Windows"
+app_version = "2.1.1_Windows"
 release_date = "2/3/2025"
 
 # Lists to store source, destination directories and names
@@ -552,7 +552,10 @@ def update_image_display():
 
 
 def zoom_callback(sender, app_data):
-    global zoom_level, pan_offset
+    global zoom_level, pan_offset, drawlist_tag
+
+    if not drawlist_tag and not dpg.does_item_exist(drawlist_tag):
+        return
 
     # Get mouse position relative to image
     mouse_pos = dpg.get_mouse_pos(local=False)
