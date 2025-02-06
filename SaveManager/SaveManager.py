@@ -1096,8 +1096,8 @@ def setup_viewport():
         callback=source_callback,
         tag="source_file_dialog",
         cancel_callback=cancel_callback,
-        width=dpg.get_viewport_width() / 2,
-        height=dpg.get_viewport_height() / 2,
+        width=dpg.get_viewport_width() / 1.5,
+        height=dpg.get_viewport_height() / 1.5,
     ):
         pass  # Just add some settings or extension filters
 
@@ -1108,8 +1108,8 @@ def setup_viewport():
         callback=destination_callback,
         tag="destination_file_dialog",
         cancel_callback=cancel_callback,
-        width=dpg.get_viewport_width() / 2,
-        height=dpg.get_viewport_height() / 2,
+        width=dpg.get_viewport_width() / 1.5,
+        height=dpg.get_viewport_height() / 1.5,
     ):
         pass
 
@@ -1118,8 +1118,8 @@ def setup_viewport():
         show=False,
         callback=open_image,
         tag="open_image_dialog",
-        width=dpg.get_viewport_width() / 2,
-        height=dpg.get_viewport_height() / 2,
+        width=dpg.get_viewport_width() / 1.5,
+        height=dpg.get_viewport_height() / 1.5,
     ):
         dpg.add_file_extension(
             "Image files (*.png *.jpg *.jpeg *.bmp *.gif){.png,.jpg,.jpeg,.bmp,.gif}"
