@@ -16,21 +16,23 @@ import numpy as np
 
 dpg.create_context()
 
-app_version = "2.1.1_Windows"
-release_date = "2/5/2025"
+app_version = "2.1.2_Windows"
+release_date = "2/6/2025"
 
-# Lists to store source, destination directories and names
-sources = []
-destinations = []
-names = []
+sources: list = []
+destinations: list = []
+names: list = []
 
-copy_folder_checkbox_state: bool
-file_size_limit: int
+settings: dict = {
+    "copy_folder_checkbox_state": False,
+    "file_size_limit": 5,
+    "show_image_status": True,
+    "remember_window_pos": True,
+    "skip_existing_files": True,
+    "file_extensions": [".sav", ".save"],
+}
+
 cancel_flag: bool
-image_enabled: bool
-remember_window_pos: bool
-skip_existing_files: bool
-file_extensions: list
 
 start_time_global = 0
 total_bytes_global = 0
@@ -44,7 +46,6 @@ drag_start_pos = None
 img_size = (0, 0)
 is_dragging = False
 
-# File path for the JSON file
 json_file_path = "save_folders.json"
 config_file = "settings.ini"
 
@@ -69,8 +70,7 @@ default_font_size = 20
 font_size = default_font_size
 
 
-# Function to load settings from the .ini file
-def load_settings(section, key, default=None):
+def load_setting(section, key, default=None):
     if os.path.exists(config_file):
         config.read(config_file)
         if config.has_section(section) and key in config[section]:
@@ -80,7 +80,28 @@ def load_settings(section, key, default=None):
     return default
 
 
-# Function to save settings to the .ini file
+def load_settings():
+    global settings
+
+    if os.path.exists(config_file):
+        config.read(config_file)
+        # Check if the section exists and contains all settings
+        if config.has_section("Settings"):
+            for key in settings:
+                try:
+                    value = config.get("Settings", key)
+                except:
+                    value = None
+                if value is not None:
+                    # Convert string back to its original type
+                    settings[key] = eval(value)
+
+    return settings.copy()
+
+
+settings = load_settings()
+
+
 def save_settings(section, key, value):
     if not config.has_section(section):
         config.add_section(section)
@@ -195,7 +216,7 @@ def get_folder_size(folder):
 
 
 def copy_thread(valid_entries, total_bytes):
-    global cancel_flag, skip_existing_files
+    global cancel_flag, settings
     try:
         progress_queue.put(("start", total_bytes))
         copied_bytes = 0
@@ -207,7 +228,7 @@ def copy_thread(valid_entries, total_bytes):
             dest = destinations[index]
             name = names[index]
 
-            if copy_folder_checkbox_state:
+            if settings["copy_folder_checkbox_state"]:
                 new_destination = os.path.join(dest, os.path.basename(source))
                 os.makedirs(new_destination, exist_ok=True)
                 dest = new_destination
@@ -227,7 +248,10 @@ def copy_thread(valid_entries, total_bytes):
                 dest_path = os.path.join(dest, rel_path)
                 os.makedirs(os.path.dirname(dest_path), exist_ok=True)
 
-                if os.path.exists(dest_path) and skip_existing_files == True:
+                if (
+                    os.path.exists(dest_path)
+                    and settings["skip_existing_files"] == True
+                ):
                     dpg.add_text(
                         f"Skipped (already exists): {rel_path}",
                         color=(139, 140, 0),  # Dark Orange
@@ -266,7 +290,7 @@ def copy_thread(valid_entries, total_bytes):
 
 
 def copy_all_callback(sender, app_data):
-    global copy_folder_checkbox_state, file_size_limit, cancel_flag
+    global settings, cancel_flag
     cancel_flag = False
     dpg.delete_item("copy_log", children_only=True)
     dpg.set_value("speed_text", "")
@@ -282,7 +306,7 @@ def copy_all_callback(sender, app_data):
     for index in range(len(sources)):
         source = sources[index]
         folder_size = get_folder_size(source)
-        if folder_size <= file_size_limit * 1024**3:  # Check size limit
+        if folder_size <= settings["file_size_limit"] * 1024**3:  # Check size limit
             valid_entries.append(index)
             total_bytes += folder_size
         else:
@@ -325,7 +349,7 @@ def cancel_callback(sender, app_data):
 
 
 def search_files():
-    global file_extensions
+    global settings
 
     local_app_data = os.getenv("LOCALAPPDATA")
     documents_path = os.path.join(os.path.expanduser("~"), "Documents")
@@ -338,7 +362,7 @@ def search_files():
     ]
 
     sav_directories = set()
-    file_extensions_tuple = tuple(file_extensions)
+    file_extensions_tuple = tuple(settings["file_extensions"])
 
     dpg.set_value("finder_progress_bar", 0.0)
     dpg.show_item("finder_progress_bar")
@@ -619,17 +643,17 @@ with dpg.handler_registry():
 
 
 def remove_current_extension(sender, app_data):
-    global file_extensions
+    global settings
 
-    file_extensions.remove(dpg.get_item_user_data(sender))
-    save_settings("SaveFinderOptions", "file_extensions", file_extensions)
+    settings["file_extensions"].remove(dpg.get_item_user_data(sender))
+    save_settings("Settings", "file_extensions", settings["file_extensions"])
     dpg.set_value(
         "save_finder_text",
-        f"Directories containing {file_extensions} files will be listed below (click to copy to clipboard).",
+        f"Directories containing {settings["file_extensions"]} files will be listed below (click to copy to clipboard).",
     )
 
     dpg.delete_item("extension_list", children_only=True)
-    for index, extension in enumerate(file_extensions, start=1):
+    for index, extension in enumerate(settings["file_extensions"], start=1):
         dpg.add_text(f"{index}: {extension}", parent="extension_list")
     dpg.hide_item("select_extension_text")
     dpg.show_item("extension_remove_button")
@@ -637,10 +661,10 @@ def remove_current_extension(sender, app_data):
 
 
 def remove_extensions():
-    global file_extensions
+    global settings
 
     dpg.delete_item("extension_list", children_only=True)
-    for index, extension in enumerate(file_extensions, start=1):
+    for index, extension in enumerate(settings["file_extensions"], start=1):
         dpg.add_selectable(
             label=f"{index}: {extension}",
             parent="extension_list",
@@ -660,19 +684,19 @@ def add_extension():
 
 
 def add_current_extension():
-    global file_extensions
+    global settings
 
     extension = dpg.get_value("add_extension_input")
     if extension != "":
-        file_extensions.append(extension)
-        save_settings("SaveFinderOptions", "file_extensions", file_extensions)
+        settings["file_extensions"].append(extension)
+        save_settings("Settings", "file_extensions", settings["file_extensions"])
         dpg.set_value(
             "save_finder_text",
-            f"Directories containing {file_extensions} files will be listed below (click to copy to clipboard).",
+            f"Directories containing {settings["file_extensions"]} files will be listed below (click to copy to clipboard).",
         )
 
         dpg.delete_item("extension_list", children_only=True)
-        for index, extension in enumerate(file_extensions, start=1):
+        for index, extension in enumerate(settings["file_extensions"], start=1):
             dpg.add_text(f"{index}: {extension}", parent="extension_list")
         dpg.hide_item("add_extension_group")
         dpg.hide_item("comfirm_add_extension")
@@ -681,7 +705,7 @@ def add_current_extension():
 
 
 def open_file_extension_menu():
-    global file_extensions
+    global settings
 
     if dpg.does_item_exist("extension_manager_window"):
         dpg.delete_item("extension_manager_window")
@@ -723,13 +747,13 @@ def open_file_extension_menu():
         with dpg.child_window(
             autosize_x=True, auto_resize_y=True, tag="extension_list"
         ):
-            for index, extension in enumerate(file_extensions, start=1):
+            for index, extension in enumerate(settings["file_extensions"], start=1):
                 dpg.add_text(f"{index}: {extension}")
 
 
 with dpg.font_registry():
     # Add font file and size
-    font_size = load_settings("DisplayOptions", "font_size")
+    font_size = load_setting("DisplayOptions", "font_size")
     if font_size == None:
         font_size = default_font_size
     custom_font = dpg.add_font(font_path, font_size)
@@ -740,46 +764,30 @@ def change_font_size(sender, app_data):
 
 
 def settings_change_callback(sender, app_data):
-    global copy_folder_checkbox_state, file_size_limit, image_enabled, remember_window_pos, skip_existing_files
+    global settings
 
     setting = dpg.get_item_user_data(sender)
     if setting == "copy_folder":
-        save_settings("DisplayOptions", "copy_folder_status", app_data)
-        copy_folder_checkbox_state = load_settings(
-            "DisplayOptions", "copy_folder_status"
-        )
-        if copy_folder_checkbox_state == None:
-            copy_folder_checkbox_state = False
+        save_settings("Settings", "copy_folder_status", app_data)
     elif setting == "file_size_limit":
-        save_settings("DisplayOptions", "file_size_limit", app_data)
-        file_size_limit = load_settings("DisplayOptions", "file_size_limit")
-        if file_size_limit == None:
-            file_size_limit = 5
+        save_settings("Settings", "file_size_limit", app_data)
     elif setting == "show_image":
-        save_settings("DisplayOptions", "show_image_status", app_data)
-        image_enabled = load_settings("DisplayOptions", "show_image_status")
-        if image_enabled == None:
-            image_enabled = True
+        save_settings("Settings", "show_image_status", app_data)
     elif setting == "remember_window_pos":
-        save_settings("DisplayOptions", "remember_window_pos", app_data)
-        remember_window_pos = load_settings("DisplayOptions", "remember_window_pos")
-        if remember_window_pos == None:
-            remember_window_pos = True
+        save_settings("Settings", "remember_window_pos", app_data)
     elif setting == "skip_existing_files":
-        save_settings("DisplayOptions", "skip_existing_files", app_data)
-        skip_existing_files = load_settings("DisplayOptions", "skip_existing_files")
-        if skip_existing_files == None:
-            skip_existing_files = True
+        save_settings("Settings", "skip_existing_files", app_data)
     else:
         dpg.set_value(
             "status_text", "Changing setting failed; user_data incorrect or missing"
         )
 
+    settings = load_settings()
+
 
 def image_resize_callback():
-    image_enabled = load_settings("DisplayOptions", "show_image_status")
-    if image_enabled != True and image_enabled != False:
-        image_enabled = True
+    global settings
+    image_enabled = settings["show_image_status"]
     if image_enabled == True:
         image_width = dpg.get_viewport_width() / 5.6
         new_x = dpg.get_viewport_width() - image_width - image_width / 20
@@ -932,10 +940,7 @@ with dpg.window(tag="Primary Window"):
                     with dpg.child_window(tag="copy_log", auto_resize_y=True):
                         pass
 
-                image_enabled = load_settings("DisplayOptions", "show_image_status")
-                if image_enabled != True and image_enabled != False:
-                    image_enabled = True
-                if image_enabled == True:
+                if settings["show_image_status"] == True:
                     img_id = dpg.add_image("cute_image", pos=(0, 0))
 
         with dpg.tab(label="File Finder"):
@@ -1027,39 +1032,20 @@ with dpg.window(tag="Primary Window"):
 
 
 def setup_viewport():
-    global copy_folder_checkbox_state, file_size_limit, remember_window_pos, font_size, skip_existing_files, file_extensions
+    global font_size
 
-    main_height = load_settings("Window", "main_height")
-    main_width = load_settings("Window", "main_width")
-    main_pos = load_settings("Window", "main_pos")
+    main_height = load_setting("Window", "main_height")
+    main_width = load_setting("Window", "main_width")
+    main_pos = load_setting("Window", "main_pos")
     user32 = ctypes.windll.user32
     screen_width, screen_height = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
 
-    copy_folder_checkbox_state = load_settings("DisplayOptions", "copy_folder_status")
-    if copy_folder_checkbox_state != True and copy_folder_checkbox_state != False:
-        copy_folder_checkbox_state = False
-
-    file_size_limit = load_settings("DisplayOptions", "file_size_limit")
-    if file_size_limit == None:
-        file_size_limit = 5
-
-    remember_window_pos = load_settings("DisplayOptions", "remember_window_pos")
-    if remember_window_pos != True and remember_window_pos != False:
-        remember_window_pos = True
-
-    skip_existing_files = load_settings("DisplayOptions", "skip_existing_files")
-    if skip_existing_files != True and skip_existing_files != False:
-        skip_existing_files = True
-
-    file_extensions = load_settings("SaveFinderOptions", "file_extensions")
-    if file_extensions == None:
-        file_extensions = [".sav", ".save"]
     dpg.set_value(
         "save_finder_text",
-        f"Directories containing {file_extensions} files will be listed below (click to copy to clipboard).",
+        f"Directories containing {settings["file_extensions"]} files will be listed below (click to copy to clipboard).",
     )
 
-    launched = load_settings("DisplayOptions", "launched")
+    launched = load_setting("DisplayOptions", "launched")
     if launched == None:
         launched = False
 
@@ -1076,10 +1062,10 @@ def setup_viewport():
         max_height = int(screen_height / 1.5)
 
     dpg.create_viewport(title="Save Manager", width=max_width, height=max_height)
-    if main_pos != None and remember_window_pos == True:
+    if main_pos != None and settings["remember_window_pos"] == True:
         dpg.set_viewport_pos(main_pos)
 
-    if launched == False or remember_window_pos == False:
+    if launched == False or settings["remember_window_pos"] == False:
         dpg.set_viewport_pos(
             [
                 (screen_width / 2) - (dpg.get_viewport_width() / 2),
@@ -1149,7 +1135,7 @@ def setup_viewport():
             wrap=0,
         )
         dpg.add_checkbox(
-            default_value=remember_window_pos,
+            default_value=settings["remember_window_pos"],
             callback=settings_change_callback,
             user_data="remember_window_pos",
         )
@@ -1157,7 +1143,7 @@ def setup_viewport():
     with dpg.group(horizontal=True, parent="display_settings_child_window"):
         dpg.add_text("Show image")
         dpg.add_checkbox(
-            default_value=image_enabled,
+            default_value=settings["show_image_status"],
             callback=settings_change_callback,
             user_data="show_image",
         )
@@ -1169,7 +1155,7 @@ def setup_viewport():
             wrap=0,
         )
         dpg.add_checkbox(
-            default_value=copy_folder_checkbox_state,
+            default_value=settings["copy_folder_checkbox_state"],
             callback=settings_change_callback,
             user_data="copy_folder",
         )
@@ -1180,7 +1166,7 @@ def setup_viewport():
             label="GB",
             min_value=1,
             max_value=500,
-            default_value=file_size_limit,
+            default_value=settings["file_size_limit"],
             step=1,
             step_fast=1,
             width=200,
@@ -1194,7 +1180,7 @@ def setup_viewport():
             wrap=0,
         )
         dpg.add_checkbox(
-            default_value=skip_existing_files,
+            default_value=settings["skip_existing_files"],
             callback=settings_change_callback,
             user_data="skip_existing_files",
         )
@@ -1310,9 +1296,9 @@ def main():
         dpg.render_dearpygui_frame()
 
     def cleanup():
-        global cancel_flag, remember_window_pos
+        global cancel_flag, settings
         cancel_flag = True
-        if remember_window_pos == True:
+        if settings["remember_window_pos"] == True:
             save_window_positions()
 
     dpg.set_exit_callback(cleanup)
