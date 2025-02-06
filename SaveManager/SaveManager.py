@@ -618,44 +618,6 @@ with dpg.handler_registry():
     dpg.add_mouse_move_handler(callback=handle_drag)
 
 
-# File Dialog for selecting source directory
-with dpg.file_dialog(
-    directory_selector=True,
-    show=False,
-    callback=source_callback,
-    tag="source_file_dialog",
-    cancel_callback=cancel_callback,
-    width=800,
-    height=450,
-):
-    pass  # Just add some settings or extension filters
-
-# File Dialog for selecting destination directory
-with dpg.file_dialog(
-    directory_selector=True,
-    show=False,
-    callback=destination_callback,
-    tag="destination_file_dialog",
-    cancel_callback=cancel_callback,
-    width=800,
-    height=450,
-):
-    pass
-
-with dpg.file_dialog(
-    directory_selector=False,
-    show=False,
-    callback=open_image,
-    tag="open_image_dialog",
-    width=800,
-    height=450,
-):
-    dpg.add_file_extension(
-        "Image files (*.png *.jpg *.jpeg *.bmp *.gif){.png,.jpg,.jpeg,.bmp,.gif}"
-    )
-    dpg.add_file_extension(".*")
-
-
 def remove_current_extension(sender, app_data):
     global file_extensions
 
@@ -1126,6 +1088,43 @@ def setup_viewport():
                 (screen_height / 2) - (dpg.get_viewport_height() / 2),
             ]
         )
+
+    # File Dialog for selecting source directory
+    with dpg.file_dialog(
+        directory_selector=True,
+        show=False,
+        callback=source_callback,
+        tag="source_file_dialog",
+        cancel_callback=cancel_callback,
+        width=dpg.get_viewport_width() / 2,
+        height=dpg.get_viewport_height() / 2,
+    ):
+        pass  # Just add some settings or extension filters
+
+    # File Dialog for selecting destination directory
+    with dpg.file_dialog(
+        directory_selector=True,
+        show=False,
+        callback=destination_callback,
+        tag="destination_file_dialog",
+        cancel_callback=cancel_callback,
+        width=dpg.get_viewport_width() / 2,
+        height=dpg.get_viewport_height() / 2,
+    ):
+        pass
+
+    with dpg.file_dialog(
+        directory_selector=False,
+        show=False,
+        callback=open_image,
+        tag="open_image_dialog",
+        width=dpg.get_viewport_width() / 2,
+        height=dpg.get_viewport_height() / 2,
+    ):
+        dpg.add_file_extension(
+            "Image files (*.png *.jpg *.jpeg *.bmp *.gif){.png,.jpg,.jpeg,.bmp,.gif}"
+        )
+        dpg.add_file_extension(".*")
 
     save_settings("DisplayOptions", "launched", True)
     dpg.set_viewport_small_icon(resource_path("docs/icon.ico"))
