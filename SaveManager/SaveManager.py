@@ -1032,7 +1032,7 @@ with dpg.window(tag="Primary Window"):
 
 
 def setup_viewport():
-    global font_size
+    global font_size, settings
 
     main_height = load_setting("Window", "main_height")
     main_width = load_setting("Window", "main_width")
@@ -1054,14 +1054,15 @@ def setup_viewport():
         max_width = main_width
         max_height = main_height
     else:
-        max_width = 1000
-        max_height = 600
+        max_width = int(screen_width / 1.5)
+        max_height = int(screen_height / 1.5)
 
     if launched == False:
         max_width = int(screen_width / 1.5)
         max_height = int(screen_height / 1.5)
 
     dpg.create_viewport(title="Save Manager", width=max_width, height=max_height)
+
     if main_pos != None and settings["remember_window_pos"] == True:
         dpg.set_viewport_pos(main_pos)
 
