@@ -781,9 +781,9 @@ def image_resize_callback():
     if image_enabled != True and image_enabled != False:
         image_enabled = True
     if image_enabled == True:
-        window_width = dpg.get_item_width("Primary Window")
-        new_x = window_width - 240
-        new_y = 20
+        image_width = dpg.get_viewport_width() / 5.6
+        new_x = dpg.get_viewport_width() - image_width - image_width / 20
+        new_y = image_width / 20
         dpg.set_item_pos(img_id, (new_x, new_y))
 
 
@@ -936,9 +936,7 @@ with dpg.window(tag="Primary Window"):
                 if image_enabled != True and image_enabled != False:
                     image_enabled = True
                 if image_enabled == True:
-                    img_id = dpg.add_image(
-                        "cute_image", pos=(0, 0), width=250, height=200
-                    )
+                    img_id = dpg.add_image("cute_image", pos=(0, 0))
 
         with dpg.tab(label="File Finder"):
             with dpg.child_window(
@@ -1088,6 +1086,9 @@ def setup_viewport():
                 (screen_height / 2) - (dpg.get_viewport_height() / 2),
             ]
         )
+
+    dpg.configure_item("cute_image", width=dpg.get_viewport_width() / 5.6)
+    dpg.configure_item("cute_image", height=dpg.get_viewport_width() / 7)
 
     # File Dialog for selecting source directory
     with dpg.file_dialog(
