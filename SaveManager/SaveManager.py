@@ -14,8 +14,6 @@ from PIL import Image
 import numpy as np
 
 
-dpg.create_context()
-
 app_version = "2.1.2_Windows"
 release_date = "2/6/2025"
 
@@ -33,6 +31,7 @@ settings: dict = {
 }
 
 cancel_flag: bool
+img_id = None
 
 start_time_global = 0
 total_bytes_global = 0
@@ -97,9 +96,6 @@ def load_settings():
                     settings[key] = eval(value)
 
     return settings.copy()
-
-
-settings = load_settings()
 
 
 def save_settings(section, key, value):
@@ -631,17 +627,6 @@ def handle_drag():
         update_image_display()
 
 
-# Add mouse drag handler
-with dpg.handler_registry():
-    # Mouse wheel for zoom
-    dpg.add_mouse_wheel_handler(callback=zoom_callback)
-
-    # Mouse drag for panning
-    dpg.add_mouse_down_handler(button=dpg.mvMouseButton_Left, callback=start_drag)
-    dpg.add_mouse_release_handler(button=dpg.mvMouseButton_Left, callback=end_drag)
-    dpg.add_mouse_move_handler(callback=handle_drag)
-
-
 def remove_current_extension(sender, app_data):
     global settings
 
@@ -751,14 +736,6 @@ def open_file_extension_menu():
                 dpg.add_text(f"{index}: {extension}")
 
 
-with dpg.font_registry():
-    # Add font file and size
-    font_size = load_setting("DisplayOptions", "font_size")
-    if font_size == None:
-        font_size = default_font_size
-    custom_font = dpg.add_font(font_path, font_size)
-
-
 def change_font_size(sender, app_data):
     save_settings("DisplayOptions", "font_size", app_data)
 
@@ -786,7 +763,7 @@ def settings_change_callback(sender, app_data):
 
 
 def image_resize_callback():
-    global settings
+    global settings, img_id
     image_enabled = settings["show_image_status"]
     if image_enabled == True:
         image_width = dpg.get_viewport_width() / 5.6
@@ -808,314 +785,282 @@ def text_click_handler(sender, app_data, user_data):
     dpg.set_value("status_text", f"Copied to clipboard: {user_data}")
 
 
-with dpg.texture_registry(tag="image_registry"):
-    width, height, channels, data = dpg.load_image(resource_path("docs/cute_image.png"))
-    dpg.add_static_texture(
-        width=width, height=height, default_value=data, tag="cute_image"
-    )
+def show_windows():
+    global img_id, settings
 
-with dpg.window(tag="Primary Window"):
-    with dpg.menu_bar():
-        with dpg.menu(label="About"):
-            with dpg.menu(label="Information"):
-                dpg.add_text(f"Version: {app_version}")
-                dpg.add_text(f"Released: {release_date}")
-                with dpg.group(horizontal=True):
-                    dpg.add_text(f"Creator: ")
-                    dpg.add_button(
-                        label="Flaming Water",
-                        callback=lambda: webbrowser.open(
-                            "https://github.com/FlamingWater35"
-                        ),
-                        small=True,
-                    )
-            dpg.add_menu_item(label="Check For Updates", callback=check_for_updates)
-        with dpg.menu(label="Debug"):
-            dpg.add_menu_item(
-                label="Show Metrics", callback=lambda: dpg.show_tool(dpg.mvTool_Metrics)
-            )
+    # Add mouse drag handler
+    with dpg.handler_registry():
+        # Mouse wheel for zoom
+        dpg.add_mouse_wheel_handler(callback=zoom_callback)
 
-    with dpg.tab_bar():
-        with dpg.tab(label="Copy Manager"):
-            with dpg.child_window(
-                autosize_x=True, auto_resize_y=True, tag="copy_manager_main_window"
-            ):
-                dpg.add_text("Copy Manager")
-                dpg.add_separator()
-                dpg.add_spacer(height=10)
+        # Mouse drag for panning
+        dpg.add_mouse_down_handler(button=dpg.mvMouseButton_Left, callback=start_drag)
+        dpg.add_mouse_release_handler(button=dpg.mvMouseButton_Left, callback=end_drag)
+        dpg.add_mouse_move_handler(callback=handle_drag)
 
-                with dpg.collapsing_header(label="Add folder pairs"):
-                    with dpg.child_window(
-                        autosize_x=True,
-                        auto_resize_y=True,
-                        tag="copy_manager_add_folder_window",
-                    ):
-                        # Input for the name
-                        dpg.add_spacer(height=5)
-                        dpg.add_input_text(label="Name", tag="name_input", width=-300)
-                        dpg.add_spacer(height=5)
+    with dpg.font_registry():
+        # Add font file and size
+        font_size = load_setting("DisplayOptions", "font_size")
+        if font_size == None:
+            font_size = default_font_size
+        custom_font = dpg.add_font(font_path, font_size)
 
-                        # Button to select source directory
-                        dpg.add_button(
-                            label="Select Source Directory",
-                            callback=lambda: dpg.show_item("source_file_dialog"),
-                        )
-                        dpg.add_text(
-                            "", tag="source_display"
-                        )  # Display for source path
-                        dpg.add_spacer(height=5)
-
-                        # Button to select destination directory
-                        dpg.add_button(
-                            label="Select Destination Directory",
-                            callback=lambda: dpg.show_item("destination_file_dialog"),
-                        )
-                        dpg.add_text(
-                            "", tag="destination_display"
-                        )  # Display for destination path
-                        dpg.add_spacer(height=5)
-
-                        # Button to add the entry
-                        dpg.add_button(
-                            label="Add folder pair", callback=add_entry_callback
-                        )
-                        dpg.add_spacer(height=5)
-
-                dpg.add_spacer(height=5)
-                dpg.add_separator()
-
-                # Container for displaying entries
-                dpg.add_text(
-                    "Folder pairs will appear below (click or double click to copy to clipboard):",
-                    wrap=0,
-                )
-
-                with dpg.child_window(tag="entry_list", auto_resize_y=True):
-                    # This will hold all entries
-                    pass
-
-                dpg.add_spacer(height=5)
-                with dpg.group(horizontal=True):
-                    dpg.add_button(
-                        label="Clear all pairs", callback=clear_entries_callback
-                    )
-                    dpg.add_button(label="Save pairs", callback=save_entries)
-
-                # Button to copy all entries
-                dpg.add_spacer(height=5)
-                dpg.add_separator()
-                dpg.add_spacer(height=5)
-                with dpg.group(horizontal=True):
-                    dpg.add_button(
-                        label="Run Copy Operation", callback=copy_all_callback
-                    )
-                    dpg.add_button(
-                        label="Cancel Copy",
-                        callback=set_cancel_to_true,
-                        tag="cancel_button",
-                    )
-
-                dpg.add_spacer(height=5)
-                dpg.add_text("", tag="status_text", color=(255, 140, 0), wrap=0)
-
-                # Progress Bar
-                dpg.add_spacer(height=5)
-                dpg.add_progress_bar(
-                    tag="progress_bar",
-                    default_value=0.0,
-                    width=-200,
-                    height=30,
-                    show=False,
-                    overlay="0.00 GB / 0.00 GB",
-                )
-
-                dpg.add_spacer(height=5)
-                dpg.add_text(
-                    "", tag="speed_text", color=(0, 255, 0), show=False, wrap=0
-                )
-
-                dpg.add_spacer(height=5)
-                with dpg.collapsing_header(label="Log"):
-                    dpg.add_text("Log:")
-                    with dpg.child_window(tag="copy_log", auto_resize_y=True):
-                        pass
-
-                if settings["show_image_status"] == True:
-                    img_id = dpg.add_image("cute_image", pos=(0, 0))
-
-        with dpg.tab(label="File Finder"):
-            with dpg.child_window(
-                autosize_x=True, auto_resize_y=True, tag="save_finder_main_window"
-            ):
-                dpg.add_text("File Finder")
-                dpg.add_separator()
-                dpg.add_spacer(height=10)
-                dpg.add_button(label="Search for files", callback=start_search_thread)
-                dpg.add_spacer(height=5)
-                dpg.add_progress_bar(
-                    tag="finder_progress_bar",
-                    default_value=0.0,
-                    width=400,
-                    height=20,
-                    show=False,
-                )
-                dpg.add_text("", tag="finder_text", show=False)
-                dpg.add_separator()
-                dpg.add_text(
-                    "Directories containing specified files will be listed below (click to copy to clipboard).",
-                    tag="save_finder_text",
-                    wrap=0,
-                )
-                dpg.add_spacer(height=10)
-                with dpg.child_window(tag="directory_list", auto_resize_y=True):
-                    pass
-
-        with dpg.tab(label="Image viewer"):
-            with dpg.child_window(
-                autosize_x=True, auto_resize_y=True, tag="image_viewer_main_window"
-            ):
-                dpg.add_text("Image viewer")
-                dpg.add_separator()
-                dpg.add_spacer(height=10)
-                with dpg.group(horizontal=True):
-                    dpg.add_button(
-                        label="Open Image",
-                        callback=lambda: dpg.show_item("open_image_dialog"),
-                    )
-                    dpg.add_spacer(width=10)
-                    dpg.add_text("", tag="image_information")
-                dpg.add_spacer(height=10)
-                with dpg.child_window(
-                    autosize_x=True,
-                    auto_resize_y=True,
-                    tag="image_viewer_child_window",
-                    # border=False,
-                ):
-                    pass
-                with dpg.group(horizontal=True):
-                    dpg.add_text("", tag="image_viewer_status_text")
-
-        with dpg.tab(label="Settings"):
-            with dpg.child_window(
-                autosize_x=True, auto_resize_y=True, tag="settings_main_window"
-            ):
-                dpg.add_text(
-                    "Changes to font size and size limit will be applied after application restart",
-                    wrap=0,
-                )
-                dpg.add_separator()
-
-                dpg.add_spacer(height=10)
-                dpg.add_text("Display", wrap=0)
-                with dpg.child_window(
-                    autosize_x=True,
-                    auto_resize_y=True,
-                    tag="display_settings_child_window",
-                ):
-                    pass
-                dpg.add_spacer(height=10)
-                dpg.add_text("Copy Manager", wrap=0)
-                with dpg.child_window(
-                    autosize_x=True,
-                    auto_resize_y=True,
-                    tag="copy_manager_settings_child_window",
-                ):
-                    pass
-                dpg.add_spacer(height=10)
-                dpg.add_text("File Finder", wrap=0)
-                with dpg.child_window(
-                    autosize_x=True,
-                    auto_resize_y=True,
-                    tag="save_finder_settings_child_window",
-                ):
-                    pass
-
-
-def setup_viewport():
-    global font_size, settings
-
-    main_height = load_setting("Window", "main_height")
-    main_width = load_setting("Window", "main_width")
-    main_pos = load_setting("Window", "main_pos")
-    user32 = ctypes.windll.user32
-    screen_width, screen_height = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
-
-    dpg.set_value(
-        "save_finder_text",
-        f"Directories containing {settings["file_extensions"]} files will be listed below (click to copy to clipboard).",
-    )
-
-    launched = load_setting("DisplayOptions", "launched")
-    if launched == None:
-        launched = False
-
-    # Set maximum width and height for the window
-    if main_height != None:
-        max_width = main_width
-        max_height = main_height
-    else:
-        max_width = int(screen_width / 1.5)
-        max_height = int(screen_height / 1.5)
-
-    if launched == False:
-        max_width = int(screen_width / 1.5)
-        max_height = int(screen_height / 1.5)
-
-    dpg.create_viewport(title="Save Manager", width=max_width, height=max_height)
-
-    if main_pos != None and settings["remember_window_pos"] == True:
-        dpg.set_viewport_pos(main_pos)
-
-    if launched == False or settings["remember_window_pos"] == False:
-        dpg.set_viewport_pos(
-            [
-                (screen_width / 2) - (dpg.get_viewport_width() / 2),
-                (screen_height / 2) - (dpg.get_viewport_height() / 2),
-            ]
+    with dpg.texture_registry(tag="image_registry"):
+        width, height, channels, data = dpg.load_image(
+            resource_path("docs/cute_image.png")
+        )
+        dpg.add_static_texture(
+            width=width, height=height, default_value=data, tag="cute_image"
         )
 
+    with dpg.item_handler_registry(tag="window_handler") as handler:
+        dpg.add_item_resize_handler(callback=image_resize_callback)
+
+    with dpg.theme() as child_window_theme:
+        with dpg.theme_component(dpg.mvChildWindow):
+            dpg.add_theme_style(dpg.mvStyleVar_WindowPadding, 15, 10)
+            dpg.add_theme_style(dpg.mvStyleVar_ChildRounding, 3, 3)
+            dpg.add_theme_style(dpg.mvStyleVar_ChildBorderSize, 4, 4)
+            dpg.add_theme_color(dpg.mvThemeCol_Border, (93, 64, 55))
+        with dpg.theme_component(dpg.mvButton):
+            dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 8, 5)
+            dpg.add_theme_style(dpg.mvStyleVar_FrameRounding, 4, 4)
+            dpg.add_theme_style(dpg.mvStyleVar_FrameBorderSize, 2, 2)
+
+    with dpg.theme() as main_window_theme:
+        with dpg.theme_component(dpg.mvChildWindow):
+            dpg.add_theme_color(dpg.mvThemeCol_Border, (21, 101, 192))
+
+    with dpg.theme() as main_window_add_folder_theme:
+        with dpg.theme_component(dpg.mvChildWindow):
+            dpg.add_theme_color(dpg.mvThemeCol_ChildBg, (43, 35, 32))
+
+    dpg.bind_font(custom_font)
     dpg.configure_item("cute_image", width=dpg.get_viewport_width() / 5.6)
     dpg.configure_item("cute_image", height=dpg.get_viewport_width() / 7)
 
-    # File Dialog for selecting source directory
-    with dpg.file_dialog(
-        directory_selector=True,
-        show=False,
-        callback=source_callback,
-        tag="source_file_dialog",
-        cancel_callback=cancel_callback,
-        width=dpg.get_viewport_width() / 1.5,
-        height=dpg.get_viewport_height() / 1.5,
-    ):
-        pass  # Just add some settings or extension filters
+    with dpg.window(tag="Primary Window"):
+        with dpg.menu_bar():
+            with dpg.menu(label="About"):
+                with dpg.menu(label="Information"):
+                    dpg.add_text(f"Version: {app_version}")
+                    dpg.add_text(f"Released: {release_date}")
+                    with dpg.group(horizontal=True):
+                        dpg.add_text(f"Creator: ")
+                        dpg.add_button(
+                            label="Flaming Water",
+                            callback=lambda: webbrowser.open(
+                                "https://github.com/FlamingWater35"
+                            ),
+                            small=True,
+                        )
+                dpg.add_menu_item(label="Check For Updates", callback=check_for_updates)
+            with dpg.menu(label="Debug"):
+                dpg.add_menu_item(
+                    label="Show Metrics",
+                    callback=lambda: dpg.show_tool(dpg.mvTool_Metrics),
+                )
 
-    # File Dialog for selecting destination directory
-    with dpg.file_dialog(
-        directory_selector=True,
-        show=False,
-        callback=destination_callback,
-        tag="destination_file_dialog",
-        cancel_callback=cancel_callback,
-        width=dpg.get_viewport_width() / 1.5,
-        height=dpg.get_viewport_height() / 1.5,
-    ):
-        pass
+        with dpg.tab_bar():
+            with dpg.tab(label="Copy Manager"):
+                with dpg.child_window(
+                    autosize_x=True, auto_resize_y=True, tag="copy_manager_main_window"
+                ):
+                    dpg.add_text("Copy Manager")
+                    dpg.add_separator()
+                    dpg.add_spacer(height=10)
 
-    with dpg.file_dialog(
-        directory_selector=False,
-        show=False,
-        callback=open_image,
-        tag="open_image_dialog",
-        width=dpg.get_viewport_width() / 1.5,
-        height=dpg.get_viewport_height() / 1.5,
-    ):
-        dpg.add_file_extension(
-            "Image files (*.png *.jpg *.jpeg *.bmp *.gif){.png,.jpg,.jpeg,.bmp,.gif}"
-        )
-        dpg.add_file_extension(".*")
+                    with dpg.collapsing_header(label="Add folder pairs"):
+                        with dpg.child_window(
+                            autosize_x=True,
+                            auto_resize_y=True,
+                            tag="copy_manager_add_folder_window",
+                        ):
+                            # Input for the name
+                            dpg.add_spacer(height=5)
+                            dpg.add_input_text(
+                                label="Name", tag="name_input", width=-300
+                            )
+                            dpg.add_spacer(height=5)
 
-    save_settings("DisplayOptions", "launched", True)
-    dpg.set_viewport_small_icon(resource_path("docs/icon.ico"))
+                            # Button to select source directory
+                            dpg.add_button(
+                                label="Select Source Directory",
+                                callback=lambda: dpg.show_item("source_file_dialog"),
+                            )
+                            dpg.add_text(
+                                "", tag="source_display"
+                            )  # Display for source path
+                            dpg.add_spacer(height=5)
+
+                            # Button to select destination directory
+                            dpg.add_button(
+                                label="Select Destination Directory",
+                                callback=lambda: dpg.show_item(
+                                    "destination_file_dialog"
+                                ),
+                            )
+                            dpg.add_text(
+                                "", tag="destination_display"
+                            )  # Display for destination path
+                            dpg.add_spacer(height=5)
+
+                            # Button to add the entry
+                            dpg.add_button(
+                                label="Add folder pair", callback=add_entry_callback
+                            )
+                            dpg.add_spacer(height=5)
+
+                    dpg.add_spacer(height=5)
+                    dpg.add_separator()
+
+                    # Container for displaying entries
+                    dpg.add_text(
+                        "Folder pairs will appear below (click or double click to copy to clipboard):",
+                        wrap=0,
+                    )
+
+                    with dpg.child_window(tag="entry_list", auto_resize_y=True):
+                        # This will hold all entries
+                        pass
+
+                    dpg.add_spacer(height=5)
+                    with dpg.group(horizontal=True):
+                        dpg.add_button(
+                            label="Clear all pairs", callback=clear_entries_callback
+                        )
+                        dpg.add_button(label="Save pairs", callback=save_entries)
+
+                    # Button to copy all entries
+                    dpg.add_spacer(height=5)
+                    dpg.add_separator()
+                    dpg.add_spacer(height=5)
+                    with dpg.group(horizontal=True):
+                        dpg.add_button(
+                            label="Run Copy Operation", callback=copy_all_callback
+                        )
+                        dpg.add_button(
+                            label="Cancel Copy",
+                            callback=set_cancel_to_true,
+                            tag="cancel_button",
+                        )
+
+                    dpg.add_spacer(height=5)
+                    dpg.add_text("", tag="status_text", color=(255, 140, 0), wrap=0)
+
+                    # Progress Bar
+                    dpg.add_spacer(height=5)
+                    dpg.add_progress_bar(
+                        tag="progress_bar",
+                        default_value=0.0,
+                        width=-200,
+                        height=30,
+                        show=False,
+                        overlay="0.00 GB / 0.00 GB",
+                    )
+
+                    dpg.add_spacer(height=5)
+                    dpg.add_text(
+                        "", tag="speed_text", color=(0, 255, 0), show=False, wrap=0
+                    )
+
+                    dpg.add_spacer(height=5)
+                    with dpg.collapsing_header(label="Log"):
+                        dpg.add_text("Log:")
+                        with dpg.child_window(tag="copy_log", auto_resize_y=True):
+                            pass
+
+                    if settings["show_image_status"] == True:
+                        img_id = dpg.add_image("cute_image", pos=(0, 0))
+
+            with dpg.tab(label="File Finder"):
+                with dpg.child_window(
+                    autosize_x=True, auto_resize_y=True, tag="save_finder_main_window"
+                ):
+                    dpg.add_text("File Finder")
+                    dpg.add_separator()
+                    dpg.add_spacer(height=10)
+                    dpg.add_button(
+                        label="Search for files", callback=start_search_thread
+                    )
+                    dpg.add_spacer(height=5)
+                    dpg.add_progress_bar(
+                        tag="finder_progress_bar",
+                        default_value=0.0,
+                        width=400,
+                        height=20,
+                        show=False,
+                    )
+                    dpg.add_text("", tag="finder_text", show=False)
+                    dpg.add_separator()
+                    dpg.add_text(
+                        "Directories containing specified files will be listed below (click to copy to clipboard).",
+                        tag="save_finder_text",
+                        wrap=0,
+                    )
+                    dpg.add_spacer(height=10)
+                    with dpg.child_window(tag="directory_list", auto_resize_y=True):
+                        pass
+
+            with dpg.tab(label="Image viewer"):
+                with dpg.child_window(
+                    autosize_x=True, auto_resize_y=True, tag="image_viewer_main_window"
+                ):
+                    dpg.add_text("Image viewer")
+                    dpg.add_separator()
+                    dpg.add_spacer(height=10)
+                    with dpg.group(horizontal=True):
+                        dpg.add_button(
+                            label="Open Image",
+                            callback=lambda: dpg.show_item("open_image_dialog"),
+                        )
+                        dpg.add_spacer(width=10)
+                        dpg.add_text("", tag="image_information")
+                    dpg.add_spacer(height=10)
+                    with dpg.child_window(
+                        autosize_x=True,
+                        auto_resize_y=True,
+                        tag="image_viewer_child_window",
+                        # border=False,
+                    ):
+                        pass
+                    with dpg.group(horizontal=True):
+                        dpg.add_text("", tag="image_viewer_status_text")
+
+            with dpg.tab(label="Settings"):
+                with dpg.child_window(
+                    autosize_x=True, auto_resize_y=True, tag="settings_main_window"
+                ):
+                    dpg.add_text(
+                        "Changes to font size and size limit will be applied after application restart",
+                        wrap=0,
+                    )
+                    dpg.add_separator()
+
+                    dpg.add_spacer(height=10)
+                    dpg.add_text("Display", wrap=0)
+                    with dpg.child_window(
+                        autosize_x=True,
+                        auto_resize_y=True,
+                        tag="display_settings_child_window",
+                    ):
+                        pass
+                    dpg.add_spacer(height=10)
+                    dpg.add_text("Copy Manager", wrap=0)
+                    with dpg.child_window(
+                        autosize_x=True,
+                        auto_resize_y=True,
+                        tag="copy_manager_settings_child_window",
+                    ):
+                        pass
+                    dpg.add_spacer(height=10)
+                    dpg.add_text("File Finder", wrap=0)
+                    with dpg.child_window(
+                        autosize_x=True,
+                        auto_resize_y=True,
+                        tag="save_finder_settings_child_window",
+                    ):
+                        pass
 
     dpg.add_spacer(height=10, parent="display_settings_child_window")
     with dpg.group(horizontal=True, parent="display_settings_child_window"):
@@ -1196,33 +1141,47 @@ def setup_viewport():
         dpg.add_button(label="Manage extensions", callback=open_file_extension_menu)
     dpg.add_spacer(height=10, parent="save_finder_settings_child_window")
 
+    # File Dialog for selecting source directory
+    with dpg.file_dialog(
+        directory_selector=True,
+        show=False,
+        callback=source_callback,
+        tag="source_file_dialog",
+        cancel_callback=cancel_callback,
+        width=dpg.get_viewport_width() / 1.5,
+        height=dpg.get_viewport_height() / 1.5,
+    ):
+        pass  # Just add some settings or extension filters
 
-def main():
-    # Load entries on application start
-    load_entries()
-    setup_viewport()
+    # File Dialog for selecting destination directory
+    with dpg.file_dialog(
+        directory_selector=True,
+        show=False,
+        callback=destination_callback,
+        tag="destination_file_dialog",
+        cancel_callback=cancel_callback,
+        width=dpg.get_viewport_width() / 1.5,
+        height=dpg.get_viewport_height() / 1.5,
+    ):
+        pass
 
-    with dpg.item_handler_registry(tag="window_handler") as handler:
-        dpg.add_item_resize_handler(callback=image_resize_callback)
+    with dpg.file_dialog(
+        directory_selector=False,
+        show=False,
+        callback=open_image,
+        tag="open_image_dialog",
+        width=dpg.get_viewport_width() / 1.5,
+        height=dpg.get_viewport_height() / 1.5,
+    ):
+        dpg.add_file_extension(
+            "Image files (*.png *.jpg *.jpeg *.bmp *.gif){.png,.jpg,.jpeg,.bmp,.gif}"
+        )
+        dpg.add_file_extension(".*")
 
-    with dpg.theme() as child_window_theme:
-        with dpg.theme_component(dpg.mvChildWindow):
-            dpg.add_theme_style(dpg.mvStyleVar_WindowPadding, 15, 10)
-            dpg.add_theme_style(dpg.mvStyleVar_ChildRounding, 3, 3)
-            dpg.add_theme_style(dpg.mvStyleVar_ChildBorderSize, 4, 4)
-            dpg.add_theme_color(dpg.mvThemeCol_Border, (93, 64, 55))
-        with dpg.theme_component(dpg.mvButton):
-            dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 8, 5)
-            dpg.add_theme_style(dpg.mvStyleVar_FrameRounding, 4, 4)
-            dpg.add_theme_style(dpg.mvStyleVar_FrameBorderSize, 2, 2)
-
-    with dpg.theme() as main_window_theme:
-        with dpg.theme_component(dpg.mvChildWindow):
-            dpg.add_theme_color(dpg.mvThemeCol_Border, (21, 101, 192))
-
-    with dpg.theme() as main_window_add_folder_theme:
-        with dpg.theme_component(dpg.mvChildWindow):
-            dpg.add_theme_color(dpg.mvThemeCol_ChildBg, (43, 35, 32))
+    dpg.set_value(
+        "save_finder_text",
+        f"Directories containing {settings["file_extensions"]} files will be listed below (click to copy to clipboard).",
+    )
 
     dpg.bind_item_theme("Primary Window", child_window_theme)
     dpg.bind_item_theme("copy_manager_main_window", main_window_theme)
@@ -1232,10 +1191,61 @@ def main():
     dpg.bind_item_theme("copy_manager_add_folder_window", main_window_add_folder_theme)
 
     dpg.bind_item_handler_registry("Primary Window", "window_handler")
-    dpg.bind_font(custom_font)
+    dpg.set_primary_window("Primary Window", True)
+
+
+def setup_viewport():
+    global settings
+
+    main_height = load_setting("Window", "main_height")
+    main_width = load_setting("Window", "main_width")
+    main_pos = load_setting("Window", "main_pos")
+    user32 = ctypes.windll.user32
+    screen_width, screen_height = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
+
+    launched = load_setting("DisplayOptions", "launched")
+    if launched == None:
+        launched = False
+
+    # Set maximum width and height for the window
+    if main_height != None:
+        max_width = main_width
+        max_height = main_height
+    else:
+        max_width = int(screen_width / 1.5)
+        max_height = int(screen_height / 1.5)
+
+    if launched == False:
+        max_width = int(screen_width / 1.5)
+        max_height = int(screen_height / 1.5)
+
+    dpg.create_viewport(title="Save Manager", width=max_width, height=max_height)
+
+    if main_pos != None and settings["remember_window_pos"] == True:
+        dpg.set_viewport_pos(main_pos)
+
+    if launched == False or settings["remember_window_pos"] == False:
+        dpg.set_viewport_pos(
+            [
+                (screen_width / 2) - (dpg.get_viewport_width() / 2),
+                (screen_height / 2) - (dpg.get_viewport_height() / 2),
+            ]
+        )
+
+    save_settings("DisplayOptions", "launched", True)
+    dpg.set_viewport_small_icon(resource_path("docs/icon.ico"))
+
+
+def main():
+    global settings
+    dpg.create_context()
+    settings = load_settings()
+    load_entries()
+    setup_viewport()
+    show_windows()
+
     dpg.setup_dearpygui()
     dpg.show_viewport()
-    dpg.set_primary_window("Primary Window", True)
 
     while dpg.is_dearpygui_running():
         while not progress_queue.empty():
