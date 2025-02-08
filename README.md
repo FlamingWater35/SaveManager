@@ -5,4 +5,4 @@ A simple Python application to save multiple folder pairs and copy them with the
 
 ## Installing
 1. Download the executable from releases
-2. Run the file
+2. Run the executable
