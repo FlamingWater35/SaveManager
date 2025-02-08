@@ -15,7 +15,7 @@ import numpy as np
 
 
 app_version = "2.1.2_Windows"
-release_date = "2/6/2025"
+release_date = "2/8/2025"
 
 sources: list = []
 destinations: list = []
