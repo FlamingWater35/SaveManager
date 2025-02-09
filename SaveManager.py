@@ -356,16 +356,6 @@ def cancel_callback(sender, app_data):
 def search_files():
     global settings
 
-    local_app_data = os.getenv("LOCALAPPDATA")
-    documents_path = os.path.join(os.path.expanduser("~"), "Documents")
-    public_documents_path = os.path.join("C:\\Users\\Public\\Documents")
-    common_paths = [
-        "C:\\Program Files",
-        "C:\\Program Files (x86)",
-        os.path.join(os.getenv("USERPROFILE"), "Desktop"),
-        os.path.join(os.getenv("USERPROFILE"), "AppData", "Roaming"),
-    ]
-
     sav_directories = set()
     file_extensions_tuple = tuple(settings["file_extensions"])
 
@@ -374,11 +364,7 @@ def search_files():
     dpg.set_value("finder_text", "Starting search...")
     dpg.show_item("finder_text")
 
-    directories_to_search = [
-        local_app_data,
-        documents_path,
-        public_documents_path,
-    ] + common_paths
+    directories_to_search = settings["folder_paths"]
 
     total_dirs = sum(
         len(dirs)
