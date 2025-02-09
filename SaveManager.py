@@ -28,6 +28,15 @@ settings: dict = {
     "remember_window_pos": True,
     "skip_existing_files": True,
     "file_extensions": [".sav", ".save"],
+    "folder_paths": [
+        "C:\\Program Files",
+        "C:\\Program Files (x86)",
+        os.path.join(os.getenv("USERPROFILE"), "Desktop"),
+        os.path.join(os.getenv("USERPROFILE"), "AppData", "Roaming"),
+        os.getenv("LOCALAPPDATA"),
+        os.path.join(os.path.expanduser("~"), "Documents"),
+        os.path.join("C:\\Users\\Public\\Documents"),
+    ],
 }
 
 cancel_flag: bool
@@ -736,6 +745,111 @@ def open_file_extension_menu():
                 dpg.add_text(f"{index}: {extension}")
 
 
+def remove_current_folderpath(sender, app_data):
+    global settings
+
+    settings["folder_paths"].remove(dpg.get_item_user_data(sender))
+    save_settings("Settings", "folder_paths", settings["folder_paths"])
+    dpg.set_value(
+        "save_finder_text",
+        f"Directories containing {settings["folder_paths"]} files will be listed below (click to copy to clipboard).",
+    )
+
+    dpg.delete_item("folderpath_list", children_only=True)
+    for index, folderpath in enumerate(settings["folder_paths"], start=1):
+        dpg.add_text(f"{index}: {folderpath}", parent="folderpath_list")
+    dpg.hide_item("select_folderpath_text")
+    dpg.show_item("folderpath_remove_button")
+    dpg.show_item("folderpath_add_button")
+
+
+def remove_folderpaths():
+    global settings
+
+    dpg.delete_item("folderpath_list", children_only=True)
+    for index, folderpath in enumerate(settings["folder_paths"], start=1):
+        dpg.add_selectable(
+            label=f"{index}: {folderpath}",
+            parent="folderpaths_list",
+            callback=remove_current_extension,
+            user_data=folderpath,
+        )
+    dpg.show_item("select_folderpath_text")
+    dpg.hide_item("folderpath_remove_button")
+    dpg.hide_item("folderpath_add_button")
+
+
+def add_folderpath():
+    dpg.show_item("add_folderpath_group")
+    dpg.show_item("comfirm_add_folderpath")
+    dpg.hide_item("folderpath_remove_button")
+    dpg.hide_item("folderpath_add_button")
+
+
+def add_current_folderpath():
+    global settings
+
+    folderpath = dpg.get_value("add_folderpath_input")
+    if folderpath != "":
+        settings["folder_paths"].append(folderpath)
+        save_settings("Settings", "folder_paths", settings["folder_paths"])
+
+        dpg.delete_item("folderpath_list", children_only=True)
+        for index, folderpath in enumerate(settings["folder_paths"], start=1):
+            dpg.add_text(f"{index}: {folderpath}", parent="folderpath_list")
+        dpg.hide_item("add_folderpath_group")
+        dpg.hide_item("comfirm_add_folderpath")
+        dpg.show_item("folderpath_remove_button")
+        dpg.show_item("folderpath_add_button")
+
+
+def open_folder_path_menu():
+    global settings
+
+    if dpg.does_item_exist("folderpath_manager_window"):
+        dpg.delete_item("folderpath_manager_window")
+    window_width = dpg.get_viewport_width() / 3
+    window_height = dpg.get_viewport_height() / 2
+    with dpg.window(
+        label="Manage folder paths",
+        tag="folderpath_manager_window",
+        modal=True,
+        no_collapse=True,
+        width=window_width,
+        height=window_height,
+        pos=[
+            (dpg.get_viewport_width() / 2) - (window_width / 2),
+            (dpg.get_viewport_height() / 2) - (window_height / 2),
+        ],
+    ):
+        with dpg.group(horizontal=True):
+            dpg.add_button(
+                label="Add", callback=add_folderpath, tag="folderpath_add_button"
+            )
+            dpg.add_button(
+                label="Remove",
+                callback=remove_folderpaths,
+                tag="folderpath_remove_button",
+            )
+            dpg.add_button(
+                label="Comfirm",
+                tag="comfirm_add_folderpath",
+                show=False,
+                callback=add_current_folderpath,
+            )
+        with dpg.group(horizontal=True, show=False, tag="add_folderpath_group"):
+            dpg.add_text("Folder path")
+            dpg.add_input_text(width=-1, tag="add_folderpath_input")
+        dpg.add_text(
+            "Select an item to remove:", tag="select_folderpath_text", show=False
+        )
+        with dpg.child_window(
+            autosize_x=True, auto_resize_y=True, tag="folderpath_list"
+        ):
+            for index, folderpath in enumerate(settings["folder_paths"], start=1):
+                dpg.add_text(f"{index}: {folderpath}")
+
+
 def change_font_size(sender, app_data):
     save_settings("DisplayOptions", "font_size", app_data)
 
@@ -1151,6 +1265,14 @@ def show_windows():
         )
         dpg.add_spacer(width=10)
         dpg.add_button(label="Manage extensions", callback=open_file_extension_menu)
+    dpg.add_spacer(height=20, parent="save_finder_settings_child_window")
+    with dpg.group(horizontal=True, parent="save_finder_settings_child_window"):
+        dpg.add_text(
+            "Folder paths to search",
+            wrap=0,
+        )
+        dpg.add_spacer(width=10)
+        dpg.add_button(label="Manage folder paths", callback=open_folder_path_menu)
     dpg.add_spacer(height=10, parent="save_finder_settings_child_window")
 
     # File Dialog for selecting source directory
