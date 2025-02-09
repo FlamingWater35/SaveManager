@@ -106,13 +106,17 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\DLLs\\_bz2.pyd',
    'EXTENSION'),
-  ('numpy\\_core\\_multiarray_tests.cp312-win_amd64.pyd',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_multiarray_tests.cp312-win_amd64.pyd',
-   'EXTENSION'),
   ('_ctypes.pyd',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\DLLs\\_ctypes.pyd',
+   'EXTENSION'),
+  ('_wmi.pyd',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\DLLs\\_wmi.pyd',
+   'EXTENSION'),
+  ('numpy\\_core\\_multiarray_tests.cp312-win_amd64.pyd',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_multiarray_tests.cp312-win_amd64.pyd',
    'EXTENSION'),
   ('numpy\\_core\\_multiarray_umath.cp312-win_amd64.pyd',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
@@ -125,10 +129,6 @@
   ('charset_normalizer\\md.cp312-win_amd64.pyd',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\charset_normalizer\\md.cp312-win_amd64.pyd',
-   'EXTENSION'),
-  ('_wmi.pyd',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\DLLs\\_wmi.pyd',
    'EXTENSION'),
   ('numpy\\linalg\\_umath_linalg.cp312-win_amd64.pyd',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
@@ -182,6 +182,10 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\fft\\_pocketfft_umath.cp312-win_amd64.pyd',
    'EXTENSION'),
+  ('PIL\\_imaging.cp312-win_amd64.pyd',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\PIL\\_imaging.cp312-win_amd64.pyd',
+   'EXTENSION'),
   ('PIL\\_webp.cp312-win_amd64.pyd',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\PIL\\_webp.cp312-win_amd64.pyd',
@@ -202,10 +206,6 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\DLLs\\_elementtree.pyd',
    'EXTENSION'),
-  ('PIL\\_imaging.cp312-win_amd64.pyd',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\PIL\\_imaging.cp312-win_amd64.pyd',
-   'EXTENSION'),
   ('_queue.pyd',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\DLLs\\_queue.pyd',
@@ -214,18 +214,6 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\dearpygui\\_dearpygui.pyd',
    'EXTENSION'),
-  ('api-ms-win-crt-runtime-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-crt-runtime-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-crt-conio-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-crt-conio-l1-1-0.dll',
-   'BINARY'),
-  ('zlib.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\zlib.dll',
-   'BINARY'),
   ('api-ms-win-crt-environment-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\api-ms-win-crt-environment-l1-1-0.dll',
@@ -234,21 +222,29 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\api-ms-win-crt-math-l1-1-0.dll',
    'BINARY'),
+  ('api-ms-win-crt-conio-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-crt-conio-l1-1-0.dll',
+   'BINARY'),
   ('api-ms-win-crt-process-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\api-ms-win-crt-process-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-crt-filesystem-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-crt-filesystem-l1-1-0.dll',
    'BINARY'),
   ('VCRUNTIME140.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\VCRUNTIME140.dll',
    'BINARY'),
-  ('api-ms-win-crt-string-l1-1-0.dll',
+  ('api-ms-win-crt-filesystem-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-crt-string-l1-1-0.dll',
+   'projects\\SaveManager\\.conda\\api-ms-win-crt-filesystem-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-crt-convert-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-crt-convert-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-crt-runtime-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-crt-runtime-l1-1-0.dll',
    'BINARY'),
   ('api-ms-win-crt-locale-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
@@ -258,25 +254,29 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\api-ms-win-crt-heap-l1-1-0.dll',
    'BINARY'),
-  ('api-ms-win-crt-time-l1-1-0.dll',
+  ('zlib.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-crt-time-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-crt-convert-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-crt-convert-l1-1-0.dll',
+   'projects\\SaveManager\\.conda\\zlib.dll',
    'BINARY'),
   ('api-ms-win-crt-stdio-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\api-ms-win-crt-stdio-l1-1-0.dll',
    'BINARY'),
-  ('VCRUNTIME140_1.dll',
+  ('api-ms-win-crt-time-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\VCRUNTIME140_1.dll',
+   'projects\\SaveManager\\.conda\\api-ms-win-crt-time-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-crt-string-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-crt-string-l1-1-0.dll',
    'BINARY'),
   ('api-ms-win-crt-utility-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\api-ms-win-crt-utility-l1-1-0.dll',
+   'BINARY'),
+  ('VCRUNTIME140_1.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\VCRUNTIME140_1.dll',
    'BINARY'),
   ('api-ms-win-crt-private-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
@@ -286,13 +286,13 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Library\\bin\\libexpat.dll',
    'BINARY'),
-  ('libcrypto-3-x64.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Library\\bin\\libcrypto-3-x64.dll',
-   'BINARY'),
   ('libssl-3-x64.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Library\\bin\\libssl-3-x64.dll',
+   'BINARY'),
+  ('libcrypto-3-x64.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Library\\bin\\libcrypto-3-x64.dll',
    'BINARY'),
   ('liblzma.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
@@ -318,45 +318,45 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\ucrtbase.dll',
    'BINARY'),
-  ('api-ms-win-core-rtlsupport-l1-1-0.dll',
+  ('api-ms-win-core-handle-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-rtlsupport-l1-1-0.dll',
+   'projects\\SaveManager\\.conda\\api-ms-win-core-handle-l1-1-0.dll',
    'BINARY'),
-  ('api-ms-win-core-synch-l1-2-0.dll',
+  ('api-ms-win-core-namedpipe-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-synch-l1-2-0.dll',
-   'BINARY'),
-  ('api-ms-win-core-debug-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-debug-l1-1-0.dll',
+   'projects\\SaveManager\\.conda\\api-ms-win-core-namedpipe-l1-1-0.dll',
    'BINARY'),
   ('api-ms-win-core-sysinfo-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\api-ms-win-core-sysinfo-l1-1-0.dll',
    'BINARY'),
-  ('api-ms-win-core-string-l1-1-0.dll',
+  ('api-ms-win-core-processenvironment-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-string-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-core-localization-l1-2-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-localization-l1-2-0.dll',
+   'projects\\SaveManager\\.conda\\api-ms-win-core-processenvironment-l1-1-0.dll',
    'BINARY'),
   ('api-ms-win-core-file-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\api-ms-win-core-file-l1-1-0.dll',
    'BINARY'),
-  ('api-ms-win-core-processthreads-l1-1-0.dll',
+  ('api-ms-win-core-errorhandling-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-processthreads-l1-1-0.dll',
+   'projects\\SaveManager\\.conda\\api-ms-win-core-errorhandling-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-timezone-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-timezone-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-fibers-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-fibers-l1-1-0.dll',
    'BINARY'),
   ('api-ms-win-core-processthreads-l1-1-1.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\api-ms-win-core-processthreads-l1-1-1.dll',
    'BINARY'),
-  ('api-ms-win-core-synch-l1-1-0.dll',
+  ('api-ms-win-core-memory-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-synch-l1-1-0.dll',
+   'projects\\SaveManager\\.conda\\api-ms-win-core-memory-l1-1-0.dll',
    'BINARY'),
   ('api-ms-win-core-interlocked-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
@@ -366,61 +366,61 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\api-ms-win-core-datetime-l1-1-0.dll',
    'BINARY'),
-  ('api-ms-win-core-file-l2-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-file-l2-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-core-fibers-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-fibers-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-core-libraryloader-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-libraryloader-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-core-timezone-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-timezone-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-core-profile-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-profile-l1-1-0.dll',
-   'BINARY'),
   ('api-ms-win-core-console-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\api-ms-win-core-console-l1-1-0.dll',
    'BINARY'),
-  ('api-ms-win-core-errorhandling-l1-1-0.dll',
+  ('api-ms-win-core-synch-l1-2-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-errorhandling-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-core-processenvironment-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-processenvironment-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-core-memory-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-memory-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-core-handle-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-handle-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-core-file-l1-2-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-file-l1-2-0.dll',
-   'BINARY'),
-  ('api-ms-win-core-namedpipe-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-namedpipe-l1-1-0.dll',
+   'projects\\SaveManager\\.conda\\api-ms-win-core-synch-l1-2-0.dll',
    'BINARY'),
   ('api-ms-win-core-heap-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\api-ms-win-core-heap-l1-1-0.dll',
    'BINARY'),
+  ('api-ms-win-core-file-l2-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-file-l2-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-file-l1-2-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-file-l1-2-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-libraryloader-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-libraryloader-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-synch-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-synch-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-localization-l1-2-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-localization-l1-2-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-processthreads-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-processthreads-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-debug-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-debug-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-string-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-string-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-profile-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-profile-l1-1-0.dll',
+   'BINARY'),
   ('api-ms-win-core-util-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\api-ms-win-core-util-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-rtlsupport-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-rtlsupport-l1-1-0.dll',
    'BINARY'),
   ('docs\\cute_image.png',
    'C:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
@@ -434,13 +434,13 @@
    'C:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\docs\\icon.ico',
    'DATA'),
-  ('certifi\\cacert.pem',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\certifi\\cacert.pem',
-   'DATA'),
   ('certifi\\py.typed',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\certifi\\py.typed',
+   'DATA'),
+  ('certifi\\cacert.pem',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\certifi\\cacert.pem',
    'DATA'),
   ('base_library.zip',
    'C:\\Users\\Admin\\Documents\\work\\projects\\VSCode '

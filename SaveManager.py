@@ -16,7 +16,7 @@ import keyboard
 from datetime import datetime
 
 
-app_version = "2.1.3_Windows"
+app_version = "2.1.4_Windows"
 release_date = "2/9/2025"
 
 sources: list = []
@@ -41,7 +41,6 @@ settings: dict = {
     ],
 }
 
-cancel_flag: bool
 img_id = None
 
 start_time_global = 0
@@ -61,6 +60,7 @@ config_file = "settings.ini"
 
 config = configparser.ConfigParser()
 progress_queue = queue.Queue()
+cancel_flag = threading.Event()
 
 
 def resource_path(relative_path):
@@ -223,7 +223,7 @@ def key_listener():
 
 def set_cancel_to_true():
     global cancel_flag
-    cancel_flag = True
+    cancel_flag.set()
 
 
 def get_folder_size(folder):
@@ -243,9 +243,9 @@ def copy_thread(valid_entries, total_bytes):
         progress_queue.put(("start", total_bytes))
         copied_bytes = 0
         for index in valid_entries:
-            if cancel_flag:
+            if cancel_flag.is_set():
                 progress_queue.put(("cancel", "Copy cancelled by user!"))
-                break
+                return
             source = sources[index]
             dest = destinations[index]
             name = names[index]
@@ -264,8 +264,9 @@ def copy_thread(valid_entries, total_bytes):
 
             # Copy files with progress
             for src_path, size in file_list:
-                if cancel_flag:
-                    break
+                if cancel_flag.is_set():
+                    progress_queue.put(("cancel", "Copy cancelled by user!"))
+                    return
                 rel_path = os.path.relpath(src_path, source)
                 dest_path = os.path.join(dest, rel_path)
                 os.makedirs(os.path.dirname(dest_path), exist_ok=True)
@@ -286,8 +287,9 @@ def copy_thread(valid_entries, total_bytes):
 
                 with open(src_path, "rb") as f_src, open(dest_path, "wb") as f_dst:
                     while chunk := f_src.read(1024 * 1024):  # 1MB chunks
-                        if cancel_flag:
-                            break
+                        if cancel_flag.is_set():
+                            progress_queue.put(("cancel", "Copy cancelled by user!"))
+                            return
                         f_dst.write(chunk)
                         copied_bytes += len(chunk)
                         progress_queue.put(("progress", copied_bytes))
@@ -300,20 +302,15 @@ def copy_thread(valid_entries, total_bytes):
                     parent="copy_log",
                 )
 
-        if not cancel_flag:
-            progress_queue.put(("complete", "Copying completed."))
-        else:
-            progress_queue.put(("cancel", "Copy cancelled by user!"))
-
     except Exception as e:
         progress_queue.put(("error", f"Error: {str(e)}"))
     finally:
-        cancel_flag = False
+        cancel_flag.clear()
 
 
 def copy_all_callback(sender, app_data):
     global settings, cancel_flag
-    cancel_flag = False
+
     dpg.delete_item("copy_log", children_only=True)
     dpg.set_value("speed_text", "")
     dpg.show_item("speed_text")
@@ -395,7 +392,7 @@ def search_files():
                 f"Skipped directory '{folder}' as it does not exist.",
             )
 
-    total_dirs = sum(
+    total_dirs = np.sum(
         len(dirs)
         for dirpath in directories_to_search
         for _, dirs, _ in os.walk(dirpath)
@@ -409,6 +406,8 @@ def search_files():
         nonlocal processed_dirs, total_files
         try:
             for root, dirs, files in os.walk(directory):
+                if cancel_flag.is_set():  # Check for exit signal
+                    return
                 processed_dirs += 1
                 dpg.set_value("finder_progress_bar", processed_dirs / total_dirs)
 
@@ -431,6 +430,8 @@ def search_files():
     # Use threading to prevent UI freezing
     def thread_target():
         for directory in directories_to_search:
+            if cancel_flag.is_set():
+                return
             process_directory(directory)
 
         # Final UI update
@@ -1473,7 +1474,12 @@ def main():
 
     def cleanup():
         global cancel_flag, settings
-        cancel_flag = True
+
+        cancel_flag.set()
+        for thread in threading.enumerate():
+            if thread is not threading.main_thread() and not thread.daemon:
+                thread.join(timeout=2)
+
         if settings["remember_window_pos"] == True:
             save_window_positions()
 
