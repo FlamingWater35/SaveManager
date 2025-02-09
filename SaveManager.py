@@ -1032,7 +1032,7 @@ def show_windows():
                     autosize_x=True, auto_resize_y=True, tag="settings_main_window"
                 ):
                     dpg.add_text(
-                        "Changes to font size and size limit will be applied after application restart",
+                        "Changes to font size will be applied after application restart",
                         wrap=0,
                     )
                     dpg.add_separator()
@@ -1064,7 +1064,9 @@ def show_windows():
 
     dpg.add_spacer(height=10, parent="display_settings_child_window")
     with dpg.group(horizontal=True, parent="display_settings_child_window"):
-        dpg.add_text("Font size")
+        dpg.add_text("Font size", wrap=0)
+        with dpg.tooltip(dpg.last_item()):
+            dpg.add_text("Sets the size for text and GUI elements")
         dpg.add_input_int(
             min_value=8,
             max_value=40,
@@ -1080,6 +1082,8 @@ def show_windows():
             "Remember window position",
             wrap=0,
         )
+        with dpg.tooltip(dpg.last_item()):
+            dpg.add_text("Whether to remember main window position and size")
         dpg.add_checkbox(
             default_value=settings["remember_window_pos"],
             callback=settings_change_callback,
@@ -1087,7 +1091,9 @@ def show_windows():
         )
     dpg.add_spacer(height=20, parent="display_settings_child_window")
     with dpg.group(horizontal=True, parent="display_settings_child_window"):
-        dpg.add_text("Show image")
+        dpg.add_text("Show image", wrap=0)
+        with dpg.tooltip(dpg.last_item()):
+            dpg.add_text("Cute image in Copy Manager :3")
         dpg.add_checkbox(
             default_value=settings["show_image_status"],
             callback=settings_change_callback,
@@ -1097,9 +1103,11 @@ def show_windows():
     dpg.add_spacer(height=10, parent="copy_manager_settings_child_window")
     with dpg.group(horizontal=True, parent="copy_manager_settings_child_window"):
         dpg.add_text(
-            "Copy source folder to destination (if disabled, only files inside it)",
+            "Copy source folder to destination",
             wrap=0,
         )
+        with dpg.tooltip(dpg.last_item()):
+            dpg.add_text("If disabled, only files inside the folder will be copied")
         dpg.add_checkbox(
             default_value=settings["copy_folder_checkbox_state"],
             callback=settings_change_callback,
@@ -1107,7 +1115,9 @@ def show_windows():
         )
     dpg.add_spacer(height=20, parent="copy_manager_settings_child_window")
     with dpg.group(horizontal=True, parent="copy_manager_settings_child_window"):
-        dpg.add_text("Folder size limit")
+        dpg.add_text("Folder size limit", wrap=0)
+        with dpg.tooltip(dpg.last_item()):
+            dpg.add_text("Skip folders over set size")
         dpg.add_input_int(
             label="GB",
             min_value=1,
@@ -1125,6 +1135,8 @@ def show_windows():
             "Skip existing files",
             wrap=0,
         )
+        with dpg.tooltip(dpg.last_item()):
+            dpg.add_text("Don't override files")
         dpg.add_checkbox(
             default_value=settings["skip_existing_files"],
             callback=settings_change_callback,
