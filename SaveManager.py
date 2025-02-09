@@ -14,8 +14,8 @@ from PIL import Image
 import numpy as np
 
 
-app_version = "2.1.2_Windows"
-release_date = "2/8/2025"
+app_version = "2.1.3_Windows"
+release_date = "2/9/2025"
 
 sources: list = []
 destinations: list = []
@@ -1383,9 +1383,9 @@ def main():
     global settings
     dpg.create_context()
     settings = load_settings()
-    load_entries()
     setup_viewport()
     show_windows()
+    load_entries()
 
     dpg.setup_dearpygui()
     dpg.show_viewport()
@@ -1402,14 +1402,13 @@ def main():
                 if total_bytes_global > 0:
                     copied_gb = copied_bytes / (1024**3)
                     total_gb = total_bytes_global / (1024**3)
+                    progress_value = copied_bytes / total_bytes_global
 
                     # Update progress bar overlay text
                     dpg.configure_item(
                         "progress_bar",
-                        overlay=f"{copied_gb:.2f} GB / {total_gb:.2f} GB",
+                        overlay=f"{copied_gb:.2f} GB / {total_gb:.2f} GB ({int(progress_value*100)}%)",
                     )
-
-                    progress_value = copied_bytes / total_bytes_global
                     dpg.set_value("progress_bar", progress_value)
 
                     # Calculate speed and time
@@ -1422,10 +1421,13 @@ def main():
                             remaining = (total_bytes_global - copied_bytes) / max(
                                 speed, 1
                             )
-                            mins_remaining = remaining / 60
+
+                            remaining_seconds = int(remaining)
+                            eta_mins = remaining_seconds // 60
+                            eta_secs = remaining_seconds % 60
                             dpg.set_value(
                                 "speed_text",
-                                f"Speed: {speed_mb:.1f} MB/s | ETA: {mins_remaining:.1f} mins",
+                                f"Speed: {speed_mb:.1f} MB/s | ETA: {eta_mins} min {eta_secs} sec",
                             )
                         last_update_time = current_time
             elif item_type == "adjust_total":
