@@ -302,6 +302,8 @@ def copy_thread(valid_entries, total_bytes):
                     parent="copy_log",
                 )
 
+        progress_queue.put(("complete", "Copying completed."))
+
     except Exception as e:
         progress_queue.put(("error", f"Error: {str(e)}"))
     finally:
