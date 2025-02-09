@@ -10,8 +10,10 @@ import time
 import ctypes
 import webbrowser
 import requests
-from PIL import Image
+from PIL import Image, ImageGrab
 import numpy as np
+import keyboard
+from datetime import datetime
 
 
 app_version = "2.1.3_Windows"
@@ -202,6 +204,21 @@ def add_entry_callback(sender, app_data):
         dpg.set_value("status_text", f"Added entry: {name}")
     else:
         dpg.set_value("status_text", "Please fill the name and select folders.")
+
+
+def take_screenshot():
+    img = ImageGrab.grab()
+    filename = datetime.now().strftime("Screenshot_%Y-%m-%d_%H-%M-%S.png")
+    filepath = os.path.join(
+        os.path.join(os.path.expanduser("~"), "Documents"), filename
+    )  # Save to the specified folder
+    img.save(filepath)
+    print(f"Screenshot saved as {filepath}")
+
+
+def key_listener():
+    keyboard.wait("F12")  # Wait for the F12 key to be pressed
+    take_screenshot()
 
 
 def set_cancel_to_true():
@@ -1377,6 +1394,9 @@ def setup_viewport():
 
     save_settings("DisplayOptions", "launched", True)
     dpg.set_viewport_small_icon(resource_path("docs/icon.ico"))
+    # Start the key listener in a separate thread
+    key_thread = threading.Thread(target=key_listener, daemon=True)
+    key_thread.start()
 
 
 def main():
