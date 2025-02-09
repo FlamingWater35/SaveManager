@@ -364,7 +364,16 @@ def search_files():
     dpg.set_value("finder_text", "Starting search...")
     dpg.show_item("finder_text")
 
-    directories_to_search = settings["folder_paths"]
+    dpg.set_value("search_status_text", "")
+    dpg.hide_item("search_status_text")
+
+    directories_to_search: list = []
+    for folder in settings["folder_paths"]:
+        if os.path.exists(folder):
+            directories_to_search.append(folder)
+        else:
+            dpg.show_item("search_status_text")
+            dpg.set_value("search_status_text", f"Skipped directory '{folder}' as it does not exist.")
 
     total_dirs = sum(
         len(dirs)
@@ -394,7 +403,8 @@ def search_files():
                     dpg.set_value("finder_progress_bar", processed_dirs / total_dirs)
 
         except Exception as e:
-            print(f"Error processing directory {directory}: {e}")
+            dpg.show_item("search_status_text")
+            dpg.set_value("search_status_text", f"Error processing directory {directory}: {e}")
 
     # Use threading to prevent UI freezing
     def thread_target():
@@ -1098,7 +1108,9 @@ def show_windows():
                         tag="save_finder_text",
                         wrap=0,
                     )
-                    dpg.add_spacer(height=10)
+                    dpg.add_spacer(height=5)
+                    dpg.add_text("", tag="search_status_text", color=(229, 57, 53), wrap=0, show=False)
+                    dpg.add_spacer(height=5)
                     with dpg.child_window(tag="directory_list", auto_resize_y=True):
                         pass
 
