@@ -313,6 +313,7 @@ def copy_thread(valid_entries, total_bytes):
 def copy_all_callback(sender, app_data):
     global settings, cancel_flag
 
+    cancel_flag.clear()
     dpg.delete_item("copy_log", children_only=True)
     dpg.set_value("speed_text", "")
     dpg.show_item("speed_text")
@@ -370,8 +371,9 @@ def cancel_callback(sender, app_data):
 
 
 def search_files():
-    global settings
+    global settings, cancel_flag
 
+    cancel_flag.clear()
     sav_directories = set()
     file_extensions_tuple = tuple(settings["file_extensions"])
 
@@ -394,7 +396,7 @@ def search_files():
                 f"Skipped directory '{folder}' as it does not exist.",
             )
 
-    total_dirs = np.sum(
+    total_dirs = sum(
         len(dirs)
         for dirpath in directories_to_search
         for _, dirs, _ in os.walk(dirpath)
