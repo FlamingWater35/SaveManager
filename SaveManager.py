@@ -396,15 +396,15 @@ def search_files():
                 f"Skipped directory '{folder}' as it does not exist.",
             )
 
-    total_dirs = sum(
+    total_dirs: int = sum(
         len(dirs)
         for dirpath in directories_to_search
         for _, dirs, _ in os.walk(dirpath)
     )
     dpg.set_value("finder_text", "Searching...")
 
-    processed_dirs = 0  # To count processed directories
-    total_files = 0  # Count total files found
+    processed_dirs: int = 0  # To count processed directories
+    total_files: int = 0  # Count total files found
 
     def process_directory(directory):
         nonlocal processed_dirs, total_files
@@ -793,8 +793,8 @@ def remove_folderpaths():
     for index, folderpath in enumerate(settings["folder_paths"], start=1):
         dpg.add_selectable(
             label=f"{index}: {folderpath}",
-            parent="folderpaths_list",
-            callback=remove_current_extension,
+            parent="folderpath_list",
+            callback=remove_current_folderpath,
             user_data=folderpath,
         )
     dpg.show_item("select_folderpath_text")
