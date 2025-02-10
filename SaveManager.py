@@ -217,8 +217,15 @@ def take_screenshot():
 
 
 def key_listener():
-    keyboard.wait("F12")  # Wait for the F12 key to be pressed
-    take_screenshot()
+    while True:
+        keyboard.wait("F12")  # Wait for the F12 key to be pressed
+        take_screenshot()
+
+
+def start_key_listener():
+    # Start the key listener in a separate thread
+    key_thread = threading.Thread(target=key_listener, daemon=True)
+    key_thread.start()
 
 
 def set_cancel_to_true():
@@ -1169,6 +1176,7 @@ def show_windows():
                     dpg.add_spacer(height=5)
                     with dpg.child_window(tag="directory_list", auto_resize_y=True):
                         pass
+                    dpg.add_spacer(height=10)
 
             with dpg.tab(label="Image viewer"):
                 with dpg.child_window(
@@ -1194,13 +1202,25 @@ def show_windows():
                         pass
                     with dpg.group(horizontal=True):
                         dpg.add_text("", tag="image_viewer_status_text")
-            
+
             with dpg.tab(label="Screenshot"):
                 with dpg.child_window(
                     autosize_x=True, auto_resize_y=True, tag="recording_main_window"
                 ):
                     dpg.add_text("Screenshot tool")
                     dpg.add_separator()
+                    dpg.add_spacer(height=10)
+                    with dpg.group(horizontal=True):
+                        dpg.add_button(
+                            label="Start process",
+                            callback=start_key_listener,
+                        )
+                        dpg.add_spacer(width=10)
+                        dpg.add_text("Change keybinds:")
+                        dpg.add_button(
+                            label="",
+                            callback=lambda: dpg.show_item("open_image_dialog"),
+                        )
                     dpg.add_spacer(height=10)
 
             with dpg.tab(label="Settings"):
@@ -1237,6 +1257,7 @@ def show_windows():
                         tag="save_finder_settings_child_window",
                     ):
                         pass
+                    dpg.add_spacer(height=10)
 
     dpg.add_spacer(height=10, parent="display_settings_child_window")
     with dpg.group(horizontal=True, parent="display_settings_child_window"):
@@ -1433,9 +1454,6 @@ def setup_viewport():
 
     save_settings("DisplayOptions", "launched", True)
     dpg.set_viewport_small_icon(resource_path("docs/icon.ico"))
-    # Start the key listener in a separate thread
-    key_thread = threading.Thread(target=key_listener, daemon=True)
-    key_thread.start()
 
 
 def main():
