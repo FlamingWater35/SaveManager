@@ -41,7 +41,12 @@ settings: dict = {
     ],
 }
 
+recording_settings: dict = {
+    "screenshot_key": "f12",
+}
+
 img_id = None
+is_recording_keybind = False
 
 start_time_global = 0
 total_bytes_global = 0
@@ -84,9 +89,12 @@ def load_setting(section, key, default=None):
     if os.path.exists(config_file):
         config.read(config_file)
         if config.has_section(section) and key in config[section]:
-            return eval(
-                config[section][key]
-            )  # Convert string back to its original type
+            if key == "screenshot_key":
+                return config[section][key]
+            else:
+                return eval(
+                    config[section][key]
+                )  # Convert string back to its original type
     return default
 
 
@@ -213,19 +221,59 @@ def take_screenshot():
         os.path.join(os.path.expanduser("~"), "Documents"), filename
     )  # Save to the specified folder
     img.save(filepath)
-    print(f"Screenshot saved as {filepath}")
+    dpg.set_value("recording_status_text", f"Screenshot saved as {filepath}")
 
 
 def key_listener():
+    global recording_settings
+
     while True:
-        keyboard.wait("F12")  # Wait for the F12 key to be pressed
+        try:
+            keyboard.wait(recording_settings["screenshot_key"])
+        except Exception as e:
+            dpg.set_value("recording_status_text", "Screenshot key does not exist")
+            break
         take_screenshot()
+        time.sleep(0.5)
 
 
 def start_key_listener():
     # Start the key listener in a separate thread
     key_thread = threading.Thread(target=key_listener, daemon=True)
     key_thread.start()
+
+
+def keybind_recorder_thread():
+    global recording_settings, is_recording_keybind
+    try:
+        # Wait for a single key press
+        key = keyboard.read_key(suppress=False)
+        current_keybind = recording_settings["screenshot_key"]
+        if key != current_keybind:
+            current_keybind = key
+            save_settings("Recording", "screenshot_key", current_keybind)
+            dpg.configure_item(
+                "start_keybind_recording_button", label=f"{current_keybind}"
+            )
+            dpg.set_value(
+                "recording_status_text", f"New keybind set to: {current_keybind}"
+            )
+        else:
+            dpg.set_value(
+                "recording_status_text", f"Keybind unchanged: {current_keybind}"
+            )
+    except Exception as e:
+        dpg.set_value("recording_status_text", f"Error: {str(e)}")
+    finally:
+        is_recording_keybind = False
+
+
+def start_keybind_recording():
+    global is_recording_keybind
+    if not is_recording_keybind:
+        is_recording_keybind = True
+        dpg.set_value("recording_status_text", "Press any key...")
+        threading.Thread(target=keybind_recorder_thread, daemon=True).start()
 
 
 def set_cancel_to_true():
@@ -953,7 +1001,7 @@ def text_click_handler(sender, app_data, user_data):
 
 
 def show_windows():
-    global img_id, settings
+    global img_id, settings, recording_settings
 
     # Add mouse drag handler
     with dpg.handler_registry():
@@ -1216,11 +1264,20 @@ def show_windows():
                             callback=start_key_listener,
                         )
                         dpg.add_spacer(width=10)
-                        dpg.add_text("Change keybinds:")
+                        dpg.add_text("Change keybind:")
+                        screenshot_binding = recording_settings["screenshot_key"]
                         dpg.add_button(
-                            label="",
+                            label=f"{screenshot_binding}",
+                            tag="start_keybind_recording_button",
+                            callback=start_keybind_recording,
+                        )
+                        dpg.add_spacer(width=10)
+                        dpg.add_button(
+                            label="Change location",
                             callback=lambda: dpg.show_item("open_image_dialog"),
                         )
+                    dpg.add_spacer(height=5)
+                    dpg.add_text("", tag="recording_status_text", color=(100, 200, 100))
                     dpg.add_spacer(height=10)
 
             with dpg.tab(label="Settings"):
@@ -1415,7 +1472,11 @@ def show_windows():
 
 
 def setup_viewport():
-    global settings
+    global settings, recording_settings
+
+    recording_settings["screenshot_key"] = load_setting("Recording", "screenshot_key")
+    if recording_settings["screenshot_key"] == None:
+        recording_settings["screenshot_key"] == "f12"
 
     main_height = load_setting("Window", "main_height")
     main_width = load_setting("Window", "main_width")
