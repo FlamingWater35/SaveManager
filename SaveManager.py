@@ -776,10 +776,6 @@ def remove_current_folderpath(sender, app_data):
     folderpath_list: list = settings["folder_paths"]
     folderpath_list.remove(dpg.get_item_user_data(sender))
     save_settings("Settings", "folder_paths", folderpath_list)
-    dpg.set_value(
-        "save_finder_text",
-        f"Directories containing {folderpath_list} files will be listed below (click to copy to clipboard).",
-    )
 
     dpg.delete_item("folderpath_list", children_only=True)
     for index, folderpath in enumerate(folderpath_list, start=1):
@@ -879,6 +875,9 @@ def open_folder_path_menu():
 
 def change_font_size(sender, app_data):
     save_settings("DisplayOptions", "font_size", app_data)
+    dpg.delete_item("font_registry", children_only=True)
+    custom_font = dpg.add_font(font_path, app_data, parent="font_registry")
+    dpg.bind_font(custom_font)
 
 
 def settings_change_callback(sender, app_data):
@@ -1194,7 +1193,7 @@ def show_windows():
                     autosize_x=True, auto_resize_y=True, tag="settings_main_window"
                 ):
                     dpg.add_text(
-                        "Changes to font size will be applied after application restart",
+                        "App settings",
                         wrap=0,
                     )
                     dpg.add_separator()
@@ -1425,6 +1424,7 @@ def setup_viewport():
 
 def main():
     global settings
+
     dpg.create_context()
     settings = load_settings()
     setup_viewport()
