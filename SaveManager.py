@@ -1264,7 +1264,7 @@ def show_windows():
                             callback=start_key_listener,
                         )
                         dpg.add_spacer(width=10)
-                        dpg.add_text("Change keybind:")
+                        dpg.add_text("Set keybind:")
                         screenshot_binding = recording_settings["screenshot_key"]
                         dpg.add_button(
                             label=f"{screenshot_binding}",
@@ -1476,7 +1476,7 @@ def setup_viewport():
 
     recording_settings["screenshot_key"] = load_setting("Recording", "screenshot_key")
     if recording_settings["screenshot_key"] == None:
-        recording_settings["screenshot_key"] == "f12"
+        recording_settings["screenshot_key"] = "f12"
 
     main_height = load_setting("Window", "main_height")
     main_width = load_setting("Window", "main_width")
