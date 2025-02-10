@@ -882,7 +882,7 @@ def change_font_size(sender, app_data):
 
 
 def settings_change_callback(sender, app_data):
-    global settings
+    global settings, img_id
 
     setting = dpg.get_item_user_data(sender)
     if setting == "copy_folder":
@@ -891,6 +891,14 @@ def settings_change_callback(sender, app_data):
         save_settings("Settings", "file_size_limit", app_data)
     elif setting == "show_image":
         save_settings("Settings", "show_image_status", app_data)
+        if app_data == False:
+            dpg.delete_item(img_id)
+        else:
+            img_id = dpg.add_image(
+                "cute_image", pos=(0, 0), parent="copy_manager_main_window"
+            )
+            settings = load_settings()
+            image_resize_callback()
     elif setting == "remember_window_pos":
         save_settings("Settings", "remember_window_pos", app_data)
     elif setting == "skip_existing_files":
@@ -1115,7 +1123,9 @@ def show_windows():
                             pass
 
                     if settings["show_image_status"] == True:
-                        img_id = dpg.add_image("cute_image", pos=(0, 0))
+                        img_id = dpg.add_image(
+                            "cute_image", pos=(0, 0), parent="copy_manager_main_window"
+                        )
 
             with dpg.tab(label="File Finder"):
                 with dpg.child_window(
