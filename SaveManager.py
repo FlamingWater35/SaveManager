@@ -76,7 +76,7 @@ def resource_path(relative_path):
 
 
 font_path = resource_path("docs/font.otf")
-default_font_size = 20
+default_font_size = 18
 font_size = default_font_size
 
 
@@ -662,15 +662,16 @@ def handle_drag():
 def remove_current_extension(sender, app_data):
     global settings
 
-    settings["file_extensions"].remove(dpg.get_item_user_data(sender))
-    save_settings("Settings", "file_extensions", settings["file_extensions"])
+    file_extension_list: list = settings["file_extensions"]
+    file_extension_list.remove(dpg.get_item_user_data(sender))
+    save_settings("Settings", "file_extensions", file_extension_list)
     dpg.set_value(
         "save_finder_text",
-        f"Directories containing {settings["file_extensions"]} files will be listed below (click to copy to clipboard).",
+        f"Directories containing {file_extension_list} files will be listed below (click to copy to clipboard).",
     )
 
     dpg.delete_item("extension_list", children_only=True)
-    for index, extension in enumerate(settings["file_extensions"], start=1):
+    for index, extension in enumerate(file_extension_list, start=1):
         dpg.add_text(f"{index}: {extension}", parent="extension_list")
     dpg.hide_item("select_extension_text")
     dpg.show_item("extension_remove_button")
@@ -704,16 +705,17 @@ def add_current_extension():
     global settings
 
     extension = dpg.get_value("add_extension_input")
-    if extension != "":
-        settings["file_extensions"].append(extension)
-        save_settings("Settings", "file_extensions", settings["file_extensions"])
+    file_extension_list: list = settings["file_extensions"]
+    if extension != "" and extension != ".":
+        file_extension_list.append(extension)
+        save_settings("Settings", "file_extensions", file_extension_list)
         dpg.set_value(
             "save_finder_text",
-            f"Directories containing {settings["file_extensions"]} files will be listed below (click to copy to clipboard).",
+            f"Directories containing {file_extension_list} files will be listed below (click to copy to clipboard).",
         )
 
         dpg.delete_item("extension_list", children_only=True)
-        for index, extension in enumerate(settings["file_extensions"], start=1):
+        for index, extension in enumerate(file_extension_list, start=1):
             dpg.add_text(f"{index}: {extension}", parent="extension_list")
         dpg.hide_item("add_extension_group")
         dpg.hide_item("comfirm_add_extension")
@@ -771,15 +773,16 @@ def open_file_extension_menu():
 def remove_current_folderpath(sender, app_data):
     global settings
 
-    settings["folder_paths"].remove(dpg.get_item_user_data(sender))
-    save_settings("Settings", "folder_paths", settings["folder_paths"])
+    folderpath_list: list = settings["folder_paths"]
+    folderpath_list.remove(dpg.get_item_user_data(sender))
+    save_settings("Settings", "folder_paths", folderpath_list)
     dpg.set_value(
         "save_finder_text",
-        f"Directories containing {settings["folder_paths"]} files will be listed below (click to copy to clipboard).",
+        f"Directories containing {folderpath_list} files will be listed below (click to copy to clipboard).",
     )
 
     dpg.delete_item("folderpath_list", children_only=True)
-    for index, folderpath in enumerate(settings["folder_paths"], start=1):
+    for index, folderpath in enumerate(folderpath_list, start=1):
         dpg.add_text(f"{index}: {folderpath}", parent="folderpath_list")
     dpg.hide_item("select_folderpath_text")
     dpg.show_item("folderpath_remove_button")
@@ -813,12 +816,13 @@ def add_current_folderpath():
     global settings
 
     folderpath = dpg.get_value("add_folderpath_input")
+    folderpath_list: list = settings["folder_paths"]
     if folderpath != "":
-        settings["folder_paths"].append(folderpath)
-        save_settings("Settings", "folder_paths", settings["folder_paths"])
+        folderpath_list.append(folderpath)
+        save_settings("Settings", "folder_paths", folderpath_list)
 
         dpg.delete_item("folderpath_list", children_only=True)
-        for index, folderpath in enumerate(settings["folder_paths"], start=1):
+        for index, folderpath in enumerate(folderpath_list, start=1):
             dpg.add_text(f"{index}: {folderpath}", parent="folderpath_list")
         dpg.hide_item("add_folderpath_group")
         dpg.hide_item("comfirm_add_folderpath")
@@ -831,7 +835,7 @@ def open_folder_path_menu():
 
     if dpg.does_item_exist("folderpath_manager_window"):
         dpg.delete_item("folderpath_manager_window")
-    window_width = dpg.get_viewport_width() / 3
+    window_width = dpg.get_viewport_width() / 1.5
     window_height = dpg.get_viewport_height() / 2
     with dpg.window(
         label="Manage folder paths",
@@ -901,12 +905,17 @@ def settings_change_callback(sender, app_data):
 
 def image_resize_callback():
     global settings, img_id
+
     image_enabled = settings["show_image_status"]
-    if image_enabled == True:
+    if image_enabled == True and img_id != None:
         image_width = dpg.get_viewport_width() / 5.6
+        image_height = dpg.get_viewport_width() / 7
         new_x = dpg.get_viewport_width() - image_width - image_width / 20
         new_y = image_width / 20
+
         dpg.set_item_pos(img_id, (new_x, new_y))
+        dpg.configure_item(img_id, width=image_width)
+        dpg.configure_item(img_id, height=image_height)
 
 
 def save_window_positions():
@@ -935,7 +944,7 @@ def show_windows():
         dpg.add_mouse_release_handler(button=dpg.mvMouseButton_Left, callback=end_drag)
         dpg.add_mouse_move_handler(callback=handle_drag)
 
-    with dpg.font_registry():
+    with dpg.font_registry(tag="font_registry"):
         # Add font file and size
         font_size = load_setting("DisplayOptions", "font_size")
         if font_size == None:
@@ -973,8 +982,6 @@ def show_windows():
             dpg.add_theme_color(dpg.mvThemeCol_ChildBg, (43, 35, 32))
 
     dpg.bind_font(custom_font)
-    dpg.configure_item("cute_image", width=dpg.get_viewport_width() / 5.6)
-    dpg.configure_item("cute_image", height=dpg.get_viewport_width() / 7)
 
     with dpg.window(tag="Primary Window"):
         with dpg.menu_bar():
@@ -1343,9 +1350,10 @@ def show_windows():
         )
         dpg.add_file_extension(".*")
 
+    file_extension_list: list = settings["file_extensions"]
     dpg.set_value(
         "save_finder_text",
-        f"Directories containing {settings["file_extensions"]} files will be listed below (click to copy to clipboard).",
+        f"Directories containing {file_extension_list} files will be listed below (click to copy to clipboard).",
     )
 
     dpg.bind_item_theme("Primary Window", child_window_theme)
@@ -1357,6 +1365,7 @@ def show_windows():
 
     dpg.bind_item_handler_registry("Primary Window", "window_handler")
     dpg.set_primary_window("Primary Window", True)
+    image_resize_callback()
 
 
 def setup_viewport():
