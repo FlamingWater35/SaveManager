@@ -16,8 +16,8 @@ import keyboard
 from datetime import datetime
 
 
-app_version = "2.1.4_Windows"
-release_date = "2/9/2025"
+app_version = "2.2.0_Windows"
+release_date = "2/10/2025"
 
 sources: list = []
 destinations: list = []
@@ -1274,7 +1274,7 @@ def show_windows():
                         dpg.add_spacer(width=10)
                         dpg.add_button(
                             label="Change location",
-                            callback=lambda: dpg.show_item("open_image_dialog"),
+                            callback=None,
                         )
                     dpg.add_spacer(height=5)
                     dpg.add_text("", tag="recording_status_text", color=(100, 200, 100))
