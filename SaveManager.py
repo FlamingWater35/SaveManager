@@ -1019,7 +1019,7 @@ def show_windows():
                     callback=lambda: dpg.show_tool(dpg.mvTool_Metrics),
                 )
 
-        with dpg.tab_bar():
+        with dpg.tab_bar(reorderable=True):
             with dpg.tab(label="Copy Manager"):
                 with dpg.child_window(
                     autosize_x=True, auto_resize_y=True, tag="copy_manager_main_window"
@@ -1194,6 +1194,14 @@ def show_windows():
                         pass
                     with dpg.group(horizontal=True):
                         dpg.add_text("", tag="image_viewer_status_text")
+            
+            with dpg.tab(label="Screenshot"):
+                with dpg.child_window(
+                    autosize_x=True, auto_resize_y=True, tag="recording_main_window"
+                ):
+                    dpg.add_text("Screenshot tool")
+                    dpg.add_separator()
+                    dpg.add_spacer(height=10)
 
             with dpg.tab(label="Settings"):
                 with dpg.child_window(
@@ -1376,6 +1384,7 @@ def show_windows():
     dpg.bind_item_theme("copy_manager_main_window", main_window_theme)
     dpg.bind_item_theme("save_finder_main_window", main_window_theme)
     dpg.bind_item_theme("image_viewer_main_window", main_window_theme)
+    dpg.bind_item_theme("recording_main_window", main_window_theme)
     dpg.bind_item_theme("settings_main_window", main_window_theme)
     dpg.bind_item_theme("copy_manager_add_folder_window", main_window_add_folder_theme)
 
