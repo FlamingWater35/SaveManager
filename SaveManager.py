@@ -396,11 +396,14 @@ def search_files():
                 f"Skipped directory '{folder}' as it does not exist.",
             )
 
-    total_dirs: int = sum(
-        len(dirs)
-        for dirpath in directories_to_search
-        for _, dirs, _ in os.walk(dirpath)
-    )
+    total_dirs = np.fromiter(
+        (
+            len(dirs)
+            for dirpath in directories_to_search
+            for _, dirs, _ in os.walk(dirpath)
+        ),
+        dtype=int,
+    ).sum()
     dpg.set_value("finder_text", "Searching...")
 
     processed_dirs: int = 0  # To count processed directories
@@ -433,6 +436,8 @@ def search_files():
 
     # Use threading to prevent UI freezing
     def thread_target():
+        global cancel_flag
+
         for directory in directories_to_search:
             if cancel_flag.is_set():
                 return
@@ -455,6 +460,8 @@ def search_files():
 
         if sav_directories:
             for index, directory in enumerate(sorted(sav_directories), start=1):
+                if cancel_flag.is_set():  # Check for exit signal
+                    return
                 cur_color = colors[color_index]
                 item_id = dpg.add_text(
                     f"{index}. {directory}",
