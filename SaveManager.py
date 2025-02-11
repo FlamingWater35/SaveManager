@@ -83,7 +83,6 @@ def resource_path(relative_path):
 
 font_path = resource_path("docs/font.otf")
 default_font_size = 18
-font_size = default_font_size
 
 
 def load_setting(section, key, default=None):
