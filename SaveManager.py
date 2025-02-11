@@ -14,6 +14,7 @@ from PIL import Image, ImageGrab
 import numpy as np
 import keyboard
 from datetime import datetime
+import ast
 
 
 app_version = "2.2.0_Windows"
@@ -89,17 +90,14 @@ def load_setting(section, key, default=None):
     if os.path.exists(config_file):
         config.read(config_file)
         if config.has_section(section) and key in config[section]:
-            if key == "screenshot_key":
-                return config[section][key]
-            else:
-                return eval(
-                    config[section][key]
-                )  # Convert string back to its original type
+            return ast.literal_eval(
+                config[section][key]
+            )  # Convert string back to its original type
     return default
 
 
 def load_settings():
-    global settings
+    global settings, recording_settings
 
     if os.path.exists(config_file):
         config.read(config_file)
@@ -112,9 +110,16 @@ def load_settings():
                     value = None
                 if value is not None:
                     # Convert string back to its original type
-                    settings[key] = eval(value)
-
-    return settings.copy()
+                    settings[key] = ast.literal_eval(value)
+        if config.has_section("Recording"):
+            for key in recording_settings:
+                try:
+                    value = config.get("Recording", key)
+                except:
+                    value = None
+                if value is not None:
+                    # Convert string back to its original type
+                    recording_settings[key] = ast.literal_eval(value)
 
 
 def save_settings(section, key, value):
@@ -251,7 +256,8 @@ def keybind_recorder_thread():
         current_keybind = recording_settings["screenshot_key"]
         if key != current_keybind:
             current_keybind = key
-            save_settings("Recording", "screenshot_key", current_keybind)
+            save_settings("Recording", "screenshot_key", f'"{current_keybind}"')
+            load_settings()
             dpg.configure_item(
                 "start_keybind_recording_button", label=f"{current_keybind}"
             )
@@ -958,7 +964,7 @@ def settings_change_callback(sender, app_data):
             img_id = dpg.add_image(
                 "cute_image", pos=(0, 0), parent="copy_manager_main_window"
             )
-            settings = load_settings()
+            load_settings()
             image_resize_callback()
     elif setting == "remember_window_pos":
         save_settings("Settings", "remember_window_pos", app_data)
@@ -969,7 +975,7 @@ def settings_change_callback(sender, app_data):
             "status_text", "Changing setting failed; user_data incorrect or missing"
         )
 
-    settings = load_settings()
+    load_settings()
 
 
 def image_resize_callback():
@@ -1472,11 +1478,7 @@ def show_windows():
 
 
 def setup_viewport():
-    global settings, recording_settings
-
-    recording_settings["screenshot_key"] = load_setting("Recording", "screenshot_key")
-    if recording_settings["screenshot_key"] == None:
-        recording_settings["screenshot_key"] = "f12"
+    global settings
 
     main_height = load_setting("Window", "main_height")
     main_width = load_setting("Window", "main_width")
@@ -1521,7 +1523,7 @@ def main():
     global settings
 
     dpg.create_context()
-    settings = load_settings()
+    load_settings()
     setup_viewport()
     show_windows()
     load_entries()
