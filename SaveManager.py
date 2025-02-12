@@ -17,8 +17,8 @@ from datetime import datetime
 import ast
 
 
-app_version = "2.2.0_Windows"
-release_date = "2/10/2025"
+app_version = "2.2.1_Windows"
+release_date = "2/12/2025"
 
 sources: list = []
 destinations: list = []
@@ -44,6 +44,7 @@ settings: dict = {
 
 recording_settings: dict = {
     "screenshot_key": "f12",
+    "screenshot_folder": os.path.join(os.path.expanduser("~"), "Documents"),
 }
 
 img_id = None
@@ -116,9 +117,11 @@ def load_settings():
                     value = config.get("Recording", key)
                 except:
                     value = None
-                if value is not None:
+                if value is not None and key != "screenshot_folder":
                     # Convert string back to its original type
                     recording_settings[key] = ast.literal_eval(value)
+                elif value is not None and key == "screenshot_folder":
+                    recording_settings[key] = value
 
 
 def save_settings(section, key, value):
@@ -219,10 +222,12 @@ def add_entry_callback(sender, app_data):
 
 
 def take_screenshot():
+    global recording_settings
+
     img = ImageGrab.grab()
     filename = datetime.now().strftime("Screenshot_%Y-%m-%d_%H-%M-%S.png")
     filepath = os.path.join(
-        os.path.join(os.path.expanduser("~"), "Documents"), filename
+        recording_settings["screenshot_folder"], filename
     )  # Save to the specified folder
     img.save(filepath)
     dpg.set_value("recording_status_text", f"Screenshot saved as {filepath}")
@@ -413,6 +418,8 @@ def copy_all_callback(sender, app_data):
 
 
 def source_callback(sender, app_data):
+    global sources
+
     sources.append(app_data["file_path_name"])  # Store the selected source
     dpg.set_value(
         "source_display", app_data["file_path_name"]
@@ -420,14 +427,31 @@ def source_callback(sender, app_data):
 
 
 def destination_callback(sender, app_data):
+    global destinations
+
     destinations.append(app_data["file_path_name"])  # Store the selected destination
     dpg.set_value(
         "destination_display", app_data["file_path_name"]
     )  # Display the selected destination path
 
 
+def screenshot_folder_select_callback(sender, app_data):
+    global recording_settings
+
+    save_settings("Recording", "screenshot_folder", app_data["file_path_name"])
+    load_settings()
+    dpg.configure_item(
+        "screenshot_file_dialog", default_path=recording_settings["screenshot_folder"]
+    )
+    dpg.set_value("recording_status_text", "Screenshot folder changed.")
+
+
 def cancel_callback(sender, app_data):
     dpg.set_value("status_text", "Operation was cancelled.")
+
+
+def recording_cancel_callback(sender, app_data):
+    dpg.set_value("recording_status_text", "Operation was cancelled.")
 
 
 def search_files():
@@ -1279,7 +1303,7 @@ def show_windows():
                         dpg.add_spacer(width=10)
                         dpg.add_button(
                             label="Change location",
-                            callback=None,
+                            callback=lambda: dpg.show_item("screenshot_file_dialog"),
                         )
                     dpg.add_spacer(height=5)
                     dpg.add_text("", tag="recording_status_text", color=(100, 200, 100))
@@ -1439,6 +1463,18 @@ def show_windows():
         callback=destination_callback,
         tag="destination_file_dialog",
         cancel_callback=cancel_callback,
+        width=dpg.get_viewport_width() / 1.5,
+        height=dpg.get_viewport_height() / 1.5,
+    ):
+        pass
+
+    with dpg.file_dialog(
+        directory_selector=True,
+        show=False,
+        callback=screenshot_folder_select_callback,
+        default_path=recording_settings["screenshot_folder"],
+        tag="screenshot_file_dialog",
+        cancel_callback=recording_cancel_callback,
         width=dpg.get_viewport_width() / 1.5,
         height=dpg.get_viewport_height() / 1.5,
     ):
