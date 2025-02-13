@@ -265,6 +265,17 @@ def record_video_thread():
 
 
 def start_video_recording_thread():
+    global recording_settings
+
+    video_folder = recording_settings["video_folder"]
+    if not os.path.exists(video_folder):
+        dpg.set_value(
+            "recording_status_text", "Invalid folder path. Changing to default value."
+        )
+        video_folder = os.path.join(os.path.expanduser("~"), "Documents")
+        save_settings("Recording", "video_folder", video_folder)
+        load_settings()
+
     video_thread = threading.Thread(target=record_video_thread, daemon=True)
     video_thread.start()
 
@@ -293,6 +304,7 @@ def take_screenshot():
     filename = datetime.now().strftime("Screenshot_%Y-%m-%d_%H-%M-%S.png")
     filepath = os.path.join(recording_settings["screenshot_folder"], filename)
     img.save(filepath)
+    dpg.show_item("recording_status_text")
     dpg.set_value("recording_status_text", f"Screenshot saved as {filepath}")
 
 
@@ -311,6 +323,17 @@ def key_listener():
 
 
 def start_key_listener():
+    global recording_settings
+
+    screenshot_folder = recording_settings["screenshot_folder"]
+    if not os.path.exists(screenshot_folder):
+        dpg.set_value(
+            "recording_status_text", "Invalid folder path. Changing to default value."
+        )
+        screenshot_folder = os.path.join(os.path.expanduser("~"), "Documents")
+        save_settings("Recording", "screenshot_folder", screenshot_folder)
+        load_settings()
+
     key_thread = threading.Thread(target=key_listener, daemon=True)
     key_thread.start()
 
