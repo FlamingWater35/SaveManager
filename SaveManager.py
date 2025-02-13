@@ -19,7 +19,7 @@ import dxcam
 import cv2
 
 
-app_version: str = "2.3.0_Windows"
+app_version: str = "2.3.1_Windows"
 release_date: str = "2/13/2025"
 
 sources: list = []
@@ -54,6 +54,7 @@ recording_settings: dict = {
 
 img_id = None
 is_recording_keybind = False
+target_app_frame_rate: int = -1
 
 start_time_global = 0
 total_bytes_global = 0
@@ -225,10 +226,12 @@ def add_entry_callback(sender, app_data):
 
 
 def record_video_thread():
-    global recording_settings
+    global recording_settings, target_app_frame_rate
 
+    target_app_frame_rate = 30
     target_fps = recording_settings["video_fps"]
-    filepath = os.path.join(recording_settings["video_folder"], "output.mp4")
+    filename = datetime.now().strftime("SaveManager_recording_%Y-%m-%d_%H-%M-%S.mp4")
+    filepath = os.path.join(recording_settings["video_folder"], filename)
 
     user32 = ctypes.windll.user32
     screen_width, screen_height = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
@@ -257,7 +260,8 @@ def record_video_thread():
 
     camera.stop()
     writer.release()
-    dpg.set_value("recording_status_text", f"Recording completed")
+    target_app_frame_rate = -1
+    dpg.set_value("recording_status_text", f"Recording saved as: {filename}")
 
 
 def start_video_recording_thread():
@@ -1672,7 +1676,9 @@ def setup_viewport():
         max_width = int(screen_width / 1.5)
         max_height = int(screen_height / 1.5)
 
-    dpg.create_viewport(title="Save Manager", width=max_width, height=max_height)
+    dpg.create_viewport(
+        title="Save Manager", width=max_width, height=max_height, vsync=True
+    )
 
     if main_pos != None and settings["remember_window_pos"] == True:
         dpg.set_viewport_pos(main_pos)
@@ -1690,7 +1696,7 @@ def setup_viewport():
 
 
 def main():
-    global settings
+    global settings, target_app_frame_rate
 
     dpg.create_context()
     try:
@@ -1705,6 +1711,8 @@ def main():
     dpg.show_viewport()
 
     while dpg.is_dearpygui_running():
+        start_time = time.time()
+
         while not progress_queue.empty():
             item_type, data = progress_queue.get()
             if item_type == "start":
@@ -1762,6 +1770,13 @@ def main():
                 webbrowser.open(data)
 
         dpg.render_dearpygui_frame()
+
+        if target_app_frame_rate != -1:
+            frame_delay = 1.0 / target_app_frame_rate
+            frame_time = time.time() - start_time
+            # Maintain the target frame rate
+            if frame_time < frame_delay:
+                time.sleep(frame_delay - frame_time)
 
     def cleanup():
         global cancel_flag, settings
