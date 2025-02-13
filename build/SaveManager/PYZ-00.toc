@@ -664,6 +664,10 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\errorinfo.py',
    'PYMODULE'),
+  ('comtypes.gen',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\gen\\__init__.py',
+   'PYMODULE'),
   ('comtypes.hresult',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\hresult.py',

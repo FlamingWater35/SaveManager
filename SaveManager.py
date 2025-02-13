@@ -19,8 +19,8 @@ import dxcam
 import cv2
 
 
-app_version = "2.2.2_Windows"
-release_date = "2/13/2025"
+app_version: str = "2.3.0_Windows"
+release_date: str = "2/13/2025"
 
 sources: list = []
 destinations: list = []
@@ -47,6 +47,9 @@ settings: dict = {
 recording_settings: dict = {
     "screenshot_key": "f12",
     "screenshot_folder": os.path.join(os.path.expanduser("~"), "Documents"),
+    "video_fps": 60,
+    "video_folder": os.path.join(os.path.expanduser("~"), "Documents"),
+    "video_duration": 10,
 }
 
 img_id = None
@@ -118,11 +121,13 @@ def load_settings():
                     value = config.get("Recording", key)
                 except:
                     value = None
-                if value is not None and key != "screenshot_folder":
+                if value is not None and key == "screenshot_folder":
+                    recording_settings[key] = value
+                elif value is not None and key == "video_folder":
+                    recording_settings[key] = value
+                elif value is not None:
                     # Convert string back to its original type
                     recording_settings[key] = ast.literal_eval(value)
-                elif value is not None and key == "screenshot_folder":
-                    recording_settings[key] = value
 
 
 def save_settings(section, key, value):
@@ -220,7 +225,11 @@ def add_entry_callback(sender, app_data):
 
 
 def record_video_thread():
-    target_fps = 60
+    global recording_settings
+
+    target_fps = recording_settings["video_fps"]
+    filepath = os.path.join(recording_settings["video_folder"], "output.mp4")
+
     user32 = ctypes.windll.user32
     screen_width, screen_height = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
     openh264_path = resource_path("docs/openh264-1.8.0-win64.dll")
@@ -231,7 +240,7 @@ def record_video_thread():
 
     # VideoWriter configuration (adjust codec if needed)
     writer = cv2.VideoWriter(
-        "output.mp4",
+        filepath,
         cv2.VideoWriter_fourcc(*"avc1"),
         target_fps,
         (screen_width, screen_height),
@@ -240,7 +249,7 @@ def record_video_thread():
     dpg.set_value("recording_status_text", f"Recording video...")
 
     try:
-        for _ in range(600):
+        for _ in range(target_fps * recording_settings["video_duration"]):
             frame = camera.get_latest_frame()
             writer.write(frame)
     except Exception as e:
@@ -254,6 +263,23 @@ def record_video_thread():
 def start_video_recording_thread():
     video_thread = threading.Thread(target=record_video_thread, daemon=True)
     video_thread.start()
+
+
+def set_video_setting(sender, app_data):
+    global recording_settings
+
+    setting = dpg.get_item_user_data(sender)
+    if setting == "FPS":
+        save_settings("Recording", "video_fps", int(app_data))
+    elif setting == "duration":
+        save_settings("Recording", "video_duration", int(app_data))
+    else:
+        dpg.set_value(
+            "recording_status_text",
+            "Changing setting failed; user_data incorrect or missing",
+        )
+
+    load_settings()
 
 
 def take_screenshot():
@@ -470,6 +496,17 @@ def screenshot_folder_select_callback(sender, app_data):
         "screenshot_file_dialog", default_path=recording_settings["screenshot_folder"]
     )
     dpg.set_value("recording_status_text", "Screenshot folder changed.")
+
+
+def video_folder_select_callback(sender, app_data):
+    global recording_settings
+
+    save_settings("Recording", "video_folder", app_data["file_path_name"])
+    load_settings()
+    dpg.configure_item(
+        "video_file_dialog", default_path=recording_settings["video_folder"]
+    )
+    dpg.set_value("recording_status_text", "Video folder changed.")
 
 
 def cancel_callback(sender, app_data):
@@ -1336,9 +1373,10 @@ def show_windows():
                                     dpg.add_combo(
                                         items=[30, 45, 60, 75, 90, 120],
                                         label="FPS",
-                                        default_value=60,
+                                        default_value=recording_settings["video_fps"],
                                         width=100,
-                                        callback=None,
+                                        user_data="FPS",
+                                        callback=set_video_setting,
                                     )
                                     with dpg.tooltip(dpg.last_item()):
                                         dpg.add_text(
@@ -1347,7 +1385,9 @@ def show_windows():
                                     dpg.add_spacer(width=10)
                                     dpg.add_button(
                                         label="Change location",
-                                        callback=None,
+                                        callback=lambda: dpg.show_item(
+                                            "video_file_dialog"
+                                        ),
                                     )
                                     with dpg.tooltip(dpg.last_item()):
                                         dpg.add_text("Where to save screen recordings")
@@ -1358,11 +1398,14 @@ def show_windows():
                                         label="sec",
                                         min_value=5,
                                         max_value=1200,
-                                        default_value=10,
+                                        default_value=recording_settings[
+                                            "video_duration"
+                                        ],
                                         step=1,
                                         step_fast=1,
                                         width=200,
-                                        callback=None,
+                                        user_data="duration",
+                                        callback=set_video_setting,
                                     )
                                     with dpg.tooltip(dpg.last_item()):
                                         dpg.add_text(
@@ -1561,6 +1604,18 @@ def show_windows():
         pass
 
     with dpg.file_dialog(
+        directory_selector=True,
+        show=False,
+        callback=video_folder_select_callback,
+        default_path=recording_settings["video_folder"],
+        tag="video_file_dialog",
+        cancel_callback=recording_cancel_callback,
+        width=dpg.get_viewport_width() / 1.5,
+        height=dpg.get_viewport_height() / 1.5,
+    ):
+        pass
+
+    with dpg.file_dialog(
         directory_selector=False,
         show=False,
         callback=open_image,
@@ -1638,7 +1693,10 @@ def main():
     global settings
 
     dpg.create_context()
-    load_settings()
+    try:
+        load_settings()
+    except Exception as e:
+        print("Error loading settings: {e}")
     setup_viewport()
     show_windows()
     load_entries()
