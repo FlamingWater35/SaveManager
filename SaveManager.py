@@ -221,6 +221,8 @@ def add_entry_callback(sender, app_data):
 
 def record_video_thread():
     target_fps = 60
+    user32 = ctypes.windll.user32
+    screen_width, screen_height = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
     openh264_path = resource_path("docs/openh264-1.8.0-win64.dll")
     ctypes.cdll.LoadLibrary(openh264_path)
 
@@ -229,8 +231,12 @@ def record_video_thread():
 
     # VideoWriter configuration (adjust codec if needed)
     writer = cv2.VideoWriter(
-        "output.mp4", cv2.VideoWriter_fourcc(*"avc1"), target_fps, (2560, 1440)
+        "output.mp4",
+        cv2.VideoWriter_fourcc(*"avc1"),
+        target_fps,
+        (screen_width, screen_height),
     )
+    dpg.show_item("recording_status_text")
     dpg.set_value("recording_status_text", f"Recording video...")
 
     try:
@@ -267,6 +273,7 @@ def key_listener():
         try:
             keyboard.wait(recording_settings["screenshot_key"])
         except Exception as e:
+            dpg.show_item("recording_status_text")
             dpg.set_value("recording_status_text", "Screenshot key does not exist")
             break
         take_screenshot()
@@ -307,6 +314,7 @@ def start_keybind_recording():
     global is_recording_keybind
     if not is_recording_keybind:
         is_recording_keybind = True
+        dpg.show_item("recording_status_text")
         dpg.set_value("recording_status_text", "Press any key...")
         threading.Thread(target=keybind_recorder_thread, daemon=True).start()
 
@@ -1211,6 +1219,7 @@ def show_windows():
                         dpg.add_text("Log:")
                         with dpg.child_window(tag="copy_log", auto_resize_y=True):
                             pass
+                    dpg.add_spacer(height=10)
 
                     if settings["show_image_status"] == True:
                         img_id = dpg.add_image(
@@ -1305,13 +1314,81 @@ def show_windows():
                             label="Change location",
                             callback=lambda: dpg.show_item("screenshot_file_dialog"),
                         )
+                        with dpg.tooltip(dpg.last_item()):
+                            dpg.add_text("Where to save screenshots")
+                    dpg.add_spacer(height=10)
+                    dpg.add_separator()
                     dpg.add_spacer(height=10)
                     with dpg.group(horizontal=True):
                         dpg.add_button(
                             label="Record video", callback=start_video_recording_thread
                         )
+                    dpg.add_spacer(height=10)
+                    with dpg.collapsing_header(label="Video settings"):
+                        dpg.add_spacer(height=5)
+                        with dpg.child_window(
+                            autosize_x=True,
+                            auto_resize_y=True,
+                        ):
+                            dpg.add_spacer(height=5)
+                            with dpg.group():
+                                with dpg.group(horizontal=True):
+                                    dpg.add_combo(
+                                        items=[30, 45, 60, 75, 90, 120],
+                                        label="FPS",
+                                        default_value=60,
+                                        width=100,
+                                        callback=None,
+                                    )
+                                    with dpg.tooltip(dpg.last_item()):
+                                        dpg.add_text(
+                                            "Record this many frames every second"
+                                        )
+                                    dpg.add_spacer(width=10)
+                                    dpg.add_button(
+                                        label="Change location",
+                                        callback=None,
+                                    )
+                                    with dpg.tooltip(dpg.last_item()):
+                                        dpg.add_text("Where to save screen recordings")
+                                dpg.add_spacer(height=10)
+                                with dpg.group(horizontal=True):
+                                    dpg.add_text("Duration:")
+                                    dpg.add_input_int(
+                                        label="sec",
+                                        min_value=5,
+                                        max_value=1200,
+                                        default_value=10,
+                                        step=1,
+                                        step_fast=1,
+                                        width=200,
+                                        callback=None,
+                                    )
+                                    with dpg.tooltip(dpg.last_item()):
+                                        dpg.add_text(
+                                            "How long to record (over a few minutes not recommended)"
+                                        )
+                                dpg.add_spacer(height=5)
+                                dpg.add_separator()
+                                dpg.add_spacer(height=5)
+                                with dpg.tree_node(label="Advanced settings"):
+                                    dpg.add_spacer(height=5)
+                                    with dpg.group(horizontal=True):
+                                        dpg.add_text("Codec")
+                                        dpg.add_combo(
+                                            items=[".avc1"],
+                                            default_value=".avc1",
+                                            width=100,
+                                            callback=None,
+                                        )
+                                dpg.add_spacer(height=5)
                     dpg.add_spacer(height=5)
-                    dpg.add_text("", tag="recording_status_text", color=(100, 200, 100))
+                    dpg.add_text(
+                        "",
+                        tag="recording_status_text",
+                        color=(100, 200, 100),
+                        show=False,
+                    )
                     dpg.add_spacer(height=10)
 
             with dpg.tab(label="Settings"):

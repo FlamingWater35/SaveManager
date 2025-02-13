@@ -29,6 +29,10 @@
   ('docs\\icon.ico',
    'C:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\docs\\icon.ico',
+   'DATA'),
+  ('docs\\openh264-1.8.0-win64.dll',
+   'C:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\docs\\openh264-1.8.0-win64.dll',
    'DATA')],
  '3.12.9 | packaged by Anaconda, Inc. | (main, Feb  6 2025, 18:49:16) [MSC '
  'v.1929 64 bit (AMD64)]',
@@ -628,129 +632,37 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\multiprocessing\\__init__.py',
    'PYMODULE'),
-  ('_py_abc',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\_py_abc.py',
-   'PYMODULE'),
   ('stringprep',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\stringprep.py',
+   'PYMODULE'),
+  ('_py_abc',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\_py_abc.py',
    'PYMODULE'),
   ('tracemalloc',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\tracemalloc.py',
    'PYMODULE'),
-  ('ast',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\ast.py',
-   'PYMODULE'),
-  ('datetime',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\datetime.py',
-   'PYMODULE'),
-  ('_pydatetime',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\_pydatetime.py',
-   'PYMODULE'),
-  ('_strptime',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\_strptime.py',
-   'PYMODULE'),
-  ('keyboard',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\keyboard\\__init__.py',
-   'PYMODULE'),
-  ('keyboard._canonical_names',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\keyboard\\_canonical_names.py',
-   'PYMODULE'),
-  ('keyboard._generic',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\keyboard\\_generic.py',
-   'PYMODULE'),
-  ('keyboard._keyboard_event',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\keyboard\\_keyboard_event.py',
-   'PYMODULE'),
-  ('keyboard._darwinkeyboard',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\keyboard\\_darwinkeyboard.py',
-   'PYMODULE'),
-  ('ctypes.util',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\ctypes\\util.py',
-   'PYMODULE'),
-  ('ctypes._aix',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\ctypes\\_aix.py',
-   'PYMODULE'),
-  ('ctypes.macholib.dyld',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\ctypes\\macholib\\dyld.py',
-   'PYMODULE'),
-  ('ctypes.macholib',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\ctypes\\macholib\\__init__.py',
-   'PYMODULE'),
-  ('ctypes.macholib.dylib',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\ctypes\\macholib\\dylib.py',
-   'PYMODULE'),
-  ('ctypes.macholib.framework',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\ctypes\\macholib\\framework.py',
-   'PYMODULE'),
-  ('keyboard._nixkeyboard',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\keyboard\\_nixkeyboard.py',
-   'PYMODULE'),
-  ('keyboard._nixcommon',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\keyboard\\_nixcommon.py',
-   'PYMODULE'),
-  ('glob',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\glob.py',
-   'PYMODULE'),
-  ('keyboard._winkeyboard',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\keyboard\\_winkeyboard.py',
-   'PYMODULE'),
-  ('ctypes.wintypes',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\ctypes\\wintypes.py',
-   'PYMODULE'),
   ('platform',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\platform.py',
    'PYMODULE'),
-  ('__future__',
+  ('numpy.core.multiarray',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\__future__.py',
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\core\\multiarray.py',
    'PYMODULE'),
-  ('numpy',
+  ('numpy.core',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\__init__.py',
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\core\\__init__.py',
    'PYMODULE'),
-  ('numpy._core._dtype_ctypes',
+  ('numpy.core._utils',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_dtype_ctypes.py',
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\core\\_utils.py',
    'PYMODULE'),
-  ('numpy._pytesttester',
+  ('numpy._core.multiarray',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_pytesttester.py',
-   'PYMODULE'),
-  ('numpy.strings',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\strings\\__init__.py',
-   'PYMODULE'),
-  ('numpy._core.strings',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\strings.py',
-   'PYMODULE'),
-  ('numpy._core.umath',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\umath.py',
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\multiarray.py',
    'PYMODULE'),
   ('numpy._core.overrides',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
@@ -768,257 +680,13 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_utils\\_convertions.py',
    'PYMODULE'),
-  ('numpy._core.multiarray',
+  ('numpy._core',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\multiarray.py',
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\__init__.py',
    'PYMODULE'),
-  ('numpy.core',
+  ('numpy._pytesttester',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\core\\__init__.py',
-   'PYMODULE'),
-  ('numpy.core._utils',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\core\\_utils.py',
-   'PYMODULE'),
-  ('numpy.char',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\char\\__init__.py',
-   'PYMODULE'),
-  ('numpy._core.defchararray',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\defchararray.py',
-   'PYMODULE'),
-  ('numpy._core.numeric',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\numeric.py',
-   'PYMODULE'),
-  ('numpy._core._asarray',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_asarray.py',
-   'PYMODULE'),
-  ('numpy._core.arrayprint',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\arrayprint.py',
-   'PYMODULE'),
-  ('numpy._core.fromnumeric',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\fromnumeric.py',
-   'PYMODULE'),
-  ('numpy._core._methods',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_methods.py',
-   'PYMODULE'),
-  ('numpy._core._exceptions',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_exceptions.py',
-   'PYMODULE'),
-  ('numpy._core._ufunc_config',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_ufunc_config.py',
-   'PYMODULE'),
-  ('numpy._core.shape_base',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\shape_base.py',
-   'PYMODULE'),
-  ('numpy._core.numerictypes',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\numerictypes.py',
-   'PYMODULE'),
-  ('numpy._core._dtype',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_dtype.py',
-   'PYMODULE'),
-  ('numpy._core._type_aliases',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_type_aliases.py',
-   'PYMODULE'),
-  ('numpy._core._string_helpers',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_string_helpers.py',
-   'PYMODULE'),
-  ('numpy.rec',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\rec\\__init__.py',
-   'PYMODULE'),
-  ('numpy._core.records',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\records.py',
-   'PYMODULE'),
-  ('numpy.typing',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\typing\\__init__.py',
-   'PYMODULE'),
-  ('numpy._typing._add_docstring',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_typing\\_add_docstring.py',
-   'PYMODULE'),
-  ('numpy._typing._array_like',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_typing\\_array_like.py',
-   'PYMODULE'),
-  ('numpy._typing._shape',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_typing\\_shape.py',
-   'PYMODULE'),
-  ('numpy._typing._nested_sequence',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_typing\\_nested_sequence.py',
-   'PYMODULE'),
-  ('numpy._typing._nbit_base',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_typing\\_nbit_base.py',
-   'PYMODULE'),
-  ('numpy._typing',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_typing\\__init__.py',
-   'PYMODULE'),
-  ('numpy._typing._ufunc',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_typing\\_ufunc.py',
-   'PYMODULE'),
-  ('numpy._typing._dtype_like',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_typing\\_dtype_like.py',
-   'PYMODULE'),
-  ('numpy._typing._scalars',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_typing\\_scalars.py',
-   'PYMODULE'),
-  ('numpy._typing._char_codes',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_typing\\_char_codes.py',
-   'PYMODULE'),
-  ('numpy._typing._nbit',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_typing\\_nbit.py',
-   'PYMODULE'),
-  ('numpy.f2py',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\__init__.py',
-   'PYMODULE'),
-  ('numpy.f2py.diagnose',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\diagnose.py',
-   'PYMODULE'),
-  ('numpy.f2py.f2py2e',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\f2py2e.py',
-   'PYMODULE'),
-  ('numpy.f2py._backends',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\_backends\\__init__.py',
-   'PYMODULE'),
-  ('numpy.f2py._backends._distutils',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\_backends\\_distutils.py',
-   'PYMODULE'),
-  ('numpy.f2py._backends._backend',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\_backends\\_backend.py',
-   'PYMODULE'),
-  ('numpy.f2py._backends._meson',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\_backends\\_meson.py',
-   'PYMODULE'),
-  ('numpy.f2py.auxfuncs',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\auxfuncs.py',
-   'PYMODULE'),
-  ('numpy.f2py.f90mod_rules',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\f90mod_rules.py',
-   'PYMODULE'),
-  ('numpy.f2py.rules',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\rules.py',
-   'PYMODULE'),
-  ('numpy.f2py.use_rules',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\use_rules.py',
-   'PYMODULE'),
-  ('numpy.f2py.common_rules',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\common_rules.py',
-   'PYMODULE'),
-  ('numpy.f2py.func2subr',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\func2subr.py',
-   'PYMODULE'),
-  ('numpy.f2py._isocbind',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\_isocbind.py',
-   'PYMODULE'),
-  ('numpy.f2py.crackfortran',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\crackfortran.py',
-   'PYMODULE'),
-  ('charset_normalizer',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\charset_normalizer\\__init__.py',
-   'PYMODULE'),
-  ('charset_normalizer.version',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\charset_normalizer\\version.py',
-   'PYMODULE'),
-  ('charset_normalizer.utils',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\charset_normalizer\\utils.py',
-   'PYMODULE'),
-  ('charset_normalizer.constant',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\charset_normalizer\\constant.py',
-   'PYMODULE'),
-  ('charset_normalizer.models',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\charset_normalizer\\models.py',
-   'PYMODULE'),
-  ('charset_normalizer.cd',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\charset_normalizer\\cd.py',
-   'PYMODULE'),
-  ('charset_normalizer.legacy',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\charset_normalizer\\legacy.py',
-   'PYMODULE'),
-  ('typing_extensions',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\setuptools\\_vendor\\typing_extensions.py',
-   'PYMODULE'),
-  ('charset_normalizer.api',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\charset_normalizer\\api.py',
-   'PYMODULE'),
-  ('fileinput',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\fileinput.py',
-   'PYMODULE'),
-  ('numpy.f2py.symbolic',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\symbolic.py',
-   'PYMODULE'),
-  ('numpy.f2py.cb_rules',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\cb_rules.py',
-   'PYMODULE'),
-  ('numpy.f2py.capi_maps',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\capi_maps.py',
-   'PYMODULE'),
-  ('numpy.f2py.cfuncs',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\cfuncs.py',
-   'PYMODULE'),
-  ('numpy.f2py.__version__',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\__version__.py',
-   'PYMODULE'),
-  ('numpy.matlib',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\matlib.py',
-   'PYMODULE'),
-  ('numpy.matrixlib.defmatrix',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\matrixlib\\defmatrix.py',
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_pytesttester.py',
    'PYMODULE'),
   ('numpy.testing',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
@@ -1040,29 +708,157 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\ma\\mrecords.py',
    'PYMODULE'),
-  ('numpy.testing._private.extbuild',
+  ('numpy.ma',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\testing\\_private\\extbuild.py',
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\ma\\__init__.py',
    'PYMODULE'),
-  ('sysconfig',
+  ('numpy.ma.extras',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\sysconfig.py',
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\ma\\extras.py',
    'PYMODULE'),
-  ('_aix_support',
+  ('numpy.lib._index_tricks_impl',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\_aix_support.py',
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_index_tricks_impl.py',
    'PYMODULE'),
-  ('numpy.testing._private.utils',
+  ('numpy.lib.stride_tricks',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\testing\\_private\\utils.py',
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\stride_tricks.py',
    'PYMODULE'),
-  ('doctest',
+  ('numpy.lib._stride_tricks_impl',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\doctest.py',
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_stride_tricks_impl.py',
    'PYMODULE'),
-  ('pdb',
+  ('numpy.matrixlib',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\pdb.py',
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\matrixlib\\__init__.py',
+   'PYMODULE'),
+  ('numpy.matrixlib.defmatrix',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\matrixlib\\defmatrix.py',
+   'PYMODULE'),
+  ('numpy.linalg',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\linalg\\__init__.py',
+   'PYMODULE'),
+  ('numpy.linalg.linalg',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\linalg\\linalg.py',
+   'PYMODULE'),
+  ('numpy.linalg._linalg',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\linalg\\_linalg.py',
+   'PYMODULE'),
+  ('numpy._typing',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_typing\\__init__.py',
+   'PYMODULE'),
+  ('numpy._typing._ufunc',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_typing\\_ufunc.py',
+   'PYMODULE'),
+  ('numpy._typing._array_like',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_typing\\_array_like.py',
+   'PYMODULE'),
+  ('numpy._typing._dtype_like',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_typing\\_dtype_like.py',
+   'PYMODULE'),
+  ('numpy._typing._shape',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_typing\\_shape.py',
+   'PYMODULE'),
+  ('numpy._typing._scalars',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_typing\\_scalars.py',
+   'PYMODULE'),
+  ('numpy._typing._char_codes',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_typing\\_char_codes.py',
+   'PYMODULE'),
+  ('numpy._typing._nbit',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_typing\\_nbit.py',
+   'PYMODULE'),
+  ('numpy._typing._nbit_base',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_typing\\_nbit_base.py',
+   'PYMODULE'),
+  ('numpy._typing._nested_sequence',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_typing\\_nested_sequence.py',
+   'PYMODULE'),
+  ('__future__',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\__future__.py',
+   'PYMODULE'),
+  ('numpy.lib._twodim_base_impl',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_twodim_base_impl.py',
+   'PYMODULE'),
+  ('numpy._globals',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_globals.py',
+   'PYMODULE'),
+  ('numpy.lib._function_base_impl',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_function_base_impl.py',
+   'PYMODULE'),
+  ('numpy.lib._histograms_impl',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_histograms_impl.py',
+   'PYMODULE'),
+  ('numpy.lib.array_utils',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\array_utils.py',
+   'PYMODULE'),
+  ('numpy.lib._array_utils_impl',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_array_utils_impl.py',
+   'PYMODULE'),
+  ('numpy.ma.core',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\ma\\core.py',
+   'PYMODULE'),
+  ('numpy.lib',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\__init__.py',
+   'PYMODULE'),
+  ('numpy.lib._version',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_version.py',
+   'PYMODULE'),
+  ('numpy.lib._arraypad_impl',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_arraypad_impl.py',
+   'PYMODULE'),
+  ('numpy.lib._arrayterator_impl',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_arrayterator_impl.py',
+   'PYMODULE'),
+  ('numpy.lib._npyio_impl',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_npyio_impl.py',
+   'PYMODULE'),
+  ('numpy.lib._datasource',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_datasource.py',
+   'PYMODULE'),
+  ('numpy.lib._polynomial_impl',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_polynomial_impl.py',
+   'PYMODULE'),
+  ('numpy.exceptions',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\exceptions.py',
+   'PYMODULE'),
+  ('numpy.lib._arraysetops_impl',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_arraysetops_impl.py',
+   'PYMODULE'),
+  ('numpy.lib._utils_impl',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_utils_impl.py',
    'PYMODULE'),
   ('pydoc',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
@@ -1096,9 +892,77 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\tty.py',
    'PYMODULE'),
+  ('sysconfig',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\sysconfig.py',
+   'PYMODULE'),
+  ('_aix_support',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\_aix_support.py',
+   'PYMODULE'),
+  ('numpy.lib._ufunclike_impl',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_ufunclike_impl.py',
+   'PYMODULE'),
+  ('numpy.lib._shape_base_impl',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_shape_base_impl.py',
+   'PYMODULE'),
+  ('numpy.lib._nanfunctions_impl',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_nanfunctions_impl.py',
+   'PYMODULE'),
+  ('numpy.lib._type_check_impl',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_type_check_impl.py',
+   'PYMODULE'),
+  ('numpy.lib.scimath',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\scimath.py',
+   'PYMODULE'),
+  ('numpy.lib._scimath_impl',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_scimath_impl.py',
+   'PYMODULE'),
+  ('numpy.lib.npyio',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\npyio.py',
+   'PYMODULE'),
+  ('numpy.lib.format',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\format.py',
+   'PYMODULE'),
+  ('numpy.lib.mixins',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\mixins.py',
+   'PYMODULE'),
+  ('numpy.lib.introspect',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\introspect.py',
+   'PYMODULE'),
+  ('numpy.testing._private.extbuild',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\testing\\_private\\extbuild.py',
+   'PYMODULE'),
+  ('numpy.testing._private.utils',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\testing\\_private\\utils.py',
+   'PYMODULE'),
+  ('doctest',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\doctest.py',
+   'PYMODULE'),
+  ('pdb',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\pdb.py',
+   'PYMODULE'),
   ('shlex',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\shlex.py',
+   'PYMODULE'),
+  ('glob',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\glob.py',
    'PYMODULE'),
   ('code',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
@@ -1316,37 +1180,605 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\unittest\\suite.py',
    'PYMODULE'),
-  ('numpy.exceptions',
+  ('numpy._core._dtype',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\exceptions.py',
-   'PYMODULE'),
-  ('numpy.ctypeslib',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\ctypeslib.py',
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_dtype.py',
    'PYMODULE'),
   ('numpy._core._internal',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_internal.py',
    'PYMODULE'),
-  ('numpy.ma',
+  ('numpy._core._dtype_ctypes',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\ma\\__init__.py',
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_dtype_ctypes.py',
    'PYMODULE'),
-  ('numpy.ma.extras',
+  ('numpy._core._add_newdocs_scalars',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\ma\\extras.py',
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_add_newdocs_scalars.py',
    'PYMODULE'),
-  ('numpy.lib.array_utils',
+  ('numpy._core._add_newdocs',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\array_utils.py',
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_add_newdocs.py',
    'PYMODULE'),
-  ('numpy.lib._array_utils_impl',
+  ('numpy._core.einsumfunc',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_array_utils_impl.py',
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\einsumfunc.py',
    'PYMODULE'),
-  ('numpy.ma.core',
+  ('numpy._core._machar',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\ma\\core.py',
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_machar.py',
+   'PYMODULE'),
+  ('numpy._core._ufunc_config',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_ufunc_config.py',
+   'PYMODULE'),
+  ('numpy._core.function_base',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\function_base.py',
+   'PYMODULE'),
+  ('numpy._core.memmap',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\memmap.py',
+   'PYMODULE'),
+  ('numpy._core.records',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\records.py',
+   'PYMODULE'),
+  ('numpy._core._asarray',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_asarray.py',
+   'PYMODULE'),
+  ('numpy._core.arrayprint',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\arrayprint.py',
+   'PYMODULE'),
+  ('numpy._core.printoptions',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\printoptions.py',
+   'PYMODULE'),
+  ('numpy._core.shape_base',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\shape_base.py',
+   'PYMODULE'),
+  ('numpy._core.fromnumeric',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\fromnumeric.py',
+   'PYMODULE'),
+  ('numpy._core._methods',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_methods.py',
+   'PYMODULE'),
+  ('numpy._core.getlimits',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\getlimits.py',
+   'PYMODULE'),
+  ('numpy._core._exceptions',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_exceptions.py',
+   'PYMODULE'),
+  ('numpy._core.numeric',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\numeric.py',
+   'PYMODULE'),
+  ('numpy._core.numerictypes',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\numerictypes.py',
+   'PYMODULE'),
+  ('numpy._core._type_aliases',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_type_aliases.py',
+   'PYMODULE'),
+  ('numpy._core._string_helpers',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_string_helpers.py',
+   'PYMODULE'),
+  ('numpy._core.umath',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\umath.py',
+   'PYMODULE'),
+  ('numpy.version',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\version.py',
+   'PYMODULE'),
+  ('dxcam',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\__init__.py',
+   'PYMODULE'),
+  ('dxcam.util.io',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\util\\io.py',
+   'PYMODULE'),
+  ('dxcam.util',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\util\\__init__.py',
+   'PYMODULE'),
+  ('dxcam._libs.user32',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\_libs\\user32.py',
+   'PYMODULE'),
+  ('dxcam._libs',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\_libs\\__init__.py',
+   'PYMODULE'),
+  ('ctypes.wintypes',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\ctypes\\wintypes.py',
+   'PYMODULE'),
+  ('dxcam._libs.dxgi',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\_libs\\dxgi.py',
+   'PYMODULE'),
+  ('dxcam._libs.d3d11',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\_libs\\d3d11.py',
+   'PYMODULE'),
+  ('comtypes',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\__init__.py',
+   'PYMODULE'),
+  ('comtypes._meta',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_meta.py',
+   'PYMODULE'),
+  ('comtypes._comobject',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_comobject.py',
+   'PYMODULE'),
+  ('comtypes.errorinfo',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\errorinfo.py',
+   'PYMODULE'),
+  ('comtypes.automation',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\automation.py',
+   'PYMODULE'),
+  ('comtypes.client',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\client\\__init__.py',
+   'PYMODULE'),
+  ('comtypes.stream',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\stream.py',
+   'PYMODULE'),
+  ('comtypes.persist',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\persist.py',
+   'PYMODULE'),
+  ('comtypes.client._create',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\client\\_create.py',
+   'PYMODULE'),
+  ('comtypes.client._activeobj',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\client\\_activeobj.py',
+   'PYMODULE'),
+  ('comtypes.client._managing',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\client\\_managing.py',
+   'PYMODULE'),
+  ('comtypes.client._generate',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\client\\_generate.py',
+   'PYMODULE'),
+  ('comtypes.tools.tlbparser',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\tlbparser.py',
+   'PYMODULE'),
+  ('comtypes.tools.typedesc',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\typedesc.py',
+   'PYMODULE'),
+  ('comtypes.tools.typedesc_base',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\typedesc_base.py',
+   'PYMODULE'),
+  ('comtypes.tools.codegenerator',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\codegenerator\\__init__.py',
+   'PYMODULE'),
+  ('comtypes.tools.codegenerator.codegenerator',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\codegenerator\\codegenerator.py',
+   'PYMODULE'),
+  ('comtypes.tools.codegenerator.helpers',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\codegenerator\\helpers.py',
+   'PYMODULE'),
+  ('comtypes.tools.codegenerator.comments',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\codegenerator\\comments.py',
+   'PYMODULE'),
+  ('comtypes.tools.codegenerator.packing',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\codegenerator\\packing.py',
+   'PYMODULE'),
+  ('comtypes.tools.codegenerator.namespaces',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\codegenerator\\namespaces.py',
+   'PYMODULE'),
+  ('comtypes.tools.codegenerator.heads',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\codegenerator\\heads.py',
+   'PYMODULE'),
+  ('comtypes.tools.codegenerator.typeannotator',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\codegenerator\\typeannotator.py',
+   'PYMODULE'),
+  ('comtypes.tools.codegenerator.modulenamer',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\codegenerator\\modulenamer.py',
+   'PYMODULE'),
+  ('comtypes.tools',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\__init__.py',
+   'PYMODULE'),
+  ('comtypes.client._events',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\client\\_events.py',
+   'PYMODULE'),
+  ('comtypes.connectionpoints',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\connectionpoints.py',
+   'PYMODULE'),
+  ('comtypes.client._constants',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\client\\_constants.py',
+   'PYMODULE'),
+  ('comtypes.client._code_cache',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\client\\_code_cache.py',
+   'PYMODULE'),
+  ('comtypes.client.lazybind',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\client\\lazybind.py',
+   'PYMODULE'),
+  ('comtypes.client.dynamic',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\client\\dynamic.py',
+   'PYMODULE'),
+  ('comtypes.safearray',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\safearray.py',
+   'PYMODULE'),
+  ('comtypes._vtbl',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_vtbl.py',
+   'PYMODULE'),
+  ('comtypes._post_coinit.instancemethod',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_post_coinit\\instancemethod.py',
+   'PYMODULE'),
+  ('comtypes._post_coinit.misc',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_post_coinit\\misc.py',
+   'PYMODULE'),
+  ('comtypes.server',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\server\\__init__.py',
+   'PYMODULE'),
+  ('comtypes._post_coinit.bstr',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_post_coinit\\bstr.py',
+   'PYMODULE'),
+  ('comtypes._post_coinit.unknwn',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_post_coinit\\unknwn.py',
+   'PYMODULE'),
+  ('comtypes._post_coinit._cominterface_meta_patcher',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_post_coinit\\_cominterface_meta_patcher.py',
+   'PYMODULE'),
+  ('comtypes._post_coinit',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_post_coinit\\__init__.py',
+   'PYMODULE'),
+  ('comtypes._memberspec',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_memberspec.py',
+   'PYMODULE'),
+  ('comtypes._tlib_version_checker',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_tlib_version_checker.py',
+   'PYMODULE'),
+  ('comtypes.typeinfo',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\typeinfo.py',
+   'PYMODULE'),
+  ('comtypes.messageloop',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\messageloop.py',
+   'PYMODULE'),
+  ('comtypes.hresult',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\hresult.py',
+   'PYMODULE'),
+  ('comtypes._safearray',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_safearray.py',
+   'PYMODULE'),
+  ('comtypes.GUID',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\GUID.py',
+   'PYMODULE'),
+  ('comtypes._npsupport',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_npsupport.py',
+   'PYMODULE'),
+  ('numpy.ctypeslib',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\ctypeslib.py',
+   'PYMODULE'),
+  ('comtypes.patcher',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\patcher.py',
+   'PYMODULE'),
+  ('dxcam.dxcam',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\dxcam.py',
+   'PYMODULE'),
+  ('dxcam.util.timer',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\util\\timer.py',
+   'PYMODULE'),
+  ('dxcam.processor',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\processor\\__init__.py',
+   'PYMODULE'),
+  ('dxcam.processor.base',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\processor\\base.py',
+   'PYMODULE'),
+  ('dxcam.processor.numpy_processor',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\processor\\numpy_processor.py',
+   'PYMODULE'),
+  ('dxcam.core',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\core\\__init__.py',
+   'PYMODULE'),
+  ('dxcam.core.duplicator',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\core\\duplicator.py',
+   'PYMODULE'),
+  ('dxcam.core.stagesurf',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\core\\stagesurf.py',
+   'PYMODULE'),
+  ('dxcam.core.output',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\core\\output.py',
+   'PYMODULE'),
+  ('dxcam.core.device',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\core\\device.py',
+   'PYMODULE'),
+  ('ast',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\ast.py',
+   'PYMODULE'),
+  ('datetime',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\datetime.py',
+   'PYMODULE'),
+  ('_pydatetime',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\_pydatetime.py',
+   'PYMODULE'),
+  ('_strptime',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\_strptime.py',
+   'PYMODULE'),
+  ('keyboard',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\keyboard\\__init__.py',
+   'PYMODULE'),
+  ('keyboard._canonical_names',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\keyboard\\_canonical_names.py',
+   'PYMODULE'),
+  ('keyboard._generic',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\keyboard\\_generic.py',
+   'PYMODULE'),
+  ('keyboard._keyboard_event',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\keyboard\\_keyboard_event.py',
+   'PYMODULE'),
+  ('keyboard._darwinkeyboard',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\keyboard\\_darwinkeyboard.py',
+   'PYMODULE'),
+  ('ctypes.util',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\ctypes\\util.py',
+   'PYMODULE'),
+  ('ctypes._aix',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\ctypes\\_aix.py',
+   'PYMODULE'),
+  ('ctypes.macholib.dyld',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\ctypes\\macholib\\dyld.py',
+   'PYMODULE'),
+  ('ctypes.macholib',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\ctypes\\macholib\\__init__.py',
+   'PYMODULE'),
+  ('ctypes.macholib.dylib',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\ctypes\\macholib\\dylib.py',
+   'PYMODULE'),
+  ('ctypes.macholib.framework',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\ctypes\\macholib\\framework.py',
+   'PYMODULE'),
+  ('keyboard._nixkeyboard',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\keyboard\\_nixkeyboard.py',
+   'PYMODULE'),
+  ('keyboard._nixcommon',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\keyboard\\_nixcommon.py',
+   'PYMODULE'),
+  ('keyboard._winkeyboard',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\keyboard\\_winkeyboard.py',
+   'PYMODULE'),
+  ('numpy',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\__init__.py',
+   'PYMODULE'),
+  ('numpy.strings',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\strings\\__init__.py',
+   'PYMODULE'),
+  ('numpy._core.strings',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\strings.py',
+   'PYMODULE'),
+  ('numpy.char',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\char\\__init__.py',
+   'PYMODULE'),
+  ('numpy._core.defchararray',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\defchararray.py',
+   'PYMODULE'),
+  ('numpy.rec',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\rec\\__init__.py',
+   'PYMODULE'),
+  ('numpy.typing',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\typing\\__init__.py',
+   'PYMODULE'),
+  ('numpy._typing._add_docstring',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_typing\\_add_docstring.py',
+   'PYMODULE'),
+  ('numpy.f2py',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\__init__.py',
+   'PYMODULE'),
+  ('numpy.f2py.diagnose',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\diagnose.py',
+   'PYMODULE'),
+  ('numpy.f2py.f2py2e',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\f2py2e.py',
+   'PYMODULE'),
+  ('numpy.f2py._backends',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\_backends\\__init__.py',
+   'PYMODULE'),
+  ('numpy.f2py._backends._distutils',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\_backends\\_distutils.py',
+   'PYMODULE'),
+  ('numpy.f2py._backends._backend',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\_backends\\_backend.py',
+   'PYMODULE'),
+  ('numpy.f2py._backends._meson',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\_backends\\_meson.py',
+   'PYMODULE'),
+  ('numpy.f2py.auxfuncs',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\auxfuncs.py',
+   'PYMODULE'),
+  ('numpy.f2py.f90mod_rules',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\f90mod_rules.py',
+   'PYMODULE'),
+  ('numpy.f2py.rules',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\rules.py',
+   'PYMODULE'),
+  ('numpy.f2py.use_rules',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\use_rules.py',
+   'PYMODULE'),
+  ('numpy.f2py.common_rules',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\common_rules.py',
+   'PYMODULE'),
+  ('numpy.f2py.func2subr',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\func2subr.py',
+   'PYMODULE'),
+  ('numpy.f2py._isocbind',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\_isocbind.py',
+   'PYMODULE'),
+  ('numpy.f2py.crackfortran',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\crackfortran.py',
+   'PYMODULE'),
+  ('charset_normalizer',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\charset_normalizer\\__init__.py',
+   'PYMODULE'),
+  ('charset_normalizer.version',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\charset_normalizer\\version.py',
+   'PYMODULE'),
+  ('charset_normalizer.utils',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\charset_normalizer\\utils.py',
+   'PYMODULE'),
+  ('charset_normalizer.constant',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\charset_normalizer\\constant.py',
+   'PYMODULE'),
+  ('charset_normalizer.models',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\charset_normalizer\\models.py',
+   'PYMODULE'),
+  ('charset_normalizer.cd',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\charset_normalizer\\cd.py',
+   'PYMODULE'),
+  ('charset_normalizer.legacy',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\charset_normalizer\\legacy.py',
+   'PYMODULE'),
+  ('typing_extensions',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\setuptools\\_vendor\\typing_extensions.py',
+   'PYMODULE'),
+  ('charset_normalizer.api',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\charset_normalizer\\api.py',
+   'PYMODULE'),
+  ('fileinput',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\fileinput.py',
+   'PYMODULE'),
+  ('numpy.f2py.symbolic',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\symbolic.py',
+   'PYMODULE'),
+  ('numpy.f2py.cb_rules',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\cb_rules.py',
+   'PYMODULE'),
+  ('numpy.f2py.capi_maps',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\capi_maps.py',
+   'PYMODULE'),
+  ('numpy.f2py.cfuncs',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\cfuncs.py',
+   'PYMODULE'),
+  ('numpy.f2py.__version__',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\f2py\\__version__.py',
+   'PYMODULE'),
+  ('numpy.matlib',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\matlib.py',
    'PYMODULE'),
   ('numpy.polynomial',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
@@ -1412,161 +1844,9 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\fft\\_pocketfft.py',
    'PYMODULE'),
-  ('numpy.linalg',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\linalg\\__init__.py',
-   'PYMODULE'),
-  ('numpy.linalg.linalg',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\linalg\\linalg.py',
-   'PYMODULE'),
-  ('numpy.linalg._linalg',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\linalg\\_linalg.py',
-   'PYMODULE'),
   ('numpy._array_api_info',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_array_api_info.py',
-   'PYMODULE'),
-  ('numpy.matrixlib',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\matrixlib\\__init__.py',
-   'PYMODULE'),
-  ('numpy.lib._index_tricks_impl',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_index_tricks_impl.py',
-   'PYMODULE'),
-  ('numpy.lib.stride_tricks',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\stride_tricks.py',
-   'PYMODULE'),
-  ('numpy.lib._npyio_impl',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_npyio_impl.py',
-   'PYMODULE'),
-  ('numpy.lib._datasource',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_datasource.py',
-   'PYMODULE'),
-  ('numpy.lib.format',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\format.py',
-   'PYMODULE'),
-  ('numpy.lib._polynomial_impl',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_polynomial_impl.py',
-   'PYMODULE'),
-  ('numpy.lib._stride_tricks_impl',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_stride_tricks_impl.py',
-   'PYMODULE'),
-  ('numpy.lib._utils_impl',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_utils_impl.py',
-   'PYMODULE'),
-  ('numpy.lib._arraypad_impl',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_arraypad_impl.py',
-   'PYMODULE'),
-  ('numpy.lib._ufunclike_impl',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_ufunclike_impl.py',
-   'PYMODULE'),
-  ('numpy.lib._arraysetops_impl',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_arraysetops_impl.py',
-   'PYMODULE'),
-  ('numpy.lib._type_check_impl',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_type_check_impl.py',
-   'PYMODULE'),
-  ('numpy._core.getlimits',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\getlimits.py',
-   'PYMODULE'),
-  ('numpy._core._machar',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_machar.py',
-   'PYMODULE'),
-  ('numpy.lib._shape_base_impl',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_shape_base_impl.py',
-   'PYMODULE'),
-  ('numpy.lib._twodim_base_impl',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_twodim_base_impl.py',
-   'PYMODULE'),
-  ('numpy.lib._function_base_impl',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_function_base_impl.py',
-   'PYMODULE'),
-  ('numpy.lib._nanfunctions_impl',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_nanfunctions_impl.py',
-   'PYMODULE'),
-  ('numpy.lib._histograms_impl',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_histograms_impl.py',
-   'PYMODULE'),
-  ('numpy.lib.scimath',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\scimath.py',
-   'PYMODULE'),
-  ('numpy.lib._scimath_impl',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_scimath_impl.py',
-   'PYMODULE'),
-  ('numpy.lib',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\__init__.py',
-   'PYMODULE'),
-  ('numpy._core.function_base',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\function_base.py',
-   'PYMODULE'),
-  ('numpy.lib._version',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_version.py',
-   'PYMODULE'),
-  ('numpy.lib._arrayterator_impl',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\_arrayterator_impl.py',
-   'PYMODULE'),
-  ('numpy.lib.npyio',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\npyio.py',
-   'PYMODULE'),
-  ('numpy.lib.mixins',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\mixins.py',
-   'PYMODULE'),
-  ('numpy.lib.introspect',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\lib\\introspect.py',
-   'PYMODULE'),
-  ('numpy._core.printoptions',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\printoptions.py',
-   'PYMODULE'),
-  ('numpy._core.memmap',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\memmap.py',
-   'PYMODULE'),
-  ('numpy._core',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\__init__.py',
-   'PYMODULE'),
-  ('numpy._core._add_newdocs_scalars',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_add_newdocs_scalars.py',
-   'PYMODULE'),
-  ('numpy._core._add_newdocs',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_add_newdocs.py',
-   'PYMODULE'),
-  ('numpy._core.einsumfunc',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\einsumfunc.py',
    'PYMODULE'),
   ('numpy.__config__',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
@@ -1576,17 +1856,9 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_distributor_init.py',
    'PYMODULE'),
-  ('numpy.version',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\version.py',
-   'PYMODULE'),
   ('numpy._expired_attrs_2_0',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_expired_attrs_2_0.py',
-   'PYMODULE'),
-  ('numpy._globals',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_globals.py',
    'PYMODULE'),
   ('PIL.ImageGrab',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
@@ -2220,17 +2492,25 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\dearpygui\\__init__.py',
    'PYMODULE')],
- [('python312.dll',
+ [('docs\\openh264-1.8.0-win64.dll',
+   'C:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\docs\\openh264-1.8.0-win64.dll',
+   'BINARY'),
+  ('python312.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\python312.dll',
    'BINARY'),
-  ('numpy.libs\\msvcp140-d64049c6e3865410a7dda6a7e9f0c575.dll',
+  ('cv2\\opencv_videoio_ffmpeg4110_64.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy.libs\\msvcp140-d64049c6e3865410a7dda6a7e9f0c575.dll',
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\cv2\\opencv_videoio_ffmpeg4110_64.dll',
    'BINARY'),
   ('numpy.libs\\libscipy_openblas64_-43e11ff0749b8cbe0a615c9cf6737e0e.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy.libs\\libscipy_openblas64_-43e11ff0749b8cbe0a615c9cf6737e0e.dll',
+   'BINARY'),
+  ('numpy.libs\\msvcp140-d64049c6e3865410a7dda6a7e9f0c575.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy.libs\\msvcp140-d64049c6e3865410a7dda6a7e9f0c575.dll',
    'BINARY'),
   ('select.pyd',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
@@ -2272,29 +2552,17 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\DLLs\\_bz2.pyd',
    'EXTENSION'),
-  ('_ctypes.pyd',
+  ('cv2\\cv2.pyd',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\DLLs\\_ctypes.pyd',
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\cv2\\cv2.pyd',
    'EXTENSION'),
   ('_wmi.pyd',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\DLLs\\_wmi.pyd',
    'EXTENSION'),
-  ('numpy\\_core\\_multiarray_tests.cp312-win_amd64.pyd',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_multiarray_tests.cp312-win_amd64.pyd',
-   'EXTENSION'),
   ('numpy\\_core\\_multiarray_umath.cp312-win_amd64.pyd',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_multiarray_umath.cp312-win_amd64.pyd',
-   'EXTENSION'),
-  ('charset_normalizer\\md__mypyc.cp312-win_amd64.pyd',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\charset_normalizer\\md__mypyc.cp312-win_amd64.pyd',
-   'EXTENSION'),
-  ('charset_normalizer\\md.cp312-win_amd64.pyd',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\charset_normalizer\\md.cp312-win_amd64.pyd',
    'EXTENSION'),
   ('numpy\\linalg\\_umath_linalg.cp312-win_amd64.pyd',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
@@ -2307,6 +2575,22 @@
   ('_asyncio.pyd',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\DLLs\\_asyncio.pyd',
+   'EXTENSION'),
+  ('_ctypes.pyd',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\DLLs\\_ctypes.pyd',
+   'EXTENSION'),
+  ('numpy\\_core\\_multiarray_tests.cp312-win_amd64.pyd',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\_multiarray_tests.cp312-win_amd64.pyd',
+   'EXTENSION'),
+  ('charset_normalizer\\md__mypyc.cp312-win_amd64.pyd',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\charset_normalizer\\md__mypyc.cp312-win_amd64.pyd',
+   'EXTENSION'),
+  ('charset_normalizer\\md.cp312-win_amd64.pyd',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\charset_normalizer\\md.cp312-win_amd64.pyd',
    'EXTENSION'),
   ('numpy\\random\\mtrand.cp312-win_amd64.pyd',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
@@ -2384,6 +2668,50 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\api-ms-win-crt-process-l1-1-0.dll',
    'BINARY'),
+  ('api-ms-win-crt-locale-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-crt-locale-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-crt-string-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-crt-string-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-crt-stdio-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-crt-stdio-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-crt-filesystem-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-crt-filesystem-l1-1-0.dll',
+   'BINARY'),
+  ('VCRUNTIME140.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\VCRUNTIME140.dll',
+   'BINARY'),
+  ('api-ms-win-crt-convert-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-crt-convert-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-crt-heap-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-crt-heap-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-crt-time-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-crt-time-l1-1-0.dll',
+   'BINARY'),
+  ('zlib.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\zlib.dll',
+   'BINARY'),
+  ('api-ms-win-crt-environment-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-crt-environment-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-crt-runtime-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-crt-runtime-l1-1-0.dll',
+   'BINARY'),
   ('api-ms-win-crt-math-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\api-ms-win-crt-math-l1-1-0.dll',
@@ -2392,61 +2720,17 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\api-ms-win-crt-conio-l1-1-0.dll',
    'BINARY'),
-  ('api-ms-win-crt-environment-l1-1-0.dll',
+  ('api-ms-win-crt-private-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-crt-environment-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-crt-heap-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-crt-heap-l1-1-0.dll',
-   'BINARY'),
-  ('zlib.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\zlib.dll',
-   'BINARY'),
-  ('api-ms-win-crt-locale-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-crt-locale-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-crt-filesystem-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-crt-filesystem-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-crt-time-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-crt-time-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-crt-stdio-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-crt-stdio-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-crt-string-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-crt-string-l1-1-0.dll',
-   'BINARY'),
-  ('VCRUNTIME140.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\VCRUNTIME140.dll',
-   'BINARY'),
-  ('api-ms-win-crt-runtime-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-crt-runtime-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-crt-convert-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-crt-convert-l1-1-0.dll',
-   'BINARY'),
-  ('VCRUNTIME140_1.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\VCRUNTIME140_1.dll',
+   'projects\\SaveManager\\.conda\\api-ms-win-crt-private-l1-1-0.dll',
    'BINARY'),
   ('api-ms-win-crt-utility-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\api-ms-win-crt-utility-l1-1-0.dll',
    'BINARY'),
-  ('api-ms-win-crt-private-l1-1-0.dll',
+  ('VCRUNTIME140_1.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-crt-private-l1-1-0.dll',
+   'projects\\SaveManager\\.conda\\VCRUNTIME140_1.dll',
    'BINARY'),
   ('libexpat.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
@@ -2468,113 +2752,113 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Library\\bin\\LIBBZ2.dll',
    'BINARY'),
+  ('python3.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\python3.dll',
+   'BINARY'),
   ('ffi.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Library\\bin\\ffi.dll',
-   'BINARY'),
-  ('dearpygui\\VCRUNTIME140_1.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dearpygui\\VCRUNTIME140_1.dll',
    'BINARY'),
   ('MSVCP140.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\MSVCP140.dll',
    'BINARY'),
+  ('dearpygui\\VCRUNTIME140_1.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dearpygui\\VCRUNTIME140_1.dll',
+   'BINARY'),
   ('ucrtbase.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\ucrtbase.dll',
-   'BINARY'),
-  ('api-ms-win-core-sysinfo-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-sysinfo-l1-1-0.dll',
    'BINARY'),
   ('api-ms-win-core-fibers-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\api-ms-win-core-fibers-l1-1-0.dll',
    'BINARY'),
-  ('api-ms-win-core-interlocked-l1-1-0.dll',
+  ('api-ms-win-core-namedpipe-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-interlocked-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-core-memory-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-memory-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-core-file-l2-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-file-l2-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-core-debug-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-debug-l1-1-0.dll',
+   'projects\\SaveManager\\.conda\\api-ms-win-core-namedpipe-l1-1-0.dll',
    'BINARY'),
   ('api-ms-win-core-processthreads-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\api-ms-win-core-processthreads-l1-1-0.dll',
    'BINARY'),
-  ('api-ms-win-core-util-l1-1-0.dll',
+  ('api-ms-win-core-file-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-util-l1-1-0.dll',
+   'projects\\SaveManager\\.conda\\api-ms-win-core-file-l1-1-0.dll',
    'BINARY'),
-  ('api-ms-win-core-handle-l1-1-0.dll',
+  ('api-ms-win-core-memory-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-handle-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-core-profile-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-profile-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-core-processthreads-l1-1-1.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-processthreads-l1-1-1.dll',
-   'BINARY'),
-  ('api-ms-win-core-string-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-string-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-core-console-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-console-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-core-synch-l1-2-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-synch-l1-2-0.dll',
-   'BINARY'),
-  ('api-ms-win-core-file-l1-2-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-file-l1-2-0.dll',
-   'BINARY'),
-  ('api-ms-win-core-libraryloader-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-libraryloader-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-core-errorhandling-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-errorhandling-l1-1-0.dll',
-   'BINARY'),
-  ('api-ms-win-core-rtlsupport-l1-1-0.dll',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-rtlsupport-l1-1-0.dll',
+   'projects\\SaveManager\\.conda\\api-ms-win-core-memory-l1-1-0.dll',
    'BINARY'),
   ('api-ms-win-core-heap-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\api-ms-win-core-heap-l1-1-0.dll',
    'BINARY'),
-  ('api-ms-win-core-datetime-l1-1-0.dll',
+  ('api-ms-win-core-file-l1-2-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-datetime-l1-1-0.dll',
+   'projects\\SaveManager\\.conda\\api-ms-win-core-file-l1-2-0.dll',
    'BINARY'),
-  ('api-ms-win-core-file-l1-1-0.dll',
+  ('api-ms-win-core-rtlsupport-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-file-l1-1-0.dll',
+   'projects\\SaveManager\\.conda\\api-ms-win-core-rtlsupport-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-synch-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-synch-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-handle-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-handle-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-util-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-util-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-profile-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-profile-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-debug-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-debug-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-sysinfo-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-sysinfo-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-file-l2-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-file-l2-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-string-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-string-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-errorhandling-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-errorhandling-l1-1-0.dll',
    'BINARY'),
   ('api-ms-win-core-localization-l1-2-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\api-ms-win-core-localization-l1-2-0.dll',
    'BINARY'),
-  ('api-ms-win-core-namedpipe-l1-1-0.dll',
+  ('api-ms-win-core-console-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-namedpipe-l1-1-0.dll',
+   'projects\\SaveManager\\.conda\\api-ms-win-core-console-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-interlocked-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-interlocked-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-processthreads-l1-1-1.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-processthreads-l1-1-1.dll',
+   'BINARY'),
+  ('api-ms-win-core-datetime-l1-1-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-datetime-l1-1-0.dll',
    'BINARY'),
   ('api-ms-win-core-timezone-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
@@ -2584,9 +2868,13 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\api-ms-win-core-processenvironment-l1-1-0.dll',
    'BINARY'),
-  ('api-ms-win-core-synch-l1-1-0.dll',
+  ('api-ms-win-core-libraryloader-l1-1-0.dll',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\api-ms-win-core-synch-l1-1-0.dll',
+   'projects\\SaveManager\\.conda\\api-ms-win-core-libraryloader-l1-1-0.dll',
+   'BINARY'),
+  ('api-ms-win-core-synch-l1-2-0.dll',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\api-ms-win-core-synch-l1-2-0.dll',
    'BINARY')],
  [],
  [],
@@ -2602,6 +2890,18 @@
    'C:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\docs\\icon.ico',
    'DATA'),
+  ('cv2\\config-3.py',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\cv2\\config-3.py',
+   'DATA'),
+  ('cv2\\config.py',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\cv2\\config.py',
+   'DATA'),
+  ('cv2\\load_config_py3.py',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\cv2\\load_config_py3.py',
+   'DATA'),
   ('certifi\\py.typed',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\certifi\\py.typed',
@@ -2609,6 +2909,42 @@
   ('certifi\\cacert.pem',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\certifi\\cacert.pem',
+   'DATA'),
+  ('cv2\\__init__.py',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\cv2\\__init__.py',
+   'DATA'),
+  ('cv2\\version.py',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\cv2\\version.py',
+   'DATA'),
+  ('cv2\\utils\\__init__.py',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\cv2\\utils\\__init__.py',
+   'DATA'),
+  ('cv2\\typing\\__init__.py',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\cv2\\typing\\__init__.py',
+   'DATA'),
+  ('cv2\\misc\\version.py',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\cv2\\misc\\version.py',
+   'DATA'),
+  ('cv2\\misc\\__init__.py',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\cv2\\misc\\__init__.py',
+   'DATA'),
+  ('cv2\\mat_wrapper\\__init__.py',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\cv2\\mat_wrapper\\__init__.py',
+   'DATA'),
+  ('cv2\\gapi\\__init__.py',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\cv2\\gapi\\__init__.py',
+   'DATA'),
+  ('cv2\\data\\__init__.py',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\cv2\\data\\__init__.py',
    'DATA'),
   ('base_library.zip',
    'C:\\Users\\Admin\\Documents\\work\\projects\\VSCode '

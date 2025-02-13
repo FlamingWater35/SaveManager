@@ -31,8 +31,10 @@ imports:
  &#8226;   <a href="#configparser">configparser</a>
  &#8226;   <a href="#copyreg">copyreg</a>
  &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#cv2">cv2</a>
  &#8226;   <a href="#datetime">datetime</a>
  &#8226;   <a href="#dearpygui.dearpygui">dearpygui.dearpygui</a>
+ &#8226;   <a href="#dxcam">dxcam</a>
  &#8226;   <a href="#encodings">encodings</a>
  &#8226;   <a href="#encodings.aliases">encodings.aliases</a>
  &#8226;   <a href="#encodings.ascii">encodings.ascii</a>
@@ -3072,7 +3074,13 @@ imported by:
   <a name="_ctypes"></a>
   <tt>_ctypes</tt> <span class="moduletype"><tt>c:\Users\Admin\Documents\work\projects\VSCode projects\SaveManager\.conda\DLLs\_ctypes.pyd</tt></span>  <div class="import">
 imported by:
-    <a href="#ctypes">ctypes</a>
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes._comobject">comtypes._comobject</a>
+ &#8226;   <a href="#comtypes._post_coinit._cominterface_meta_patcher">comtypes._post_coinit._cominterface_meta_patcher</a>
+ &#8226;   <a href="#comtypes._vtbl">comtypes._vtbl</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.client._managing">comtypes.client._managing</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
  &#8226;   <a href="#ctypes.macholib.dyld">ctypes.macholib.dyld</a>
  &#8226;   <a href="#numpy._core._dtype_ctypes">numpy._core._dtype_ctypes</a>
 
@@ -3801,6 +3809,7 @@ imported by:
  &#8226;   <a href="#PIL.ImageShow">PIL.ImageShow</a>
  &#8226;   <a href="#SaveManager.py">SaveManager.py</a>
  &#8226;   <a href="#_collections_abc">_collections_abc</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.typeannotator">comtypes.tools.codegenerator.typeannotator</a>
  &#8226;   <a href="#contextlib">contextlib</a>
  &#8226;   <a href="#dataclasses">dataclasses</a>
  &#8226;   <a href="#email._policybase">email._policybase</a>
@@ -3866,6 +3875,8 @@ imported by:
 imported by:
     <a href="#PIL.ImagePalette">PIL.ImagePalette</a>
  &#8226;   <a href="#PIL.JpegImagePlugin">PIL.JpegImagePlugin</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.safearray">comtypes.safearray</a>
  &#8226;   <a href="#multiprocessing.dummy">multiprocessing.dummy</a>
  &#8226;   <a href="#multiprocessing.managers">multiprocessing.managers</a>
  &#8226;   <a href="#multiprocessing.reduction">multiprocessing.reduction</a>
@@ -4852,6 +4863,7 @@ imported by:
 imported by:
     <a href="#PIL.Image">PIL.Image</a>
  &#8226;   <a href="#certifi.core">certifi.core</a>
+ &#8226;   <a href="#comtypes">comtypes</a>
  &#8226;   <a href="#keyboard._nixcommon">keyboard._nixcommon</a>
  &#8226;   <a href="#keyboard._winkeyboard">keyboard._winkeyboard</a>
  &#8226;   <a href="#logging">logging</a>
@@ -5594,12 +5606,15 @@ imported by:
  &#8226;   <a href="#asyncio.streams">asyncio.streams</a>
  &#8226;   <a href="#charset_normalizer.cd">charset_normalizer.cd</a>
  &#8226;   <a href="#collections.abc">collections.abc</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.namespaces">comtypes.tools.codegenerator.namespaces</a>
  &#8226;   <a href="#concurrent.futures._base">concurrent.futures._base</a>
  &#8226;   <a href="#configparser">configparser</a>
  &#8226;   <a href="#contextlib">contextlib</a>
+ &#8226;   <a href="#cv2.utils">cv2.utils</a>
  &#8226;   <a href="#difflib">difflib</a>
  &#8226;   <a href="#dis">dis</a>
  &#8226;   <a href="#doctest">doctest</a>
+ &#8226;   <a href="#dxcam.util.io">dxcam.util.io</a>
  &#8226;   <a href="#email.feedparser">email.feedparser</a>
  &#8226;   <a href="#functools">functools</a>
  &#8226;   <a href="#importlib.metadata">importlib.metadata</a>
@@ -5697,6 +5712,1304 @@ imported by:
 <span class="moduletype">SourceModule</span>  <div class="import">
 imported by:
     <a href="#PIL.ImageColor">PIL.ImageColor</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/__init__.py" type="text/plain"><tt>comtypes</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#_ctypes">_ctypes</a>
+ &#8226;   <a href="#atexit">atexit</a>
+ &#8226;   <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.GUID">comtypes.GUID</a>
+ &#8226;   <a href="#comtypes._comobject">comtypes._comobject</a>
+ &#8226;   <a href="#comtypes._memberspec">comtypes._memberspec</a>
+ &#8226;   <a href="#comtypes._meta">comtypes._meta</a>
+ &#8226;   <a href="#comtypes._npsupport">comtypes._npsupport</a>
+ &#8226;   <a href="#comtypes._post_coinit">comtypes._post_coinit</a>
+ &#8226;   <a href="#comtypes._post_coinit.bstr">comtypes._post_coinit.bstr</a>
+ &#8226;   <a href="#comtypes._post_coinit.instancemethod">comtypes._post_coinit.instancemethod</a>
+ &#8226;   <a href="#comtypes._post_coinit.misc">comtypes._post_coinit.misc</a>
+ &#8226;   <a href="#comtypes._post_coinit.unknwn">comtypes._post_coinit.unknwn</a>
+ &#8226;   <a href="#comtypes._safearray">comtypes._safearray</a>
+ &#8226;   <a href="#comtypes._tlib_version_checker">comtypes._tlib_version_checker</a>
+ &#8226;   <a href="#comtypes.gen">comtypes.gen</a>
+ &#8226;   <a href="#comtypes.hresult">comtypes.hresult</a>
+ &#8226;   <a href="#comtypes.messageloop">comtypes.messageloop</a>
+ &#8226;   <a href="#comtypes.patcher">comtypes.patcher</a>
+ &#8226;   <a href="#comtypes.typeinfo">comtypes.typeinfo</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#ctypes._CData">ctypes._CData</a>
+ &#8226;   <a href="#ctypes.wintypes">ctypes.wintypes</a>
+ &#8226;   <a href="#logging">logging</a>
+ &#8226;   <a href="#sys">sys</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.GUID">comtypes.GUID</a>
+ &#8226;   <a href="#comtypes._comobject">comtypes._comobject</a>
+ &#8226;   <a href="#comtypes._memberspec">comtypes._memberspec</a>
+ &#8226;   <a href="#comtypes._meta">comtypes._meta</a>
+ &#8226;   <a href="#comtypes._npsupport">comtypes._npsupport</a>
+ &#8226;   <a href="#comtypes._post_coinit">comtypes._post_coinit</a>
+ &#8226;   <a href="#comtypes._post_coinit._cominterface_meta_patcher">comtypes._post_coinit._cominterface_meta_patcher</a>
+ &#8226;   <a href="#comtypes._post_coinit.bstr">comtypes._post_coinit.bstr</a>
+ &#8226;   <a href="#comtypes._post_coinit.misc">comtypes._post_coinit.misc</a>
+ &#8226;   <a href="#comtypes._post_coinit.unknwn">comtypes._post_coinit.unknwn</a>
+ &#8226;   <a href="#comtypes._safearray">comtypes._safearray</a>
+ &#8226;   <a href="#comtypes._tlib_version_checker">comtypes._tlib_version_checker</a>
+ &#8226;   <a href="#comtypes._vtbl">comtypes._vtbl</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.client._activeobj">comtypes.client._activeobj</a>
+ &#8226;   <a href="#comtypes.client._code_cache">comtypes.client._code_cache</a>
+ &#8226;   <a href="#comtypes.client._constants">comtypes.client._constants</a>
+ &#8226;   <a href="#comtypes.client._create">comtypes.client._create</a>
+ &#8226;   <a href="#comtypes.client._events">comtypes.client._events</a>
+ &#8226;   <a href="#comtypes.client._generate">comtypes.client._generate</a>
+ &#8226;   <a href="#comtypes.client._managing">comtypes.client._managing</a>
+ &#8226;   <a href="#comtypes.client.dynamic">comtypes.client.dynamic</a>
+ &#8226;   <a href="#comtypes.client.lazybind">comtypes.client.lazybind</a>
+ &#8226;   <a href="#comtypes.connectionpoints">comtypes.connectionpoints</a>
+ &#8226;   <a href="#comtypes.errorinfo">comtypes.errorinfo</a>
+ &#8226;   <a href="#comtypes.gen">comtypes.gen</a>
+ &#8226;   <a href="#comtypes.hresult">comtypes.hresult</a>
+ &#8226;   <a href="#comtypes.messageloop">comtypes.messageloop</a>
+ &#8226;   <a href="#comtypes.patcher">comtypes.patcher</a>
+ &#8226;   <a href="#comtypes.persist">comtypes.persist</a>
+ &#8226;   <a href="#comtypes.safearray">comtypes.safearray</a>
+ &#8226;   <a href="#comtypes.server">comtypes.server</a>
+ &#8226;   <a href="#comtypes.stream">comtypes.stream</a>
+ &#8226;   <a href="#comtypes.tools">comtypes.tools</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.codegenerator">comtypes.tools.codegenerator.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.modulenamer">comtypes.tools.codegenerator.modulenamer</a>
+ &#8226;   <a href="#comtypes.tools.tlbparser">comtypes.tools.tlbparser</a>
+ &#8226;   <a href="#comtypes.tools.typedesc">comtypes.tools.typedesc</a>
+ &#8226;   <a href="#comtypes.tools.typedesc_base">comtypes.tools.typedesc_base</a>
+ &#8226;   <a href="#comtypes.typeinfo">comtypes.typeinfo</a>
+ &#8226;   <a href="#dxcam._libs.d3d11">dxcam._libs.d3d11</a>
+ &#8226;   <a href="#dxcam._libs.dxgi">dxcam._libs.dxgi</a>
+ &#8226;   <a href="#dxcam.core.device">dxcam.core.device</a>
+ &#8226;   <a href="#dxcam.dxcam">dxcam.dxcam</a>
+ &#8226;   <a href="#dxcam.util.io">dxcam.util.io</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.GUID"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/GUID.py" type="text/plain"><tt>comtypes.GUID</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#ctypes.wintypes">ctypes.wintypes</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes._comobject">comtypes._comobject</a>
+ &#8226;   <a href="#comtypes._post_coinit.misc">comtypes._post_coinit.misc</a>
+ &#8226;   <a href="#comtypes._post_coinit.unknwn">comtypes._post_coinit.unknwn</a>
+ &#8226;   <a href="#comtypes._safearray">comtypes._safearray</a>
+ &#8226;   <a href="#comtypes._vtbl">comtypes._vtbl</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.client._activeobj">comtypes.client._activeobj</a>
+ &#8226;   <a href="#comtypes.client._create">comtypes.client._create</a>
+ &#8226;   <a href="#comtypes.client._generate">comtypes.client._generate</a>
+ &#8226;   <a href="#comtypes.client._managing">comtypes.client._managing</a>
+ &#8226;   <a href="#comtypes.client.dynamic">comtypes.client.dynamic</a>
+ &#8226;   <a href="#comtypes.connectionpoints">comtypes.connectionpoints</a>
+ &#8226;   <a href="#comtypes.errorinfo">comtypes.errorinfo</a>
+ &#8226;   <a href="#comtypes.persist">comtypes.persist</a>
+ &#8226;   <a href="#comtypes.server">comtypes.server</a>
+ &#8226;   <a href="#comtypes.stream">comtypes.stream</a>
+ &#8226;   <a href="#comtypes.typeinfo">comtypes.typeinfo</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes._comobject"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/_comobject.py" type="text/plain"><tt>comtypes._comobject</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#_ctypes">_ctypes</a>
+ &#8226;   <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.GUID">comtypes.GUID</a>
+ &#8226;   <a href="#comtypes._vtbl">comtypes._vtbl</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.errorinfo">comtypes.errorinfo</a>
+ &#8226;   <a href="#comtypes.hresult">comtypes.hresult</a>
+ &#8226;   <a href="#comtypes.messageloop">comtypes.messageloop</a>
+ &#8226;   <a href="#comtypes.typeinfo">comtypes.typeinfo</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#ctypes._CArgObject">ctypes._CArgObject</a>
+ &#8226;   <a href="#ctypes.wintypes">ctypes.wintypes</a>
+ &#8226;   <a href="#logging">logging</a>
+ &#8226;   <a href="#queue">queue</a>
+ &#8226;   <a href="#threading">threading</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.client._events">comtypes.client._events</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes._memberspec"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/_memberspec.py" type="text/plain"><tt>comtypes._memberspec</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes._post_coinit.misc">comtypes._post_coinit.misc</a>
+ &#8226;   <a href="#comtypes._post_coinit.unknwn">comtypes._post_coinit.unknwn</a>
+ &#8226;   <a href="#comtypes._vtbl">comtypes._vtbl</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes._meta"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/_meta.py" type="text/plain"><tt>comtypes._meta</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes">comtypes</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes._npsupport"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/_npsupport.py" type="text/plain"><tt>comtypes._npsupport</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#numpy">numpy</a>
+ &#8226;   <a href="#numpy.ctypeslib">numpy.ctypeslib</a>
+ &#8226;   <a href="#sys">sys</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes">comtypes</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes._post_coinit"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/_post_coinit/__init__.py" type="text/plain"><tt>comtypes._post_coinit</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes._post_coinit._cominterface_meta_patcher">comtypes._post_coinit._cominterface_meta_patcher</a>
+ &#8226;   <a href="#comtypes._post_coinit.unknwn">comtypes._post_coinit.unknwn</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes._post_coinit._cominterface_meta_patcher">comtypes._post_coinit._cominterface_meta_patcher</a>
+ &#8226;   <a href="#comtypes._post_coinit.bstr">comtypes._post_coinit.bstr</a>
+ &#8226;   <a href="#comtypes._post_coinit.instancemethod">comtypes._post_coinit.instancemethod</a>
+ &#8226;   <a href="#comtypes._post_coinit.misc">comtypes._post_coinit.misc</a>
+ &#8226;   <a href="#comtypes._post_coinit.unknwn">comtypes._post_coinit.unknwn</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes._post_coinit._cominterface_meta_patcher"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/_post_coinit/_cominterface_meta_patcher.py" type="text/plain"><tt>comtypes._post_coinit._cominterface_meta_patcher</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#_ctypes">_ctypes</a>
+ &#8226;   <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes._post_coinit">comtypes._post_coinit</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.patcher">comtypes.patcher</a>
+ &#8226;   <a href="#types">types</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes._post_coinit">comtypes._post_coinit</a>
+ &#8226;   <a href="#comtypes._post_coinit.unknwn">comtypes._post_coinit.unknwn</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes._post_coinit.bstr"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/_post_coinit/bstr.py" type="text/plain"><tt>comtypes._post_coinit.bstr</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes._post_coinit">comtypes._post_coinit</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes">comtypes</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes._post_coinit.instancemethod"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/_post_coinit/instancemethod.py" type="text/plain"><tt>comtypes._post_coinit.instancemethod</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes._post_coinit">comtypes._post_coinit</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes._post_coinit.unknwn">comtypes._post_coinit.unknwn</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes._post_coinit.misc"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/_post_coinit/misc.py" type="text/plain"><tt>comtypes._post_coinit.misc</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.GUID">comtypes.GUID</a>
+ &#8226;   <a href="#comtypes._memberspec">comtypes._memberspec</a>
+ &#8226;   <a href="#comtypes._post_coinit">comtypes._post_coinit</a>
+ &#8226;   <a href="#comtypes._post_coinit.unknwn">comtypes._post_coinit.unknwn</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.server">comtypes.server</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#ctypes.wintypes">ctypes.wintypes</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes">comtypes</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes._post_coinit.unknwn"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/_post_coinit/unknwn.py" type="text/plain"><tt>comtypes._post_coinit.unknwn</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.GUID">comtypes.GUID</a>
+ &#8226;   <a href="#comtypes._memberspec">comtypes._memberspec</a>
+ &#8226;   <a href="#comtypes._post_coinit">comtypes._post_coinit</a>
+ &#8226;   <a href="#comtypes._post_coinit._cominterface_meta_patcher">comtypes._post_coinit._cominterface_meta_patcher</a>
+ &#8226;   <a href="#comtypes._post_coinit.instancemethod">comtypes._post_coinit.instancemethod</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#logging">logging</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes._post_coinit">comtypes._post_coinit</a>
+ &#8226;   <a href="#comtypes._post_coinit.misc">comtypes._post_coinit.misc</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes._safearray"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/_safearray.py" type="text/plain"><tt>comtypes._safearray</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.GUID">comtypes.GUID</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#ctypes.wintypes">ctypes.wintypes</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.safearray">comtypes.safearray</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes._tlib_version_checker"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/_tlib_version_checker.py" type="text/plain"><tt>comtypes._tlib_version_checker</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator">comtypes.tools.codegenerator</a>
+ &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#sys">sys</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes">comtypes</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes._vtbl"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/_vtbl.py" type="text/plain"><tt>comtypes._vtbl</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#_ctypes">_ctypes</a>
+ &#8226;   <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.GUID">comtypes.GUID</a>
+ &#8226;   <a href="#comtypes._memberspec">comtypes._memberspec</a>
+ &#8226;   <a href="#comtypes.errorinfo">comtypes.errorinfo</a>
+ &#8226;   <a href="#comtypes.hresult">comtypes.hresult</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#ctypes._FuncPointer">ctypes._FuncPointer</a>
+ &#8226;   <a href="#logging">logging</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes._comobject">comtypes._comobject</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.automation"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/automation.py" type="text/plain"><tt>comtypes.automation</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#_ctypes">_ctypes</a>
+ &#8226;   <a href="#array">array</a>
+ &#8226;   <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.GUID">comtypes.GUID</a>
+ &#8226;   <a href="#comtypes._memberspec">comtypes._memberspec</a>
+ &#8226;   <a href="#comtypes._safearray">comtypes._safearray</a>
+ &#8226;   <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.client.dynamic">comtypes.client.dynamic</a>
+ &#8226;   <a href="#comtypes.hresult">comtypes.hresult</a>
+ &#8226;   <a href="#comtypes.patcher">comtypes.patcher</a>
+ &#8226;   <a href="#comtypes.safearray">comtypes.safearray</a>
+ &#8226;   <a href="#comtypes.typeinfo">comtypes.typeinfo</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#ctypes._CArgObject">ctypes._CArgObject</a>
+ &#8226;   <a href="#ctypes.wintypes">ctypes.wintypes</a>
+ &#8226;   <a href="#datetime">datetime</a>
+ &#8226;   <a href="#decimal">decimal</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes._comobject">comtypes._comobject</a>
+ &#8226;   <a href="#comtypes._memberspec">comtypes._memberspec</a>
+ &#8226;   <a href="#comtypes._post_coinit._cominterface_meta_patcher">comtypes._post_coinit._cominterface_meta_patcher</a>
+ &#8226;   <a href="#comtypes._post_coinit.misc">comtypes._post_coinit.misc</a>
+ &#8226;   <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.client._activeobj">comtypes.client._activeobj</a>
+ &#8226;   <a href="#comtypes.client._constants">comtypes.client._constants</a>
+ &#8226;   <a href="#comtypes.client._create">comtypes.client._create</a>
+ &#8226;   <a href="#comtypes.client._events">comtypes.client._events</a>
+ &#8226;   <a href="#comtypes.client._managing">comtypes.client._managing</a>
+ &#8226;   <a href="#comtypes.client.dynamic">comtypes.client.dynamic</a>
+ &#8226;   <a href="#comtypes.client.lazybind">comtypes.client.lazybind</a>
+ &#8226;   <a href="#comtypes.persist">comtypes.persist</a>
+ &#8226;   <a href="#comtypes.safearray">comtypes.safearray</a>
+ &#8226;   <a href="#comtypes.server">comtypes.server</a>
+ &#8226;   <a href="#comtypes.tools.tlbparser">comtypes.tools.tlbparser</a>
+ &#8226;   <a href="#comtypes.typeinfo">comtypes.typeinfo</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.client"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/client/__init__.py" type="text/plain"><tt>comtypes.client</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.client._activeobj">comtypes.client._activeobj</a>
+ &#8226;   <a href="#comtypes.client._code_cache">comtypes.client._code_cache</a>
+ &#8226;   <a href="#comtypes.client._constants">comtypes.client._constants</a>
+ &#8226;   <a href="#comtypes.client._create">comtypes.client._create</a>
+ &#8226;   <a href="#comtypes.client._events">comtypes.client._events</a>
+ &#8226;   <a href="#comtypes.client._generate">comtypes.client._generate</a>
+ &#8226;   <a href="#comtypes.client._managing">comtypes.client._managing</a>
+ &#8226;   <a href="#comtypes.client.dynamic">comtypes.client.dynamic</a>
+ &#8226;   <a href="#comtypes.client.lazybind">comtypes.client.lazybind</a>
+ &#8226;   <a href="#comtypes.gen">comtypes.gen</a>
+ &#8226;   <a href="#comtypes.hresult">comtypes.hresult</a>
+ &#8226;   <a href="#comtypes.persist">comtypes.persist</a>
+ &#8226;   <a href="#comtypes.stream">comtypes.stream</a>
+ &#8226;   <a href="#comtypes.typeinfo">comtypes.typeinfo</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#ctypes.wintypes">ctypes.wintypes</a>
+ &#8226;   <a href="#logging">logging</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.client._activeobj">comtypes.client._activeobj</a>
+ &#8226;   <a href="#comtypes.client._code_cache">comtypes.client._code_cache</a>
+ &#8226;   <a href="#comtypes.client._constants">comtypes.client._constants</a>
+ &#8226;   <a href="#comtypes.client._create">comtypes.client._create</a>
+ &#8226;   <a href="#comtypes.client._events">comtypes.client._events</a>
+ &#8226;   <a href="#comtypes.client._generate">comtypes.client._generate</a>
+ &#8226;   <a href="#comtypes.client._managing">comtypes.client._managing</a>
+ &#8226;   <a href="#comtypes.client.dynamic">comtypes.client.dynamic</a>
+ &#8226;   <a href="#comtypes.client.lazybind">comtypes.client.lazybind</a>
+ &#8226;   <a href="#comtypes.server">comtypes.server</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.client._activeobj"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/client/_activeobj.py" type="text/plain"><tt>comtypes.client._activeobj</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.GUID">comtypes.GUID</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.client._managing">comtypes.client._managing</a>
+ &#8226;   <a href="#comtypes.client.dynamic">comtypes.client.dynamic</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.client">comtypes.client</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.client._code_cache"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/client/_code_cache.py" type="text/plain"><tt>comtypes.client._code_cache</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.gen">comtypes.gen</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#ctypes.wintypes">ctypes.wintypes</a>
+ &#8226;   <a href="#logging">logging</a>
+ &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#sys">sys</a>
+ &#8226;   <a href="#tempfile">tempfile</a>
+ &#8226;   <a href="#types">types</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.tools.tlbparser">comtypes.tools.tlbparser</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.client._constants"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/client/_constants.py" type="text/plain"><tt>comtypes.client._constants</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.typeinfo">comtypes.typeinfo</a>
+ &#8226;   <a href="#keyword">keyword</a>
+ &#8226;   <a href="#sys">sys</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.client">comtypes.client</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.client._create"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/client/_create.py" type="text/plain"><tt>comtypes.client._create</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.GUID">comtypes.GUID</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.client._managing">comtypes.client._managing</a>
+ &#8226;   <a href="#comtypes.client.dynamic">comtypes.client.dynamic</a>
+ &#8226;   <a href="#logging">logging</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.client">comtypes.client</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.client._events"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/client/_events.py" type="text/plain"><tt>comtypes.client._events</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes._comobject">comtypes._comobject</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.client._generate">comtypes.client._generate</a>
+ &#8226;   <a href="#comtypes.connectionpoints">comtypes.connectionpoints</a>
+ &#8226;   <a href="#comtypes.hresult">comtypes.hresult</a>
+ &#8226;   <a href="#comtypes.typeinfo">comtypes.typeinfo</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#ctypes.wintypes">ctypes.wintypes</a>
+ &#8226;   <a href="#logging">logging</a>
+ &#8226;   <a href="#traceback">traceback</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.client">comtypes.client</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.client._generate"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/client/_generate.py" type="text/plain"><tt>comtypes.client._generate</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.GUID">comtypes.GUID</a>
+ &#8226;   <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.gen">comtypes.gen</a>
+ &#8226;   <a href="#comtypes.tools">comtypes.tools</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator">comtypes.tools.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.tlbparser">comtypes.tools.tlbparser</a>
+ &#8226;   <a href="#comtypes.typeinfo">comtypes.typeinfo</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#importlib">importlib</a>
+ &#8226;   <a href="#inspect">inspect</a>
+ &#8226;   <a href="#logging">logging</a>
+ &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#sys">sys</a>
+ &#8226;   <a href="#types">types</a>
+ &#8226;   <a href="#typing">typing</a>
+ &#8226;   <a href="#winreg">winreg</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.client._events">comtypes.client._events</a>
+ &#8226;   <a href="#comtypes.client._managing">comtypes.client._managing</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.client._managing"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/client/_managing.py" type="text/plain"><tt>comtypes.client._managing</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#_ctypes">_ctypes</a>
+ &#8226;   <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.GUID">comtypes.GUID</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.client._generate">comtypes.client._generate</a>
+ &#8226;   <a href="#comtypes.client.dynamic">comtypes.client.dynamic</a>
+ &#8226;   <a href="#comtypes.typeinfo">comtypes.typeinfo</a>
+ &#8226;   <a href="#logging">logging</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.client._activeobj">comtypes.client._activeobj</a>
+ &#8226;   <a href="#comtypes.client._create">comtypes.client._create</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.client.dynamic"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/client/dynamic.py" type="text/plain"><tt>comtypes.client.dynamic</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.GUID">comtypes.GUID</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.client.lazybind">comtypes.client.lazybind</a>
+ &#8226;   <a href="#comtypes.hresult">comtypes.hresult</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.client._activeobj">comtypes.client._activeobj</a>
+ &#8226;   <a href="#comtypes.client._create">comtypes.client._create</a>
+ &#8226;   <a href="#comtypes.client._managing">comtypes.client._managing</a>
+ &#8226;   <a href="#comtypes.server">comtypes.server</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.client.lazybind"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/client/lazybind.py" type="text/plain"><tt>comtypes.client.lazybind</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.typeinfo">comtypes.typeinfo</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.client.dynamic">comtypes.client.dynamic</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.connectionpoints"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/connectionpoints.py" type="text/plain"><tt>comtypes.connectionpoints</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.GUID">comtypes.GUID</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#sys">sys</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.client._events">comtypes.client._events</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.errorinfo"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/errorinfo.py" type="text/plain"><tt>comtypes.errorinfo</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.GUID">comtypes.GUID</a>
+ &#8226;   <a href="#comtypes.hresult">comtypes.hresult</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#ctypes.wintypes">ctypes.wintypes</a>
+ &#8226;   <a href="#sys">sys</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes._comobject">comtypes._comobject</a>
+ &#8226;   <a href="#comtypes._vtbl">comtypes._vtbl</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.gen"></a>
+  <a target="code" href="" type="text/plain"><tt>comtypes.gen</tt></a>
+<span class="moduletype">MissingModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.client._code_cache">comtypes.client._code_cache</a>
+ &#8226;   <a href="#comtypes.client._generate">comtypes.client._generate</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.hresult"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/hresult.py" type="text/plain"><tt>comtypes.hresult</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes._comobject">comtypes._comobject</a>
+ &#8226;   <a href="#comtypes._vtbl">comtypes._vtbl</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.client._events">comtypes.client._events</a>
+ &#8226;   <a href="#comtypes.client.dynamic">comtypes.client.dynamic</a>
+ &#8226;   <a href="#comtypes.errorinfo">comtypes.errorinfo</a>
+ &#8226;   <a href="#comtypes.persist">comtypes.persist</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.messageloop"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/messageloop.py" type="text/plain"><tt>comtypes.messageloop</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#ctypes.wintypes">ctypes.wintypes</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes._comobject">comtypes._comobject</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.patcher"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/patcher.py" type="text/plain"><tt>comtypes.patcher</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes._post_coinit._cominterface_meta_patcher">comtypes._post_coinit._cominterface_meta_patcher</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.safearray">comtypes.safearray</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.persist"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/persist.py" type="text/plain"><tt>comtypes.persist</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.GUID">comtypes.GUID</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.hresult">comtypes.hresult</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#ctypes.wintypes">ctypes.wintypes</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.tools.tlbparser">comtypes.tools.tlbparser</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.safearray"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/safearray.py" type="text/plain"><tt>comtypes.safearray</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#array">array</a>
+ &#8226;   <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes._safearray">comtypes._safearray</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.patcher">comtypes.patcher</a>
+ &#8226;   <a href="#comtypes.typeinfo">comtypes.typeinfo</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#threading">threading</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.automation">comtypes.automation</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.server"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/server/__init__.py" type="text/plain"><tt>comtypes.server</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.GUID">comtypes.GUID</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.client.dynamic">comtypes.client.dynamic</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#ctypes.wintypes">ctypes.wintypes</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes._post_coinit.misc">comtypes._post_coinit.misc</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.stream"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/stream.py" type="text/plain"><tt>comtypes.stream</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.GUID">comtypes.GUID</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.client">comtypes.client</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.tools"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/tools/__init__.py" type="text/plain"><tt>comtypes.tools</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.tools.tlbparser">comtypes.tools.tlbparser</a>
+ &#8226;   <a href="#comtypes.tools.typedesc">comtypes.tools.typedesc</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.client._generate">comtypes.client._generate</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator">comtypes.tools.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.codegenerator">comtypes.tools.codegenerator.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.comments">comtypes.tools.codegenerator.comments</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.heads">comtypes.tools.codegenerator.heads</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.helpers">comtypes.tools.codegenerator.helpers</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.packing">comtypes.tools.codegenerator.packing</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.typeannotator">comtypes.tools.codegenerator.typeannotator</a>
+ &#8226;   <a href="#comtypes.tools.tlbparser">comtypes.tools.tlbparser</a>
+ &#8226;   <a href="#comtypes.tools.typedesc">comtypes.tools.typedesc</a>
+ &#8226;   <a href="#comtypes.tools.typedesc_base">comtypes.tools.typedesc_base</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.tools.codegenerator"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/tools/codegenerator/__init__.py" type="text/plain"><tt>comtypes.tools.codegenerator</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#comtypes.tools">comtypes.tools</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.codegenerator">comtypes.tools.codegenerator.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.heads">comtypes.tools.codegenerator.heads</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.modulenamer">comtypes.tools.codegenerator.modulenamer</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.namespaces">comtypes.tools.codegenerator.namespaces</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.packing">comtypes.tools.codegenerator.packing</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.typeannotator">comtypes.tools.codegenerator.typeannotator</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes._tlib_version_checker">comtypes._tlib_version_checker</a>
+ &#8226;   <a href="#comtypes.client._generate">comtypes.client._generate</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.codegenerator">comtypes.tools.codegenerator.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.comments">comtypes.tools.codegenerator.comments</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.heads">comtypes.tools.codegenerator.heads</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.helpers">comtypes.tools.codegenerator.helpers</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.modulenamer">comtypes.tools.codegenerator.modulenamer</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.namespaces">comtypes.tools.codegenerator.namespaces</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.packing">comtypes.tools.codegenerator.packing</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.typeannotator">comtypes.tools.codegenerator.typeannotator</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.tools.codegenerator.codegenerator"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/tools/codegenerator/codegenerator.py" type="text/plain"><tt>comtypes.tools.codegenerator.codegenerator</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.tools">comtypes.tools</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator">comtypes.tools.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.comments">comtypes.tools.codegenerator.comments</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.heads">comtypes.tools.codegenerator.heads</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.helpers">comtypes.tools.codegenerator.helpers</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.modulenamer">comtypes.tools.codegenerator.modulenamer</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.namespaces">comtypes.tools.codegenerator.namespaces</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.packing">comtypes.tools.codegenerator.packing</a>
+ &#8226;   <a href="#comtypes.tools.tlbparser">comtypes.tools.tlbparser</a>
+ &#8226;   <a href="#comtypes.tools.typedesc">comtypes.tools.typedesc</a>
+ &#8226;   <a href="#comtypes.typeinfo">comtypes.typeinfo</a>
+ &#8226;   <a href="#contextlib">contextlib</a>
+ &#8226;   <a href="#io">io</a>
+ &#8226;   <a href="#keyword">keyword</a>
+ &#8226;   <a href="#logging">logging</a>
+ &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#textwrap">textwrap</a>
+ &#8226;   <a href="#typing">typing</a>
+ &#8226;   <a href="#warnings">warnings</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.tools.codegenerator">comtypes.tools.codegenerator</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.tools.codegenerator.comments"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/tools/codegenerator/comments.py" type="text/plain"><tt>comtypes.tools.codegenerator.comments</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes.tools">comtypes.tools</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator">comtypes.tools.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.typedesc">comtypes.tools.typedesc</a>
+ &#8226;   <a href="#io">io</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.tools.codegenerator.codegenerator">comtypes.tools.codegenerator.codegenerator</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.tools.codegenerator.heads"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/tools/codegenerator/heads.py" type="text/plain"><tt>comtypes.tools.codegenerator.heads</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes.tools">comtypes.tools</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator">comtypes.tools.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.typeannotator">comtypes.tools.codegenerator.typeannotator</a>
+ &#8226;   <a href="#comtypes.tools.typedesc">comtypes.tools.typedesc</a>
+ &#8226;   <a href="#io">io</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.tools.codegenerator">comtypes.tools.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.codegenerator">comtypes.tools.codegenerator.codegenerator</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.tools.codegenerator.helpers"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/tools/codegenerator/helpers.py" type="text/plain"><tt>comtypes.tools.codegenerator.helpers</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes.tools">comtypes.tools</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator">comtypes.tools.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.modulenamer">comtypes.tools.codegenerator.modulenamer</a>
+ &#8226;   <a href="#comtypes.tools.typedesc">comtypes.tools.typedesc</a>
+ &#8226;   <a href="#keyword">keyword</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.tools.codegenerator.codegenerator">comtypes.tools.codegenerator.codegenerator</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.tools.codegenerator.modulenamer"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/tools/codegenerator/modulenamer.py" type="text/plain"><tt>comtypes.tools.codegenerator.modulenamer</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator">comtypes.tools.codegenerator</a>
+ &#8226;   <a href="#comtypes.typeinfo">comtypes.typeinfo</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.tools.codegenerator">comtypes.tools.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.codegenerator">comtypes.tools.codegenerator.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.helpers">comtypes.tools.codegenerator.helpers</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.tools.codegenerator.namespaces"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/tools/codegenerator/namespaces.py" type="text/plain"><tt>comtypes.tools.codegenerator.namespaces</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#collections">collections</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator">comtypes.tools.codegenerator</a>
+ &#8226;   <a href="#textwrap">textwrap</a>
+ &#8226;   <a href="#typing">typing</a>
+ &#8226;   <a href="#warnings">warnings</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.tools.codegenerator">comtypes.tools.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.codegenerator">comtypes.tools.codegenerator.codegenerator</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.tools.codegenerator.packing"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/tools/codegenerator/packing.py" type="text/plain"><tt>comtypes.tools.codegenerator.packing</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes.tools">comtypes.tools</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator">comtypes.tools.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.typedesc">comtypes.tools.typedesc</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.tools.codegenerator">comtypes.tools.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.codegenerator">comtypes.tools.codegenerator.codegenerator</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.tools.codegenerator.typeannotator"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/tools/codegenerator/typeannotator.py" type="text/plain"><tt>comtypes.tools.codegenerator.typeannotator</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#abc">abc</a>
+ &#8226;   <a href="#comtypes.tools">comtypes.tools</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator">comtypes.tools.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.typedesc">comtypes.tools.typedesc</a>
+ &#8226;   <a href="#keyword">keyword</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.tools.codegenerator">comtypes.tools.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.heads">comtypes.tools.codegenerator.heads</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.tools.tlbparser"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/tools/tlbparser.py" type="text/plain"><tt>comtypes.tools.tlbparser</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.client._code_cache">comtypes.client._code_cache</a>
+ &#8226;   <a href="#comtypes.persist">comtypes.persist</a>
+ &#8226;   <a href="#comtypes.tools">comtypes.tools</a>
+ &#8226;   <a href="#comtypes.tools.typedesc">comtypes.tools.typedesc</a>
+ &#8226;   <a href="#comtypes.typeinfo">comtypes.typeinfo</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#sys">sys</a>
+ &#8226;   <a href="#typing">typing</a>
+ &#8226;   <a href="#warnings">warnings</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.client._generate">comtypes.client._generate</a>
+ &#8226;   <a href="#comtypes.tools">comtypes.tools</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.codegenerator">comtypes.tools.codegenerator.codegenerator</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.tools.typedesc"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/tools/typedesc.py" type="text/plain"><tt>comtypes.tools.typedesc</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.tools">comtypes.tools</a>
+ &#8226;   <a href="#comtypes.tools.typedesc_base">comtypes.tools.typedesc_base</a>
+ &#8226;   <a href="#comtypes.typeinfo">comtypes.typeinfo</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.tools">comtypes.tools</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.codegenerator">comtypes.tools.codegenerator.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.comments">comtypes.tools.codegenerator.comments</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.heads">comtypes.tools.codegenerator.heads</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.helpers">comtypes.tools.codegenerator.helpers</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.packing">comtypes.tools.codegenerator.packing</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.typeannotator">comtypes.tools.codegenerator.typeannotator</a>
+ &#8226;   <a href="#comtypes.tools.tlbparser">comtypes.tools.tlbparser</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.tools.typedesc_base"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/tools/typedesc_base.py" type="text/plain"><tt>comtypes.tools.typedesc_base</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.tools">comtypes.tools</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes.tools.typedesc">comtypes.tools.typedesc</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="comtypes.typeinfo"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/comtypes/typeinfo.py" type="text/plain"><tt>comtypes.typeinfo</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.GUID">comtypes.GUID</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#ctypes.wintypes">ctypes.wintypes</a>
+ &#8226;   <a href="#sys">sys</a>
+ &#8226;   <a href="#typing">typing</a>
+ &#8226;   <a href="#weakref">weakref</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes._comobject">comtypes._comobject</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.client._constants">comtypes.client._constants</a>
+ &#8226;   <a href="#comtypes.client._events">comtypes.client._events</a>
+ &#8226;   <a href="#comtypes.client._generate">comtypes.client._generate</a>
+ &#8226;   <a href="#comtypes.client._managing">comtypes.client._managing</a>
+ &#8226;   <a href="#comtypes.client.lazybind">comtypes.client.lazybind</a>
+ &#8226;   <a href="#comtypes.safearray">comtypes.safearray</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.codegenerator">comtypes.tools.codegenerator.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.modulenamer">comtypes.tools.codegenerator.modulenamer</a>
+ &#8226;   <a href="#comtypes.tools.tlbparser">comtypes.tools.tlbparser</a>
+ &#8226;   <a href="#comtypes.tools.typedesc">comtypes.tools.typedesc</a>
 
   </div>
 
@@ -5858,6 +7171,7 @@ imported by:
  &#8226;   <a href="#ast">ast</a>
  &#8226;   <a href="#asyncio.staggered">asyncio.staggered</a>
  &#8226;   <a href="#bdb">bdb</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.codegenerator">comtypes.tools.codegenerator.codegenerator</a>
  &#8226;   <a href="#dearpygui.dearpygui">dearpygui.dearpygui</a>
  &#8226;   <a href="#getpass">getpass</a>
  &#8226;   <a href="#glob">glob</a>
@@ -5930,6 +7244,7 @@ imported by:
  &#8226;   <a href="#_sre">_sre</a>
  &#8226;   <a href="#argparse">argparse</a>
  &#8226;   <a href="#collections">collections</a>
+ &#8226;   <a href="#cv2">cv2</a>
  &#8226;   <a href="#dataclasses">dataclasses</a>
  &#8226;   <a href="#email.generator">email.generator</a>
  &#8226;   <a href="#gettext">gettext</a>
@@ -6012,6 +7327,9 @@ imported by:
 <span class="moduletype">Package</span>  <div class="import">
 imports:
     <a href="#_ctypes">_ctypes</a>
+ &#8226;   <a href="#ctypes._CArgObject">ctypes._CArgObject</a>
+ &#8226;   <a href="#ctypes._CData">ctypes._CData</a>
+ &#8226;   <a href="#ctypes._FuncPointer">ctypes._FuncPointer</a>
  &#8226;   <a href="#ctypes._endian">ctypes._endian</a>
  &#8226;   <a href="#nt">nt</a>
  &#8226;   <a href="#os">os</a>
@@ -6023,11 +7341,50 @@ imports:
   <div class="import">
 imported by:
     <a href="#SaveManager.py">SaveManager.py</a>
+ &#8226;   <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.GUID">comtypes.GUID</a>
+ &#8226;   <a href="#comtypes._comobject">comtypes._comobject</a>
+ &#8226;   <a href="#comtypes._memberspec">comtypes._memberspec</a>
+ &#8226;   <a href="#comtypes._meta">comtypes._meta</a>
+ &#8226;   <a href="#comtypes._post_coinit.bstr">comtypes._post_coinit.bstr</a>
+ &#8226;   <a href="#comtypes._post_coinit.instancemethod">comtypes._post_coinit.instancemethod</a>
+ &#8226;   <a href="#comtypes._post_coinit.misc">comtypes._post_coinit.misc</a>
+ &#8226;   <a href="#comtypes._post_coinit.unknwn">comtypes._post_coinit.unknwn</a>
+ &#8226;   <a href="#comtypes._safearray">comtypes._safearray</a>
+ &#8226;   <a href="#comtypes._vtbl">comtypes._vtbl</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.client._code_cache">comtypes.client._code_cache</a>
+ &#8226;   <a href="#comtypes.client._events">comtypes.client._events</a>
+ &#8226;   <a href="#comtypes.client._generate">comtypes.client._generate</a>
+ &#8226;   <a href="#comtypes.client.dynamic">comtypes.client.dynamic</a>
+ &#8226;   <a href="#comtypes.connectionpoints">comtypes.connectionpoints</a>
+ &#8226;   <a href="#comtypes.errorinfo">comtypes.errorinfo</a>
+ &#8226;   <a href="#comtypes.hresult">comtypes.hresult</a>
+ &#8226;   <a href="#comtypes.messageloop">comtypes.messageloop</a>
+ &#8226;   <a href="#comtypes.persist">comtypes.persist</a>
+ &#8226;   <a href="#comtypes.safearray">comtypes.safearray</a>
+ &#8226;   <a href="#comtypes.server">comtypes.server</a>
+ &#8226;   <a href="#comtypes.stream">comtypes.stream</a>
+ &#8226;   <a href="#comtypes.tools.tlbparser">comtypes.tools.tlbparser</a>
+ &#8226;   <a href="#comtypes.tools.typedesc">comtypes.tools.typedesc</a>
+ &#8226;   <a href="#comtypes.typeinfo">comtypes.typeinfo</a>
  &#8226;   <a href="#ctypes._aix">ctypes._aix</a>
  &#8226;   <a href="#ctypes._endian">ctypes._endian</a>
  &#8226;   <a href="#ctypes.macholib">ctypes.macholib</a>
  &#8226;   <a href="#ctypes.util">ctypes.util</a>
  &#8226;   <a href="#ctypes.wintypes">ctypes.wintypes</a>
+ &#8226;   <a href="#dxcam._libs.d3d11">dxcam._libs.d3d11</a>
+ &#8226;   <a href="#dxcam._libs.dxgi">dxcam._libs.dxgi</a>
+ &#8226;   <a href="#dxcam._libs.user32">dxcam._libs.user32</a>
+ &#8226;   <a href="#dxcam.core.device">dxcam.core.device</a>
+ &#8226;   <a href="#dxcam.core.duplicator">dxcam.core.duplicator</a>
+ &#8226;   <a href="#dxcam.core.output">dxcam.core.output</a>
+ &#8226;   <a href="#dxcam.core.stagesurf">dxcam.core.stagesurf</a>
+ &#8226;   <a href="#dxcam.dxcam">dxcam.dxcam</a>
+ &#8226;   <a href="#dxcam.processor.numpy_processor">dxcam.processor.numpy_processor</a>
+ &#8226;   <a href="#dxcam.util.io">dxcam.util.io</a>
+ &#8226;   <a href="#dxcam.util.timer">dxcam.util.timer</a>
  &#8226;   <a href="#keyboard._darwinkeyboard">keyboard._darwinkeyboard</a>
  &#8226;   <a href="#keyboard._winkeyboard">keyboard._winkeyboard</a>
  &#8226;   <a href="#multiprocessing.sharedctypes">multiprocessing.sharedctypes</a>
@@ -6035,6 +7392,43 @@ imported by:
  &#8226;   <a href="#numpy._core._internal">numpy._core._internal</a>
  &#8226;   <a href="#numpy.ctypeslib">numpy.ctypeslib</a>
  &#8226;   <a href="#pyperclip">pyperclip</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="ctypes._CArgObject"></a>
+  <a target="code" href="" type="text/plain"><tt>ctypes._CArgObject</tt></a>
+<span class="moduletype">MissingModule</span>  <div class="import">
+imported by:
+    <a href="#comtypes._comobject">comtypes._comobject</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="ctypes._CData"></a>
+  <a target="code" href="" type="text/plain"><tt>ctypes._CData</tt></a>
+<span class="moduletype">MissingModule</span>  <div class="import">
+imported by:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="ctypes._FuncPointer"></a>
+  <a target="code" href="" type="text/plain"><tt>ctypes._FuncPointer</tt></a>
+<span class="moduletype">MissingModule</span>  <div class="import">
+imported by:
+    <a href="#comtypes._vtbl">comtypes._vtbl</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
 
   </div>
 
@@ -6187,8 +7581,336 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#keyboard._winkeyboard">keyboard._winkeyboard</a>
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.GUID">comtypes.GUID</a>
+ &#8226;   <a href="#comtypes._comobject">comtypes._comobject</a>
+ &#8226;   <a href="#comtypes._post_coinit.misc">comtypes._post_coinit.misc</a>
+ &#8226;   <a href="#comtypes._safearray">comtypes._safearray</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.client._code_cache">comtypes.client._code_cache</a>
+ &#8226;   <a href="#comtypes.client._events">comtypes.client._events</a>
+ &#8226;   <a href="#comtypes.errorinfo">comtypes.errorinfo</a>
+ &#8226;   <a href="#comtypes.messageloop">comtypes.messageloop</a>
+ &#8226;   <a href="#comtypes.persist">comtypes.persist</a>
+ &#8226;   <a href="#comtypes.server">comtypes.server</a>
+ &#8226;   <a href="#comtypes.typeinfo">comtypes.typeinfo</a>
+ &#8226;   <a href="#dxcam._libs.d3d11">dxcam._libs.d3d11</a>
+ &#8226;   <a href="#dxcam._libs.dxgi">dxcam._libs.dxgi</a>
+ &#8226;   <a href="#dxcam._libs.user32">dxcam._libs.user32</a>
+ &#8226;   <a href="#dxcam.util.timer">dxcam.util.timer</a>
+ &#8226;   <a href="#keyboard._winkeyboard">keyboard._winkeyboard</a>
  &#8226;   <a href="#pyperclip">pyperclip</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="cv2"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/cv2/__init__.py" type="text/plain"><tt>cv2</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#copy">copy</a>
+ &#8226;   <a href="#cv2">cv2</a>
+ &#8226;   <a href="#cv2.config">cv2.config</a>
+ &#8226;   <a href="#cv2.config-3">cv2.config-3</a>
+ &#8226;   <a href="#cv2.cv2">cv2.cv2</a>
+ &#8226;   <a href="#cv2.data">cv2.data</a>
+ &#8226;   <a href="#cv2.gapi">cv2.gapi</a>
+ &#8226;   <a href="#cv2.load_config_py3">cv2.load_config_py3</a>
+ &#8226;   <a href="#cv2.mat_wrapper">cv2.mat_wrapper</a>
+ &#8226;   <a href="#cv2.misc">cv2.misc</a>
+ &#8226;   <a href="#cv2.misc.version">cv2.misc.version</a>
+ &#8226;   <a href="#cv2.typing">cv2.typing</a>
+ &#8226;   <a href="#cv2.utils">cv2.utils</a>
+ &#8226;   <a href="#cv2.version">cv2.version</a>
+ &#8226;   <a href="#importlib">importlib</a>
+ &#8226;   <a href="#numpy">numpy</a>
+ &#8226;   <a href="#numpy.core.multiarray">numpy.core.multiarray</a>
+ &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#platform">platform</a>
+ &#8226;   <a href="#sys">sys</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#SaveManager.py">SaveManager.py</a>
+ &#8226;   <a href="#cv2">cv2</a>
+ &#8226;   <a href="#cv2.config">cv2.config</a>
+ &#8226;   <a href="#cv2.config-3">cv2.config-3</a>
+ &#8226;   <a href="#cv2.cv2">cv2.cv2</a>
+ &#8226;   <a href="#cv2.data">cv2.data</a>
+ &#8226;   <a href="#cv2.dnn">cv2.dnn</a>
+ &#8226;   <a href="#cv2.gapi">cv2.gapi</a>
+ &#8226;   <a href="#cv2.load_config_py3">cv2.load_config_py3</a>
+ &#8226;   <a href="#cv2.mat_wrapper">cv2.mat_wrapper</a>
+ &#8226;   <a href="#cv2.misc">cv2.misc</a>
+ &#8226;   <a href="#cv2.misc.version">cv2.misc.version</a>
+ &#8226;   <a href="#cv2.typing">cv2.typing</a>
+ &#8226;   <a href="#cv2.utils">cv2.utils</a>
+ &#8226;   <a href="#cv2.version">cv2.version</a>
+ &#8226;   <a href="#dxcam.processor.numpy_processor">dxcam.processor.numpy_processor</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="cv2.config"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/cv2/config.py" type="text/plain"><tt>cv2.config</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#cv2">cv2</a>
+ &#8226;   <a href="#os">os</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#cv2">cv2</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="cv2.config-3"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/cv2/config-3.py" type="text/plain"><tt>cv2.config-3</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#cv2">cv2</a>
+ &#8226;   <a href="#cv2.version">cv2.version</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#cv2">cv2</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="cv2.cv2"></a>
+  <tt>cv2.cv2</tt> <span class="moduletype"><tt>c:\Users\Admin\Documents\work\projects\VSCode projects\SaveManager\.conda\Lib\site-packages\cv2\cv2.pyd</tt></span>  <div class="import">
+imports:
+    <a href="#cv2">cv2</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#cv2">cv2</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="cv2.data"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/cv2/data/__init__.py" type="text/plain"><tt>cv2.data</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#cv2">cv2</a>
+ &#8226;   <a href="#os">os</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#cv2">cv2</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="cv2.dnn"></a>
+  <a target="code" href="-" type="text/plain"><tt>cv2.dnn</tt></a>
+<span class="moduletype">NamespacePackage</span>  <div class="import">
+imports:
+    <a href="#cv2">cv2</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#cv2.typing">cv2.typing</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="cv2.gapi"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/cv2/gapi/__init__.py" type="text/plain"><tt>cv2.gapi</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#cv2">cv2</a>
+ &#8226;   <a href="#sys">sys</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#cv2">cv2</a>
+ &#8226;   <a href="#cv2.gapi.wip">cv2.gapi.wip</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="cv2.gapi.wip"></a>
+  <a target="code" href="-" type="text/plain"><tt>cv2.gapi.wip</tt></a>
+<span class="moduletype">NamespacePackage</span>  <div class="import">
+imports:
+    <a href="#cv2.gapi">cv2.gapi</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#cv2.gapi.wip.draw">cv2.gapi.wip.draw</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="cv2.gapi.wip.draw"></a>
+  <a target="code" href="-" type="text/plain"><tt>cv2.gapi.wip.draw</tt></a>
+<span class="moduletype">NamespacePackage</span>  <div class="import">
+imports:
+    <a href="#cv2.gapi.wip">cv2.gapi.wip</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#cv2.typing">cv2.typing</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="cv2.load_config_py3"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/cv2/load_config_py3.py" type="text/plain"><tt>cv2.load_config_py3</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#cv2">cv2</a>
+ &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#sys">sys</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#cv2">cv2</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="cv2.mat_wrapper"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/cv2/mat_wrapper/__init__.py" type="text/plain"><tt>cv2.mat_wrapper</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#cv2">cv2</a>
+ &#8226;   <a href="#numpy">numpy</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#cv2">cv2</a>
+ &#8226;   <a href="#cv2.typing">cv2.typing</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="cv2.misc"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/cv2/misc/__init__.py" type="text/plain"><tt>cv2.misc</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#cv2">cv2</a>
+ &#8226;   <a href="#cv2.misc.version">cv2.misc.version</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#cv2">cv2</a>
+ &#8226;   <a href="#cv2.misc.version">cv2.misc.version</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="cv2.misc.version"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/cv2/misc/version.py" type="text/plain"><tt>cv2.misc.version</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#cv2">cv2</a>
+ &#8226;   <a href="#cv2.misc">cv2.misc</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#cv2">cv2</a>
+ &#8226;   <a href="#cv2.misc">cv2.misc</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="cv2.typing"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/cv2/typing/__init__.py" type="text/plain"><tt>cv2.typing</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#cv2">cv2</a>
+ &#8226;   <a href="#cv2.dnn">cv2.dnn</a>
+ &#8226;   <a href="#cv2.gapi.wip.draw">cv2.gapi.wip.draw</a>
+ &#8226;   <a href="#cv2.mat_wrapper">cv2.mat_wrapper</a>
+ &#8226;   <a href="#numpy">numpy</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#cv2">cv2</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="cv2.utils"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/cv2/utils/__init__.py" type="text/plain"><tt>cv2.utils</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#collections">collections</a>
+ &#8226;   <a href="#cv2">cv2</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#cv2">cv2</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="cv2.version"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/cv2/version.py" type="text/plain"><tt>cv2.version</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#cv2">cv2</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#cv2">cv2</a>
+ &#8226;   <a href="#cv2.config-3">cv2.config-3</a>
 
   </div>
 
@@ -6213,7 +7935,11 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#pprint">pprint</a>
+    <a href="#dxcam.core.device">dxcam.core.device</a>
+ &#8226;   <a href="#dxcam.core.duplicator">dxcam.core.duplicator</a>
+ &#8226;   <a href="#dxcam.core.output">dxcam.core.output</a>
+ &#8226;   <a href="#dxcam.core.stagesurf">dxcam.core.stagesurf</a>
+ &#8226;   <a href="#pprint">pprint</a>
  &#8226;   <a href="#urllib3.contrib.emscripten.request">urllib3.contrib.emscripten.request</a>
  &#8226;   <a href="#urllib3.contrib.emscripten.response">urllib3.contrib.emscripten.response</a>
 
@@ -6236,6 +7962,7 @@ imported by:
     <a href="#SaveManager.py">SaveManager.py</a>
  &#8226;   <a href="#_strptime">_strptime</a>
  &#8226;   <a href="#calendar">calendar</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
  &#8226;   <a href="#email.utils">email.utils</a>
  &#8226;   <a href="#http.cookiejar">http.cookiejar</a>
  &#8226;   <a href="#http.server">http.server</a>
@@ -6308,7 +8035,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#fractions">fractions</a>
+    <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#fractions">fractions</a>
  &#8226;   <a href="#statistics">statistics</a>
  &#8226;   <a href="#xmlrpc.client">xmlrpc.client</a>
 
@@ -6407,6 +8135,369 @@ imported by:
 <span class="moduletype">MissingModule</span>  <div class="import">
 imported by:
     <a href="#requests.cookies">requests.cookies</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="dxcam"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/dxcam/__init__.py" type="text/plain"><tt>dxcam</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#dxcam.dxcam">dxcam.dxcam</a>
+ &#8226;   <a href="#dxcam.util.io">dxcam.util.io</a>
+ &#8226;   <a href="#time">time</a>
+ &#8226;   <a href="#weakref">weakref</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#SaveManager.py">SaveManager.py</a>
+ &#8226;   <a href="#dxcam._libs">dxcam._libs</a>
+ &#8226;   <a href="#dxcam.core">dxcam.core</a>
+ &#8226;   <a href="#dxcam.dxcam">dxcam.dxcam</a>
+ &#8226;   <a href="#dxcam.processor">dxcam.processor</a>
+ &#8226;   <a href="#dxcam.util">dxcam.util</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="dxcam._libs"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/dxcam/_libs/__init__.py" type="text/plain"><tt>dxcam._libs</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#dxcam">dxcam</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#dxcam._libs.d3d11">dxcam._libs.d3d11</a>
+ &#8226;   <a href="#dxcam._libs.dxgi">dxcam._libs.dxgi</a>
+ &#8226;   <a href="#dxcam._libs.user32">dxcam._libs.user32</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="dxcam._libs.d3d11"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/dxcam/_libs/d3d11.py" type="text/plain"><tt>dxcam._libs.d3d11</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#ctypes.wintypes">ctypes.wintypes</a>
+ &#8226;   <a href="#dxcam._libs">dxcam._libs</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#dxcam._libs.dxgi">dxcam._libs.dxgi</a>
+ &#8226;   <a href="#dxcam.core.device">dxcam.core.device</a>
+ &#8226;   <a href="#dxcam.core.duplicator">dxcam.core.duplicator</a>
+ &#8226;   <a href="#dxcam.core.output">dxcam.core.output</a>
+ &#8226;   <a href="#dxcam.core.stagesurf">dxcam.core.stagesurf</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="dxcam._libs.dxgi"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/dxcam/_libs/dxgi.py" type="text/plain"><tt>dxcam._libs.dxgi</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#ctypes.wintypes">ctypes.wintypes</a>
+ &#8226;   <a href="#dxcam._libs">dxcam._libs</a>
+ &#8226;   <a href="#dxcam._libs.d3d11">dxcam._libs.d3d11</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#dxcam.core.device">dxcam.core.device</a>
+ &#8226;   <a href="#dxcam.core.duplicator">dxcam.core.duplicator</a>
+ &#8226;   <a href="#dxcam.core.output">dxcam.core.output</a>
+ &#8226;   <a href="#dxcam.core.stagesurf">dxcam.core.stagesurf</a>
+ &#8226;   <a href="#dxcam.util.io">dxcam.util.io</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="dxcam._libs.user32"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/dxcam/_libs/user32.py" type="text/plain"><tt>dxcam._libs.user32</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#ctypes.wintypes">ctypes.wintypes</a>
+ &#8226;   <a href="#dxcam._libs">dxcam._libs</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#dxcam.util.io">dxcam.util.io</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="dxcam.core"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/dxcam/core/__init__.py" type="text/plain"><tt>dxcam.core</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#dxcam">dxcam</a>
+ &#8226;   <a href="#dxcam.core.device">dxcam.core.device</a>
+ &#8226;   <a href="#dxcam.core.duplicator">dxcam.core.duplicator</a>
+ &#8226;   <a href="#dxcam.core.output">dxcam.core.output</a>
+ &#8226;   <a href="#dxcam.core.stagesurf">dxcam.core.stagesurf</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#dxcam.core.device">dxcam.core.device</a>
+ &#8226;   <a href="#dxcam.core.duplicator">dxcam.core.duplicator</a>
+ &#8226;   <a href="#dxcam.core.output">dxcam.core.output</a>
+ &#8226;   <a href="#dxcam.core.stagesurf">dxcam.core.stagesurf</a>
+ &#8226;   <a href="#dxcam.dxcam">dxcam.dxcam</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="dxcam.core.device"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/dxcam/core/device.py" type="text/plain"><tt>dxcam.core.device</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#dataclasses">dataclasses</a>
+ &#8226;   <a href="#dxcam._libs.d3d11">dxcam._libs.d3d11</a>
+ &#8226;   <a href="#dxcam._libs.dxgi">dxcam._libs.dxgi</a>
+ &#8226;   <a href="#dxcam.core">dxcam.core</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#dxcam.core">dxcam.core</a>
+ &#8226;   <a href="#dxcam.core.duplicator">dxcam.core.duplicator</a>
+ &#8226;   <a href="#dxcam.core.stagesurf">dxcam.core.stagesurf</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="dxcam.core.duplicator"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/dxcam/core/duplicator.py" type="text/plain"><tt>dxcam.core.duplicator</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#dataclasses">dataclasses</a>
+ &#8226;   <a href="#dxcam._libs.d3d11">dxcam._libs.d3d11</a>
+ &#8226;   <a href="#dxcam._libs.dxgi">dxcam._libs.dxgi</a>
+ &#8226;   <a href="#dxcam.core">dxcam.core</a>
+ &#8226;   <a href="#dxcam.core.device">dxcam.core.device</a>
+ &#8226;   <a href="#dxcam.core.output">dxcam.core.output</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#dxcam.core">dxcam.core</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="dxcam.core.output"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/dxcam/core/output.py" type="text/plain"><tt>dxcam.core.output</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#dataclasses">dataclasses</a>
+ &#8226;   <a href="#dxcam._libs.d3d11">dxcam._libs.d3d11</a>
+ &#8226;   <a href="#dxcam._libs.dxgi">dxcam._libs.dxgi</a>
+ &#8226;   <a href="#dxcam.core">dxcam.core</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#dxcam.core">dxcam.core</a>
+ &#8226;   <a href="#dxcam.core.duplicator">dxcam.core.duplicator</a>
+ &#8226;   <a href="#dxcam.core.stagesurf">dxcam.core.stagesurf</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="dxcam.core.stagesurf"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/dxcam/core/stagesurf.py" type="text/plain"><tt>dxcam.core.stagesurf</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#dataclasses">dataclasses</a>
+ &#8226;   <a href="#dxcam._libs.d3d11">dxcam._libs.d3d11</a>
+ &#8226;   <a href="#dxcam._libs.dxgi">dxcam._libs.dxgi</a>
+ &#8226;   <a href="#dxcam.core">dxcam.core</a>
+ &#8226;   <a href="#dxcam.core.device">dxcam.core.device</a>
+ &#8226;   <a href="#dxcam.core.output">dxcam.core.output</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#dxcam.core">dxcam.core</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="dxcam.dxcam"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/dxcam/dxcam.py" type="text/plain"><tt>dxcam.dxcam</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#dxcam">dxcam</a>
+ &#8226;   <a href="#dxcam.core">dxcam.core</a>
+ &#8226;   <a href="#dxcam.processor">dxcam.processor</a>
+ &#8226;   <a href="#dxcam.util.timer">dxcam.util.timer</a>
+ &#8226;   <a href="#numpy">numpy</a>
+ &#8226;   <a href="#threading">threading</a>
+ &#8226;   <a href="#time">time</a>
+ &#8226;   <a href="#traceback">traceback</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#dxcam">dxcam</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="dxcam.processor"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/dxcam/processor/__init__.py" type="text/plain"><tt>dxcam.processor</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#dxcam">dxcam</a>
+ &#8226;   <a href="#dxcam.processor.base">dxcam.processor.base</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#dxcam.dxcam">dxcam.dxcam</a>
+ &#8226;   <a href="#dxcam.processor.base">dxcam.processor.base</a>
+ &#8226;   <a href="#dxcam.processor.numpy_processor">dxcam.processor.numpy_processor</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="dxcam.processor.base"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/dxcam/processor/base.py" type="text/plain"><tt>dxcam.processor.base</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#dxcam.processor">dxcam.processor</a>
+ &#8226;   <a href="#dxcam.processor.numpy_processor">dxcam.processor.numpy_processor</a>
+ &#8226;   <a href="#enum">enum</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#dxcam.processor">dxcam.processor</a>
+ &#8226;   <a href="#dxcam.processor.numpy_processor">dxcam.processor.numpy_processor</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="dxcam.processor.numpy_processor"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/dxcam/processor/numpy_processor.py" type="text/plain"><tt>dxcam.processor.numpy_processor</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#cv2">cv2</a>
+ &#8226;   <a href="#dxcam.processor">dxcam.processor</a>
+ &#8226;   <a href="#dxcam.processor.base">dxcam.processor.base</a>
+ &#8226;   <a href="#numpy">numpy</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#dxcam.processor.base">dxcam.processor.base</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="dxcam.util"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/dxcam/util/__init__.py" type="text/plain"><tt>dxcam.util</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#dxcam">dxcam</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#dxcam.util.io">dxcam.util.io</a>
+ &#8226;   <a href="#dxcam.util.timer">dxcam.util.timer</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="dxcam.util.io"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/dxcam/util/io.py" type="text/plain"><tt>dxcam.util.io</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#collections">collections</a>
+ &#8226;   <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#dxcam._libs.dxgi">dxcam._libs.dxgi</a>
+ &#8226;   <a href="#dxcam._libs.user32">dxcam._libs.user32</a>
+ &#8226;   <a href="#dxcam.util">dxcam.util</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#dxcam">dxcam</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="dxcam.util.timer"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/dxcam/util/timer.py" type="text/plain"><tt>dxcam.util.timer</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#ctypes.wintypes">ctypes.wintypes</a>
+ &#8226;   <a href="#dxcam.util">dxcam.util</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#dxcam.dxcam">dxcam.dxcam</a>
 
   </div>
 
@@ -9430,6 +11521,7 @@ imported by:
  &#8226;   <a href="#asyncio.sslproto">asyncio.sslproto</a>
  &#8226;   <a href="#asyncio.timeouts">asyncio.timeouts</a>
  &#8226;   <a href="#calendar">calendar</a>
+ &#8226;   <a href="#dxcam.processor.base">dxcam.processor.base</a>
  &#8226;   <a href="#http">http</a>
  &#8226;   <a href="#inspect">inspect</a>
  &#8226;   <a href="#numpy.__config__">numpy.__config__</a>
@@ -10259,6 +12351,7 @@ imports:
  &#8226;   <a href="#importlib">importlib</a>
  &#8226;   <a href="#importlib._bootstrap">importlib._bootstrap</a>
  &#8226;   <a href="#importlib._bootstrap_external">importlib._bootstrap_external</a>
+ &#8226;   <a href="#importlib.machinery">importlib.machinery</a>
  &#8226;   <a href="#sys">sys</a>
  &#8226;   <a href="#warnings">warnings</a>
 
@@ -10267,6 +12360,8 @@ imports:
 imported by:
     <a href="#charset_normalizer.cd">charset_normalizer.cd</a>
  &#8226;   <a href="#charset_normalizer.utils">charset_normalizer.utils</a>
+ &#8226;   <a href="#comtypes.client._generate">comtypes.client._generate</a>
+ &#8226;   <a href="#cv2">cv2</a>
  &#8226;   <a href="#importlib">importlib</a>
  &#8226;   <a href="#importlib._abc">importlib._abc</a>
  &#8226;   <a href="#importlib._bootstrap">importlib._bootstrap</a>
@@ -10396,6 +12491,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#ctypes.util">ctypes.util</a>
+ &#8226;   <a href="#importlib">importlib</a>
  &#8226;   <a href="#importlib.abc">importlib.abc</a>
  &#8226;   <a href="#inspect">inspect</a>
  &#8226;   <a href="#pkgutil">pkgutil</a>
@@ -10814,6 +12910,7 @@ imported by:
  &#8226;   <a href="#asyncio.format_helpers">asyncio.format_helpers</a>
  &#8226;   <a href="#asyncio.tasks">asyncio.tasks</a>
  &#8226;   <a href="#bdb">bdb</a>
+ &#8226;   <a href="#comtypes.client._generate">comtypes.client._generate</a>
  &#8226;   <a href="#dataclasses">dataclasses</a>
  &#8226;   <a href="#dearpygui.dearpygui">dearpygui.dearpygui</a>
  &#8226;   <a href="#doctest">doctest</a>
@@ -10872,6 +12969,9 @@ imported by:
  &#8226;   <a href="#asyncio.proactor_events">asyncio.proactor_events</a>
  &#8226;   <a href="#asyncio.unix_events">asyncio.unix_events</a>
  &#8226;   <a href="#bz2">bz2</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.codegenerator">comtypes.tools.codegenerator.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.comments">comtypes.tools.codegenerator.comments</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.heads">comtypes.tools.codegenerator.heads</a>
  &#8226;   <a href="#configparser">configparser</a>
  &#8226;   <a href="#csv">csv</a>
  &#8226;   <a href="#dis">dis</a>
@@ -11340,6 +13440,10 @@ imported by:
 imported by:
     <a href="#SaveManager.py">SaveManager.py</a>
  &#8226;   <a href="#collections">collections</a>
+ &#8226;   <a href="#comtypes.client._constants">comtypes.client._constants</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.codegenerator">comtypes.tools.codegenerator.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.helpers">comtypes.tools.codegenerator.helpers</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.typeannotator">comtypes.tools.codegenerator.typeannotator</a>
  &#8226;   <a href="#dataclasses">dataclasses</a>
  &#8226;   <a href="#inspect">inspect</a>
 
@@ -11436,6 +13540,17 @@ imported by:
  &#8226;   <a href="#charset_normalizer">charset_normalizer</a>
  &#8226;   <a href="#charset_normalizer.api">charset_normalizer.api</a>
  &#8226;   <a href="#charset_normalizer.utils">charset_normalizer.utils</a>
+ &#8226;   <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes._comobject">comtypes._comobject</a>
+ &#8226;   <a href="#comtypes._post_coinit.unknwn">comtypes._post_coinit.unknwn</a>
+ &#8226;   <a href="#comtypes._vtbl">comtypes._vtbl</a>
+ &#8226;   <a href="#comtypes.client">comtypes.client</a>
+ &#8226;   <a href="#comtypes.client._code_cache">comtypes.client._code_cache</a>
+ &#8226;   <a href="#comtypes.client._create">comtypes.client._create</a>
+ &#8226;   <a href="#comtypes.client._events">comtypes.client._events</a>
+ &#8226;   <a href="#comtypes.client._generate">comtypes.client._generate</a>
+ &#8226;   <a href="#comtypes.client._managing">comtypes.client._managing</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.codegenerator">comtypes.tools.codegenerator.codegenerator</a>
  &#8226;   <a href="#concurrent.futures._base">concurrent.futures._base</a>
  &#8226;   <a href="#hashlib">hashlib</a>
  &#8226;   <a href="#http.cookiejar">http.cookiejar</a>
@@ -12711,6 +14826,12 @@ imports:
   <div class="import">
 imported by:
     <a href="#SaveManager.py">SaveManager.py</a>
+ &#8226;   <a href="#comtypes._npsupport">comtypes._npsupport</a>
+ &#8226;   <a href="#cv2">cv2</a>
+ &#8226;   <a href="#cv2.mat_wrapper">cv2.mat_wrapper</a>
+ &#8226;   <a href="#cv2.typing">cv2.typing</a>
+ &#8226;   <a href="#dxcam.dxcam">dxcam.dxcam</a>
+ &#8226;   <a href="#dxcam.processor.numpy_processor">dxcam.processor.numpy_processor</a>
  &#8226;   <a href="#numpy">numpy</a>
  &#8226;   <a href="#numpy.__config__">numpy.__config__</a>
  &#8226;   <a href="#numpy._array_api_info">numpy._array_api_info</a>
@@ -13088,6 +15209,7 @@ imported by:
  &#8226;   <a href="#numpy._core.strings">numpy._core.strings</a>
  &#8226;   <a href="#numpy._core.umath">numpy._core.umath</a>
  &#8226;   <a href="#numpy.core">numpy.core</a>
+ &#8226;   <a href="#numpy.core.multiarray">numpy.core.multiarray</a>
  &#8226;   <a href="#numpy.fft._helper">numpy.fft._helper</a>
  &#8226;   <a href="#numpy.fft._pocketfft">numpy.fft._pocketfft</a>
  &#8226;   <a href="#numpy.lib._array_utils_impl">numpy.lib._array_utils_impl</a>
@@ -15112,6 +17234,7 @@ imported by:
  &#8226;   <a href="#numpy._core.shape_base">numpy._core.shape_base</a>
  &#8226;   <a href="#numpy._core.strings">numpy._core.strings</a>
  &#8226;   <a href="#numpy._typing._array_like">numpy._typing._array_like</a>
+ &#8226;   <a href="#numpy.core.multiarray">numpy.core.multiarray</a>
  &#8226;   <a href="#numpy.ctypeslib">numpy.ctypeslib</a>
  &#8226;   <a href="#numpy.lib._function_base_impl">numpy.lib._function_base_impl</a>
  &#8226;   <a href="#numpy.lib._index_tricks_impl">numpy.lib._index_tricks_impl</a>
@@ -16557,6 +18680,7 @@ imports:
 imported by:
     <a href="#numpy">numpy</a>
  &#8226;   <a href="#numpy.core._utils">numpy.core._utils</a>
+ &#8226;   <a href="#numpy.core.multiarray">numpy.core.multiarray</a>
 
   </div>
 
@@ -16574,6 +18698,26 @@ imports:
   <div class="import">
 imported by:
     <a href="#numpy.core">numpy.core</a>
+ &#8226;   <a href="#numpy.core.multiarray">numpy.core.multiarray</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="numpy.core.multiarray"></a>
+  <a target="code" href="///C:/Users/Admin/Documents/work/projects/VSCode%20projects/SaveManager/.conda/Lib/site-packages/numpy/core/multiarray.py" type="text/plain"><tt>numpy.core.multiarray</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#numpy._core">numpy._core</a>
+ &#8226;   <a href="#numpy._core.multiarray">numpy._core.multiarray</a>
+ &#8226;   <a href="#numpy.core">numpy.core</a>
+ &#8226;   <a href="#numpy.core._utils">numpy.core._utils</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#cv2">cv2</a>
 
   </div>
 
@@ -16595,7 +18739,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#numpy">numpy</a>
+    <a href="#comtypes._npsupport">comtypes._npsupport</a>
+ &#8226;   <a href="#numpy">numpy</a>
 
   </div>
 
@@ -19162,6 +21307,11 @@ imported by:
  &#8226;   <a href="#bz2">bz2</a>
  &#8226;   <a href="#certifi.core">certifi.core</a>
  &#8226;   <a href="#charset_normalizer.api">charset_normalizer.api</a>
+ &#8226;   <a href="#comtypes._tlib_version_checker">comtypes._tlib_version_checker</a>
+ &#8226;   <a href="#comtypes.client._code_cache">comtypes.client._code_cache</a>
+ &#8226;   <a href="#comtypes.client._generate">comtypes.client._generate</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.codegenerator">comtypes.tools.codegenerator.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.tlbparser">comtypes.tools.tlbparser</a>
  &#8226;   <a href="#concurrent.futures.process">concurrent.futures.process</a>
  &#8226;   <a href="#concurrent.futures.thread">concurrent.futures.thread</a>
  &#8226;   <a href="#configparser">configparser</a>
@@ -19170,6 +21320,10 @@ imported by:
  &#8226;   <a href="#ctypes._aix">ctypes._aix</a>
  &#8226;   <a href="#ctypes.macholib.dyld">ctypes.macholib.dyld</a>
  &#8226;   <a href="#ctypes.util">ctypes.util</a>
+ &#8226;   <a href="#cv2">cv2</a>
+ &#8226;   <a href="#cv2.config">cv2.config</a>
+ &#8226;   <a href="#cv2.data">cv2.data</a>
+ &#8226;   <a href="#cv2.load_config_py3">cv2.load_config_py3</a>
  &#8226;   <a href="#doctest">doctest</a>
  &#8226;   <a href="#email.utils">email.utils</a>
  &#8226;   <a href="#fileinput">fileinput</a>
@@ -19468,7 +21622,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#keyboard">keyboard</a>
+    <a href="#cv2">cv2</a>
+ &#8226;   <a href="#keyboard">keyboard</a>
  &#8226;   <a href="#keyboard._canonical_names">keyboard._canonical_names</a>
  &#8226;   <a href="#numpy.f2py.crackfortran">numpy.f2py.crackfortran</a>
  &#8226;   <a href="#numpy.lib._utils_impl">numpy.lib._utils_impl</a>
@@ -19778,6 +21933,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#SaveManager.py">SaveManager.py</a>
+ &#8226;   <a href="#comtypes._comobject">comtypes._comobject</a>
  &#8226;   <a href="#concurrent.futures.process">concurrent.futures.process</a>
  &#8226;   <a href="#concurrent.futures.thread">concurrent.futures.thread</a>
  &#8226;   <a href="#keyboard">keyboard</a>
@@ -21216,6 +23372,16 @@ imported by:
  &#8226;   <a href="#code">code</a>
  &#8226;   <a href="#codecs">codecs</a>
  &#8226;   <a href="#collections">collections</a>
+ &#8226;   <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes._npsupport">comtypes._npsupport</a>
+ &#8226;   <a href="#comtypes._tlib_version_checker">comtypes._tlib_version_checker</a>
+ &#8226;   <a href="#comtypes.client._code_cache">comtypes.client._code_cache</a>
+ &#8226;   <a href="#comtypes.client._constants">comtypes.client._constants</a>
+ &#8226;   <a href="#comtypes.client._generate">comtypes.client._generate</a>
+ &#8226;   <a href="#comtypes.connectionpoints">comtypes.connectionpoints</a>
+ &#8226;   <a href="#comtypes.errorinfo">comtypes.errorinfo</a>
+ &#8226;   <a href="#comtypes.tools.tlbparser">comtypes.tools.tlbparser</a>
+ &#8226;   <a href="#comtypes.typeinfo">comtypes.typeinfo</a>
  &#8226;   <a href="#concurrent.futures.process">concurrent.futures.process</a>
  &#8226;   <a href="#configparser">configparser</a>
  &#8226;   <a href="#contextlib">contextlib</a>
@@ -21224,6 +23390,9 @@ imported by:
  &#8226;   <a href="#ctypes._endian">ctypes._endian</a>
  &#8226;   <a href="#ctypes.macholib.dyld">ctypes.macholib.dyld</a>
  &#8226;   <a href="#ctypes.util">ctypes.util</a>
+ &#8226;   <a href="#cv2">cv2</a>
+ &#8226;   <a href="#cv2.gapi">cv2.gapi</a>
+ &#8226;   <a href="#cv2.load_config_py3">cv2.load_config_py3</a>
  &#8226;   <a href="#dataclasses">dataclasses</a>
  &#8226;   <a href="#dis">dis</a>
  &#8226;   <a href="#doctest">doctest</a>
@@ -21449,6 +23618,7 @@ imported by:
  &#8226;   <a href="#PIL.ImageGrab">PIL.ImageGrab</a>
  &#8226;   <a href="#PIL.JpegImagePlugin">PIL.JpegImagePlugin</a>
  &#8226;   <a href="#asyncio.windows_utils">asyncio.windows_utils</a>
+ &#8226;   <a href="#comtypes.client._code_cache">comtypes.client._code_cache</a>
  &#8226;   <a href="#ctypes.util">ctypes.util</a>
  &#8226;   <a href="#importlib.resources._common">importlib.resources._common</a>
  &#8226;   <a href="#multiprocessing.connection">multiprocessing.connection</a>
@@ -21491,6 +23661,8 @@ imports:
   <div class="import">
 imported by:
     <a href="#argparse">argparse</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.codegenerator">comtypes.tools.codegenerator.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.namespaces">comtypes.tools.codegenerator.namespaces</a>
  &#8226;   <a href="#importlib.metadata">importlib.metadata</a>
  &#8226;   <a href="#importlib.metadata._adapters">importlib.metadata._adapters</a>
  &#8226;   <a href="#numpy._typing._add_docstring">numpy._typing._add_docstring</a>
@@ -21533,9 +23705,12 @@ imported by:
  &#8226;   <a href="#asyncio.proactor_events">asyncio.proactor_events</a>
  &#8226;   <a href="#asyncio.runners">asyncio.runners</a>
  &#8226;   <a href="#asyncio.unix_events">asyncio.unix_events</a>
+ &#8226;   <a href="#comtypes._comobject">comtypes._comobject</a>
+ &#8226;   <a href="#comtypes.safearray">comtypes.safearray</a>
  &#8226;   <a href="#concurrent.futures._base">concurrent.futures._base</a>
  &#8226;   <a href="#concurrent.futures.process">concurrent.futures.process</a>
  &#8226;   <a href="#concurrent.futures.thread">concurrent.futures.thread</a>
+ &#8226;   <a href="#dxcam.dxcam">dxcam.dxcam</a>
  &#8226;   <a href="#http.cookiejar">http.cookiejar</a>
  &#8226;   <a href="#importlib.util">importlib.util</a>
  &#8226;   <a href="#keyboard">keyboard</a>
@@ -21605,6 +23780,8 @@ imported by:
  &#8226;   <a href="#asyncio.windows_events">asyncio.windows_events</a>
  &#8226;   <a href="#concurrent.futures._base">concurrent.futures._base</a>
  &#8226;   <a href="#datetime">datetime</a>
+ &#8226;   <a href="#dxcam">dxcam</a>
+ &#8226;   <a href="#dxcam.dxcam">dxcam.dxcam</a>
  &#8226;   <a href="#email._parseaddr">email._parseaddr</a>
  &#8226;   <a href="#email.generator">email.generator</a>
  &#8226;   <a href="#email.utils">email.utils</a>
@@ -21717,8 +23894,10 @@ imported by:
  &#8226;   <a href="#asyncio.base_tasks">asyncio.base_tasks</a>
  &#8226;   <a href="#asyncio.format_helpers">asyncio.format_helpers</a>
  &#8226;   <a href="#code">code</a>
+ &#8226;   <a href="#comtypes.client._events">comtypes.client._events</a>
  &#8226;   <a href="#concurrent.futures.process">concurrent.futures.process</a>
  &#8226;   <a href="#doctest">doctest</a>
+ &#8226;   <a href="#dxcam.dxcam">dxcam.dxcam</a>
  &#8226;   <a href="#http.cookiejar">http.cookiejar</a>
  &#8226;   <a href="#keyboard._generic">keyboard._generic</a>
  &#8226;   <a href="#keyboard._nixkeyboard">keyboard._nixkeyboard</a>
@@ -21806,6 +23985,9 @@ imported by:
  &#8226;   <a href="#asyncio.tasks">asyncio.tasks</a>
  &#8226;   <a href="#asyncio.timeouts">asyncio.timeouts</a>
  &#8226;   <a href="#certifi.core">certifi.core</a>
+ &#8226;   <a href="#comtypes._post_coinit._cominterface_meta_patcher">comtypes._post_coinit._cominterface_meta_patcher</a>
+ &#8226;   <a href="#comtypes.client._code_cache">comtypes.client._code_cache</a>
+ &#8226;   <a href="#comtypes.client._generate">comtypes.client._generate</a>
  &#8226;   <a href="#concurrent.futures._base">concurrent.futures._base</a>
  &#8226;   <a href="#concurrent.futures.thread">concurrent.futures.thread</a>
  &#8226;   <a href="#contextlib">contextlib</a>
@@ -21937,7 +24119,42 @@ imported by:
  &#8226;   <a href="#charset_normalizer.legacy">charset_normalizer.legacy</a>
  &#8226;   <a href="#charset_normalizer.models">charset_normalizer.models</a>
  &#8226;   <a href="#charset_normalizer.utils">charset_normalizer.utils</a>
+ &#8226;   <a href="#comtypes">comtypes</a>
+ &#8226;   <a href="#comtypes.GUID">comtypes.GUID</a>
+ &#8226;   <a href="#comtypes._comobject">comtypes._comobject</a>
+ &#8226;   <a href="#comtypes._memberspec">comtypes._memberspec</a>
+ &#8226;   <a href="#comtypes._post_coinit._cominterface_meta_patcher">comtypes._post_coinit._cominterface_meta_patcher</a>
+ &#8226;   <a href="#comtypes._post_coinit.bstr">comtypes._post_coinit.bstr</a>
+ &#8226;   <a href="#comtypes._post_coinit.misc">comtypes._post_coinit.misc</a>
+ &#8226;   <a href="#comtypes._post_coinit.unknwn">comtypes._post_coinit.unknwn</a>
+ &#8226;   <a href="#comtypes._vtbl">comtypes._vtbl</a>
+ &#8226;   <a href="#comtypes.automation">comtypes.automation</a>
+ &#8226;   <a href="#comtypes.client._activeobj">comtypes.client._activeobj</a>
+ &#8226;   <a href="#comtypes.client._create">comtypes.client._create</a>
+ &#8226;   <a href="#comtypes.client._generate">comtypes.client._generate</a>
+ &#8226;   <a href="#comtypes.client._managing">comtypes.client._managing</a>
+ &#8226;   <a href="#comtypes.client.dynamic">comtypes.client.dynamic</a>
+ &#8226;   <a href="#comtypes.persist">comtypes.persist</a>
+ &#8226;   <a href="#comtypes.safearray">comtypes.safearray</a>
+ &#8226;   <a href="#comtypes.server">comtypes.server</a>
+ &#8226;   <a href="#comtypes.stream">comtypes.stream</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.codegenerator">comtypes.tools.codegenerator.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.heads">comtypes.tools.codegenerator.heads</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.helpers">comtypes.tools.codegenerator.helpers</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.modulenamer">comtypes.tools.codegenerator.modulenamer</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.namespaces">comtypes.tools.codegenerator.namespaces</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.typeannotator">comtypes.tools.codegenerator.typeannotator</a>
+ &#8226;   <a href="#comtypes.tools.tlbparser">comtypes.tools.tlbparser</a>
+ &#8226;   <a href="#comtypes.tools.typedesc">comtypes.tools.typedesc</a>
+ &#8226;   <a href="#comtypes.tools.typedesc_base">comtypes.tools.typedesc_base</a>
+ &#8226;   <a href="#comtypes.typeinfo">comtypes.typeinfo</a>
+ &#8226;   <a href="#cv2.mat_wrapper">cv2.mat_wrapper</a>
+ &#8226;   <a href="#cv2.typing">cv2.typing</a>
  &#8226;   <a href="#dearpygui.dearpygui">dearpygui.dearpygui</a>
+ &#8226;   <a href="#dxcam.core.device">dxcam.core.device</a>
+ &#8226;   <a href="#dxcam.core.output">dxcam.core.output</a>
+ &#8226;   <a href="#dxcam.dxcam">dxcam.dxcam</a>
+ &#8226;   <a href="#dxcam.util.io">dxcam.util.io</a>
  &#8226;   <a href="#functools">functools</a>
  &#8226;   <a href="#idna.core">idna.core</a>
  &#8226;   <a href="#idna.intranges">idna.intranges</a>
@@ -23602,6 +25819,9 @@ imported by:
  &#8226;   <a href="#calendar">calendar</a>
  &#8226;   <a href="#charset_normalizer.legacy">charset_normalizer.legacy</a>
  &#8226;   <a href="#codeop">codeop</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.codegenerator">comtypes.tools.codegenerator.codegenerator</a>
+ &#8226;   <a href="#comtypes.tools.codegenerator.namespaces">comtypes.tools.codegenerator.namespaces</a>
+ &#8226;   <a href="#comtypes.tools.tlbparser">comtypes.tools.tlbparser</a>
  &#8226;   <a href="#configparser">configparser</a>
  &#8226;   <a href="#dearpygui.dearpygui">dearpygui.dearpygui</a>
  &#8226;   <a href="#email.utils">email.utils</a>
@@ -23737,9 +25957,11 @@ imported by:
  &#8226;   <a href="#asyncio.streams">asyncio.streams</a>
  &#8226;   <a href="#asyncio.tasks">asyncio.tasks</a>
  &#8226;   <a href="#asyncio.windows_events">asyncio.windows_events</a>
+ &#8226;   <a href="#comtypes.typeinfo">comtypes.typeinfo</a>
  &#8226;   <a href="#concurrent.futures.process">concurrent.futures.process</a>
  &#8226;   <a href="#concurrent.futures.thread">concurrent.futures.thread</a>
  &#8226;   <a href="#copy">copy</a>
+ &#8226;   <a href="#dxcam">dxcam</a>
  &#8226;   <a href="#functools">functools</a>
  &#8226;   <a href="#inspect">inspect</a>
  &#8226;   <a href="#logging">logging</a>
@@ -23798,7 +26020,8 @@ imported by:
   <a name="winreg"></a>
   <tt>winreg</tt> <span class="moduletype"><i>(builtin module)</i></span>  <div class="import">
 imported by:
-    <a href="#importlib._bootstrap_external">importlib._bootstrap_external</a>
+    <a href="#comtypes.client._generate">comtypes.client._generate</a>
+ &#8226;   <a href="#importlib._bootstrap_external">importlib._bootstrap_external</a>
  &#8226;   <a href="#mimetypes">mimetypes</a>
  &#8226;   <a href="#platform">platform</a>
  &#8226;   <a href="#requests.utils">requests.utils</a>

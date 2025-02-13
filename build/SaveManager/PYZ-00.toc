@@ -552,6 +552,202 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\colorsys.py',
    'PYMODULE'),
+  ('comtypes',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\__init__.py',
+   'PYMODULE'),
+  ('comtypes.GUID',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\GUID.py',
+   'PYMODULE'),
+  ('comtypes._comobject',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_comobject.py',
+   'PYMODULE'),
+  ('comtypes._memberspec',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_memberspec.py',
+   'PYMODULE'),
+  ('comtypes._meta',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_meta.py',
+   'PYMODULE'),
+  ('comtypes._npsupport',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_npsupport.py',
+   'PYMODULE'),
+  ('comtypes._post_coinit',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_post_coinit\\__init__.py',
+   'PYMODULE'),
+  ('comtypes._post_coinit._cominterface_meta_patcher',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_post_coinit\\_cominterface_meta_patcher.py',
+   'PYMODULE'),
+  ('comtypes._post_coinit.bstr',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_post_coinit\\bstr.py',
+   'PYMODULE'),
+  ('comtypes._post_coinit.instancemethod',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_post_coinit\\instancemethod.py',
+   'PYMODULE'),
+  ('comtypes._post_coinit.misc',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_post_coinit\\misc.py',
+   'PYMODULE'),
+  ('comtypes._post_coinit.unknwn',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_post_coinit\\unknwn.py',
+   'PYMODULE'),
+  ('comtypes._safearray',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_safearray.py',
+   'PYMODULE'),
+  ('comtypes._tlib_version_checker',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_tlib_version_checker.py',
+   'PYMODULE'),
+  ('comtypes._vtbl',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\_vtbl.py',
+   'PYMODULE'),
+  ('comtypes.automation',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\automation.py',
+   'PYMODULE'),
+  ('comtypes.client',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\client\\__init__.py',
+   'PYMODULE'),
+  ('comtypes.client._activeobj',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\client\\_activeobj.py',
+   'PYMODULE'),
+  ('comtypes.client._code_cache',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\client\\_code_cache.py',
+   'PYMODULE'),
+  ('comtypes.client._constants',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\client\\_constants.py',
+   'PYMODULE'),
+  ('comtypes.client._create',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\client\\_create.py',
+   'PYMODULE'),
+  ('comtypes.client._events',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\client\\_events.py',
+   'PYMODULE'),
+  ('comtypes.client._generate',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\client\\_generate.py',
+   'PYMODULE'),
+  ('comtypes.client._managing',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\client\\_managing.py',
+   'PYMODULE'),
+  ('comtypes.client.dynamic',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\client\\dynamic.py',
+   'PYMODULE'),
+  ('comtypes.client.lazybind',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\client\\lazybind.py',
+   'PYMODULE'),
+  ('comtypes.connectionpoints',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\connectionpoints.py',
+   'PYMODULE'),
+  ('comtypes.errorinfo',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\errorinfo.py',
+   'PYMODULE'),
+  ('comtypes.hresult',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\hresult.py',
+   'PYMODULE'),
+  ('comtypes.messageloop',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\messageloop.py',
+   'PYMODULE'),
+  ('comtypes.patcher',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\patcher.py',
+   'PYMODULE'),
+  ('comtypes.persist',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\persist.py',
+   'PYMODULE'),
+  ('comtypes.safearray',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\safearray.py',
+   'PYMODULE'),
+  ('comtypes.server',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\server\\__init__.py',
+   'PYMODULE'),
+  ('comtypes.stream',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\stream.py',
+   'PYMODULE'),
+  ('comtypes.tools',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\__init__.py',
+   'PYMODULE'),
+  ('comtypes.tools.codegenerator',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\codegenerator\\__init__.py',
+   'PYMODULE'),
+  ('comtypes.tools.codegenerator.codegenerator',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\codegenerator\\codegenerator.py',
+   'PYMODULE'),
+  ('comtypes.tools.codegenerator.comments',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\codegenerator\\comments.py',
+   'PYMODULE'),
+  ('comtypes.tools.codegenerator.heads',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\codegenerator\\heads.py',
+   'PYMODULE'),
+  ('comtypes.tools.codegenerator.helpers',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\codegenerator\\helpers.py',
+   'PYMODULE'),
+  ('comtypes.tools.codegenerator.modulenamer',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\codegenerator\\modulenamer.py',
+   'PYMODULE'),
+  ('comtypes.tools.codegenerator.namespaces',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\codegenerator\\namespaces.py',
+   'PYMODULE'),
+  ('comtypes.tools.codegenerator.packing',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\codegenerator\\packing.py',
+   'PYMODULE'),
+  ('comtypes.tools.codegenerator.typeannotator',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\codegenerator\\typeannotator.py',
+   'PYMODULE'),
+  ('comtypes.tools.tlbparser',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\tlbparser.py',
+   'PYMODULE'),
+  ('comtypes.tools.typedesc',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\typedesc.py',
+   'PYMODULE'),
+  ('comtypes.tools.typedesc_base',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\tools\\typedesc_base.py',
+   'PYMODULE'),
+  ('comtypes.typeinfo',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\typeinfo.py',
+   'PYMODULE'),
   ('concurrent',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\concurrent\\__init__.py',
@@ -659,6 +855,74 @@
   ('doctest',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\doctest.py',
+   'PYMODULE'),
+  ('dxcam',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\__init__.py',
+   'PYMODULE'),
+  ('dxcam._libs',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\_libs\\__init__.py',
+   'PYMODULE'),
+  ('dxcam._libs.d3d11',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\_libs\\d3d11.py',
+   'PYMODULE'),
+  ('dxcam._libs.dxgi',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\_libs\\dxgi.py',
+   'PYMODULE'),
+  ('dxcam._libs.user32',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\_libs\\user32.py',
+   'PYMODULE'),
+  ('dxcam.core',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\core\\__init__.py',
+   'PYMODULE'),
+  ('dxcam.core.device',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\core\\device.py',
+   'PYMODULE'),
+  ('dxcam.core.duplicator',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\core\\duplicator.py',
+   'PYMODULE'),
+  ('dxcam.core.output',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\core\\output.py',
+   'PYMODULE'),
+  ('dxcam.core.stagesurf',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\core\\stagesurf.py',
+   'PYMODULE'),
+  ('dxcam.dxcam',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\dxcam.py',
+   'PYMODULE'),
+  ('dxcam.processor',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\processor\\__init__.py',
+   'PYMODULE'),
+  ('dxcam.processor.base',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\processor\\base.py',
+   'PYMODULE'),
+  ('dxcam.processor.numpy_processor',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\processor\\numpy_processor.py',
+   'PYMODULE'),
+  ('dxcam.util',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\util\\__init__.py',
+   'PYMODULE'),
+  ('dxcam.util.io',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\util\\io.py',
+   'PYMODULE'),
+  ('dxcam.util.timer',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\dxcam\\util\\timer.py',
    'PYMODULE'),
   ('email',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
@@ -1307,6 +1571,10 @@
   ('numpy.core._utils',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\core\\_utils.py',
+   'PYMODULE'),
+  ('numpy.core.multiarray',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\core\\multiarray.py',
    'PYMODULE'),
   ('numpy.ctypeslib',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
