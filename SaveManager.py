@@ -15,10 +15,12 @@ import numpy as np
 import keyboard
 from datetime import datetime
 import ast
+import dxcam
+import cv2
 
 
-app_version = "2.2.1_Windows"
-release_date = "2/12/2025"
+app_version = "2.2.2_Windows"
+release_date = "2/13/2025"
 
 sources: list = []
 destinations: list = []
@@ -101,7 +103,6 @@ def load_settings():
 
     if os.path.exists(config_file):
         config.read(config_file)
-        # Check if the section exists and contains all settings
         if config.has_section("Settings"):
             for key in settings:
                 try:
@@ -134,6 +135,7 @@ def save_settings(section, key, value):
 
 def load_entries():
     global sources, destinations, names
+
     if os.path.exists(json_file_path):
         with open(json_file_path, "r") as f:
             entries = json.load(f)
@@ -176,11 +178,9 @@ def clear_entries_callback(sender, app_data):
     destinations.clear()
     names.clear()
 
-    # Clear the displayed entries
     dpg.delete_item("entry_list", children_only=True)
     dpg.set_value("status_text", "All entries cleared.")
 
-    # Clear the JSON file
     if os.path.exists(json_file_path):
         os.remove(json_file_path)
 
@@ -189,10 +189,9 @@ def add_entry_callback(sender, app_data):
     name = dpg.get_value("name_input")
 
     if name and sources and destinations:
-        current_source = sources[-1]  # Get the last added source
-        current_destination = destinations[-1]  # Get the last added destination
+        current_source = sources[-1]
+        current_destination = destinations[-1]
 
-        # Add the new entry
         names.append(name)
         item_id = dpg.add_text(
             f"{name}: {current_source} -> {current_destination}",
@@ -212,13 +211,43 @@ def add_entry_callback(sender, app_data):
             )
         dpg.bind_item_handler_registry(item_id, f"text_handler_{item_id}")
 
-        # Clear the displayed paths
         dpg.set_value("source_display", "")
         dpg.set_value("destination_display", "")
-        dpg.set_value("name_input", "")  # Clear name input
+        dpg.set_value("name_input", "")
         dpg.set_value("status_text", f"Added entry: {name}")
     else:
         dpg.set_value("status_text", "Please fill the name and select folders.")
+
+
+def record_video_thread():
+    target_fps = 60
+    openh264_path = resource_path("docs/openh264-1.8.0-win64.dll")
+    ctypes.cdll.LoadLibrary(openh264_path)
+
+    camera = dxcam.create(output_idx=0, output_color="BGR")
+    camera.start(target_fps=target_fps, video_mode=True)
+
+    # VideoWriter configuration (adjust codec if needed)
+    writer = cv2.VideoWriter(
+        "output.mp4", cv2.VideoWriter_fourcc(*"avc1"), target_fps, (2560, 1440)
+    )
+    dpg.set_value("recording_status_text", f"Recording video...")
+
+    try:
+        for _ in range(600):
+            frame = camera.get_latest_frame()
+            writer.write(frame)
+    except Exception as e:
+        dpg.set_value("recording_status_text", f"Error recording video: {e}")
+
+    camera.stop()
+    writer.release()
+    dpg.set_value("recording_status_text", f"Recording completed")
+
+
+def start_video_recording_thread():
+    video_thread = threading.Thread(target=record_video_thread, daemon=True)
+    video_thread.start()
 
 
 def take_screenshot():
@@ -226,9 +255,7 @@ def take_screenshot():
 
     img = ImageGrab.grab()
     filename = datetime.now().strftime("Screenshot_%Y-%m-%d_%H-%M-%S.png")
-    filepath = os.path.join(
-        recording_settings["screenshot_folder"], filename
-    )  # Save to the specified folder
+    filepath = os.path.join(recording_settings["screenshot_folder"], filename)
     img.save(filepath)
     dpg.set_value("recording_status_text", f"Screenshot saved as {filepath}")
 
@@ -247,7 +274,6 @@ def key_listener():
 
 
 def start_key_listener():
-    # Start the key listener in a separate thread
     key_thread = threading.Thread(target=key_listener, daemon=True)
     key_thread.start()
 
@@ -255,7 +281,6 @@ def start_key_listener():
 def keybind_recorder_thread():
     global recording_settings, is_recording_keybind
     try:
-        # Wait for a single key press
         key = keyboard.read_key(suppress=False)
         current_keybind = recording_settings["screenshot_key"]
         if key != current_keybind:
@@ -342,11 +367,11 @@ def copy_thread(valid_entries, total_bytes):
                 ):
                     dpg.add_text(
                         f"Skipped (already exists): {rel_path}",
-                        color=(139, 140, 0),  # Dark Orange
+                        color=(139, 140, 0),
                         wrap=0,
                         parent="copy_log",
                     )
-                    total_bytes -= size  # Subtract the size of the skipped file
+                    total_bytes -= size  # Adjust total size
                     progress_queue.put(("adjust_total", total_bytes))
                     continue  # Skip this file
 
@@ -359,7 +384,6 @@ def copy_thread(valid_entries, total_bytes):
                         copied_bytes += len(chunk)
                         progress_queue.put(("progress", copied_bytes))
 
-                # Add a text item for the copied file
                 dpg.add_text(
                     f"Copied: {rel_path}",
                     wrap=0,
@@ -408,31 +432,25 @@ def copy_all_callback(sender, app_data):
         dpg.set_value("status_text", "No entries to copy (all exceed size limit).")
         return
 
-    # Setup UI
     dpg.set_value("progress_bar", 0.0)
     dpg.set_value("status_text", "Copying directories...")
     dpg.show_item("progress_bar")
 
-    # Start copy thread
     threading.Thread(target=copy_thread, args=(valid_entries, total_bytes)).start()
 
 
 def source_callback(sender, app_data):
     global sources
 
-    sources.append(app_data["file_path_name"])  # Store the selected source
-    dpg.set_value(
-        "source_display", app_data["file_path_name"]
-    )  # Display the selected source path
+    sources.append(app_data["file_path_name"])
+    dpg.set_value("source_display", app_data["file_path_name"])
 
 
 def destination_callback(sender, app_data):
     global destinations
 
-    destinations.append(app_data["file_path_name"])  # Store the selected destination
-    dpg.set_value(
-        "destination_display", app_data["file_path_name"]
-    )  # Display the selected destination path
+    destinations.append(app_data["file_path_name"])
+    dpg.set_value("destination_display", app_data["file_path_name"])
 
 
 def screenshot_folder_select_callback(sender, app_data):
@@ -490,14 +508,14 @@ def search_files():
     ).sum()
     dpg.set_value("finder_text", "Searching...")
 
-    processed_dirs: int = 0  # To count processed directories
-    total_files: int = 0  # Count total files found
+    processed_dirs: int = 0
+    total_files: int = 0
 
     def process_directory(directory):
         nonlocal processed_dirs, total_files
         try:
             for root, dirs, files in os.walk(directory):
-                if cancel_flag.is_set():  # Check for exit signal
+                if cancel_flag.is_set():
                     return
                 processed_dirs += 1
                 dpg.set_value("finder_progress_bar", processed_dirs / total_dirs)
@@ -518,7 +536,7 @@ def search_files():
                 "search_status_text", f"Error processing directory {directory}: {e}"
             )
 
-    # Use threading to prevent UI freezing
+    # Using threading to prevent UI freezing
     def thread_target():
         global cancel_flag
 
@@ -527,24 +545,22 @@ def search_files():
                 return
             process_directory(directory)
 
-        # Final UI update
         dpg.set_value("finder_progress_bar", 1.0)
         dpg.hide_item("finder_progress_bar")
         dpg.hide_item("finder_text")
 
-        # Update UI with found directories
         if dpg.does_item_exist("directory_list"):
             dpg.delete_item("directory_list", children_only=True)
 
         colors = [
-            (0, 140, 139),  # Dark Cyan
-            (255, 140, 0),  # Dark Orange
+            (0, 140, 139),
+            (255, 140, 0),
         ]
         color_index = 0
 
         if sav_directories:
             for index, directory in enumerate(sorted(sav_directories), start=1):
-                if cancel_flag.is_set():  # Check for exit signal
+                if cancel_flag.is_set():
                     return
                 cur_color = colors[color_index]
                 item_id = dpg.add_text(
@@ -570,7 +586,6 @@ def search_files():
                 parent="directory_list",
             )
 
-    # Start the search in a separate thread
     thread = threading.Thread(target=thread_target)
     thread.start()
 
@@ -651,7 +666,7 @@ def open_image(sender, app_data):
     if drawlist_tag:
         dpg.delete_item(drawlist_tag)
 
-    # Create new texture, change to dynamic texture if needed
+    # Change to dynamic texture if needed
     texture_tag = dpg.add_static_texture(
         width, height, image_data, parent="image_registry", tag="image_viewer_img"
     )
@@ -1023,16 +1038,13 @@ def save_window_positions():
 
 
 def text_click_handler(sender, app_data, user_data):
-    # Copy the text to the clipboard
     pyperclip.copy(user_data)
-    # Update the status text to inform the user
     dpg.set_value("status_text", f"Copied to clipboard: {user_data}")
 
 
 def show_windows():
     global img_id, settings, recording_settings
 
-    # Add mouse drag handler
     with dpg.handler_registry():
         # Mouse wheel for zoom
         dpg.add_mouse_wheel_handler(callback=zoom_callback)
@@ -1118,36 +1130,28 @@ def show_windows():
                             auto_resize_y=True,
                             tag="copy_manager_add_folder_window",
                         ):
-                            # Input for the name
                             dpg.add_spacer(height=5)
                             dpg.add_input_text(
                                 label="Name", tag="name_input", width=-300
                             )
                             dpg.add_spacer(height=5)
 
-                            # Button to select source directory
                             dpg.add_button(
                                 label="Select Source Directory",
                                 callback=lambda: dpg.show_item("source_file_dialog"),
                             )
-                            dpg.add_text(
-                                "", tag="source_display"
-                            )  # Display for source path
+                            dpg.add_text("", tag="source_display")
                             dpg.add_spacer(height=5)
 
-                            # Button to select destination directory
                             dpg.add_button(
                                 label="Select Destination Directory",
                                 callback=lambda: dpg.show_item(
                                     "destination_file_dialog"
                                 ),
                             )
-                            dpg.add_text(
-                                "", tag="destination_display"
-                            )  # Display for destination path
+                            dpg.add_text("", tag="destination_display")
                             dpg.add_spacer(height=5)
 
-                            # Button to add the entry
                             dpg.add_button(
                                 label="Add folder pair", callback=add_entry_callback
                             )
@@ -1156,14 +1160,12 @@ def show_windows():
                     dpg.add_spacer(height=5)
                     dpg.add_separator()
 
-                    # Container for displaying entries
                     dpg.add_text(
                         "Folder pairs will appear below (click or double click to copy to clipboard):",
                         wrap=0,
                     )
 
                     with dpg.child_window(tag="entry_list", auto_resize_y=True):
-                        # This will hold all entries
                         pass
 
                     dpg.add_spacer(height=5)
@@ -1173,7 +1175,6 @@ def show_windows():
                         )
                         dpg.add_button(label="Save pairs", callback=save_entries)
 
-                    # Button to copy all entries
                     dpg.add_spacer(height=5)
                     dpg.add_separator()
                     dpg.add_spacer(height=5)
@@ -1190,7 +1191,6 @@ def show_windows():
                     dpg.add_spacer(height=5)
                     dpg.add_text("", tag="status_text", color=(255, 140, 0), wrap=0)
 
-                    # Progress Bar
                     dpg.add_spacer(height=5)
                     dpg.add_progress_bar(
                         tag="progress_bar",
@@ -1304,6 +1304,11 @@ def show_windows():
                         dpg.add_button(
                             label="Change location",
                             callback=lambda: dpg.show_item("screenshot_file_dialog"),
+                        )
+                    dpg.add_spacer(height=10)
+                    with dpg.group(horizontal=True):
+                        dpg.add_button(
+                            label="Record video", callback=start_video_recording_thread
                         )
                     dpg.add_spacer(height=5)
                     dpg.add_text("", tag="recording_status_text", color=(100, 200, 100))
@@ -1444,7 +1449,6 @@ def show_windows():
         dpg.add_button(label="Manage folder paths", callback=open_folder_path_menu)
     dpg.add_spacer(height=10, parent="save_finder_settings_child_window")
 
-    # File Dialog for selecting source directory
     with dpg.file_dialog(
         directory_selector=True,
         show=False,
@@ -1456,7 +1460,6 @@ def show_windows():
     ):
         pass  # Just add some settings or extension filters
 
-    # File Dialog for selecting destination directory
     with dpg.file_dialog(
         directory_selector=True,
         show=False,
@@ -1525,7 +1528,7 @@ def setup_viewport():
     if launched == None:
         launched = False
 
-    # Set maximum width and height for the window
+    # Set width and height for the window
     if main_height != None:
         max_width = main_width
         max_height = main_height
@@ -1580,19 +1583,17 @@ def main():
                     total_gb = total_bytes_global / (1024**3)
                     progress_value = copied_bytes / total_bytes_global
 
-                    # Update progress bar overlay text
                     dpg.configure_item(
                         "progress_bar",
                         overlay=f"{copied_gb:.2f} GB / {total_gb:.2f} GB ({int(progress_value*100)}%)",
                     )
                     dpg.set_value("progress_bar", progress_value)
 
-                    # Calculate speed and time
                     current_time = time.time()
                     if current_time - last_update_time >= 0.5:
                         elapsed = current_time - start_time_global
                         if elapsed > 0:
-                            speed = copied_bytes / elapsed  # bytes/sec
+                            speed = copied_bytes / elapsed
                             speed_mb = speed / (1024**2)
                             remaining = (total_bytes_global - copied_bytes) / max(
                                 speed, 1
