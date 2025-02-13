@@ -664,10 +664,6 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\errorinfo.py',
    'PYMODULE'),
-  ('comtypes.gen',
-   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
-   'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\gen\\__init__.py',
-   'PYMODULE'),
   ('comtypes.hresult',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\comtypes\\hresult.py',
@@ -1487,6 +1483,11 @@
   ('numpy._core.strings',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\strings.py',
+   'PYMODULE'),
+  ('numpy._core.tests', '-', 'PYMODULE'),
+  ('numpy._core.tests._natype',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\numpy\\_core\\tests\\_natype.py',
    'PYMODULE'),
   ('numpy._core.umath',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '

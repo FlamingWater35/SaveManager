@@ -1,0 +1,11 @@
+dearpygui
+pyperclip
+requests
+pillow
+numpy
+keyboard
+dxcam[cv2]
+
+# Optional
+pyinstaller
+black
