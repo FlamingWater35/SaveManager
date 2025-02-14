@@ -209,6 +209,7 @@ def save_settings(section, key, value):
     config[section][key] = str(value)
     with open(config_file, "w") as configfile:
         config.write(configfile)
+    logging.debug(f"Saved setting: {key}")
 
 
 def reset_settings():
@@ -216,6 +217,7 @@ def reset_settings():
         with open(config_file, "w"):
             if config.has_section("Settings"):
                 config.remove_section("Settings")
+                logging.debug("Reset section 'Settings' from config file")
 
 
 def load_entries():
@@ -263,6 +265,7 @@ def save_entries():
     with open(json_file_path, "w") as f:
         json.dump(entries, f, indent=4)
     dpg.set_value("status_text", "Folder pairs saved successfully.")
+    logging.debug("Copy Manager entries saved to JSON")
 
 
 def clear_entries_callback(sender, app_data):
@@ -277,6 +280,7 @@ def clear_entries_callback(sender, app_data):
 
     if os.path.exists(json_file_path):
         os.remove(json_file_path)
+        logging.debug("JSON file deleted upon clearing entries")
 
 
 def clear_latest_entry(sender, app_data):
@@ -293,6 +297,7 @@ def clear_latest_entry(sender, app_data):
     save_entries()
     load_entries()
     dpg.set_value("status_text", "The latest folder pair has been cleared.")
+    logging.debug("Latest entry deleted from JSON file")
 
 
 def add_entry_callback(sender, app_data):
@@ -315,6 +320,7 @@ def add_entry_callback(sender, app_data):
             f"{name}: {current_source} -> {current_destination}",
             parent="entry_list",
             wrap=0,
+            color=(255, 140, 0),
             user_data=[current_source, current_destination],
         )
 
@@ -370,11 +376,14 @@ def record_video_thread():
             writer.write(frame)
     except Exception as e:
         dpg.set_value("recording_status_text", f"Error recording video: {e}")
+        logging.error(f"Error occurred while recording video: {e}")
+        return
 
     camera.stop()
     writer.release()
     target_app_frame_rate = -1
     dpg.set_value("recording_status_text", f"Recording saved as: {filename}")
+    logging.debug("Video recorded successfully")
 
 
 def start_video_recording_thread():
@@ -385,6 +394,7 @@ def start_video_recording_thread():
         dpg.set_value(
             "recording_status_text", "Invalid folder path. Changing to default value."
         )
+        logging.warning("Invalid folder path for video folder, defaulting")
         video_folder = os.path.join(os.path.expanduser("~"), "Documents")
         save_settings("Recording", "video_folder", video_folder)
         load_settings()
@@ -417,9 +427,15 @@ def take_screenshot():
     img = ImageGrab.grab()
     filename = datetime.now().strftime("Screenshot_%Y-%m-%d_%H-%M-%S.png")
     filepath = os.path.join(recording_settings["screenshot_folder"], filename)
-    img.save(filepath)
+    try:
+        img.save(filepath)
+    except Exception as e:
+        dpg.set_value("recording_status_text", f"Saving screenshot failed: {e}")
+        logging.error(f"Error occurred while saving screenshot: {e}")
+        return
     dpg.show_item("recording_status_text")
     dpg.set_value("recording_status_text", f"Screenshot saved as {filepath}")
+    logging.debug(f"Screenshot saved successfully as: {filepath}")
 
 
 def key_listener():
@@ -431,6 +447,7 @@ def key_listener():
         except Exception as e:
             dpg.show_item("recording_status_text")
             dpg.set_value("recording_status_text", "Screenshot key does not exist")
+            logging.error("Screenhot key not existing when called by key listener")
             break
         take_screenshot()
         time.sleep(0.5)
@@ -444,6 +461,7 @@ def start_key_listener():
         dpg.set_value(
             "recording_status_text", "Invalid folder path. Changing to default value."
         )
+        logging.warning("Invalid folder path for screenshot folder, defaulting")
         screenshot_folder = os.path.join(os.path.expanduser("~"), "Documents")
         save_settings("Recording", "screenshot_folder", screenshot_folder)
         load_settings()
@@ -474,6 +492,7 @@ def keybind_recorder_thread():
             )
     except Exception as e:
         dpg.set_value("recording_status_text", f"Error: {str(e)}")
+        logging.error(f"Error during keybind recorder thread: {e}")
     finally:
         is_recording_keybind = False
 
@@ -491,6 +510,7 @@ def start_keybind_recording():
 def set_cancel_to_true():
     global cancel_flag
     cancel_flag.set()
+    logging.debug("Non-daemon threads signaled to exit")
 
 
 def get_folder_size(folder):
