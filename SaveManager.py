@@ -599,22 +599,30 @@ def search_files():
 
     dpg.set_value("finder_progress_bar", 0.0)
     dpg.show_item("finder_progress_bar")
-    dpg.set_value("finder_text", "Starting search...")
+    dpg.set_value("finder_text", "Starting search... (might take a while)")
     dpg.show_item("finder_text")
 
     dpg.set_value("search_status_text", "")
     dpg.hide_item("search_status_text")
 
     directories_to_search: list = []
+    invalid_paths: list = []
     for folder in settings["folder_paths"]:
         if os.path.exists(folder):
             directories_to_search.append(folder)
         else:
-            dpg.show_item("search_status_text")
-            dpg.set_value(
-                "search_status_text",
-                f"Skipped directory '{folder}' as it does not exist.",
-            )
+            invalid_paths.append(folder)
+            if len(invalid_paths) == 1:
+                dpg.show_item("search_status_text")
+                dpg.set_value(
+                    "search_status_text",
+                    f"Skipped directory '{folder}' as it does not exist.",
+                )
+            else:
+                dpg.set_value(
+                    "search_status_text",
+                    f"Skipped directories '{invalid_paths}' as they do not exist.",
+                )
 
     total_dirs = np.fromiter(
         (
@@ -930,7 +938,7 @@ def add_current_extension():
 
     extension = dpg.get_value("add_extension_input")
     file_extension_list: list = settings["file_extensions"]
-    if extension != "" and extension != ".":
+    if len(extension) > 2:
         file_extension_list.append(extension)
         save_settings("Settings", "file_extensions", file_extension_list)
         dpg.set_value(
@@ -1037,7 +1045,7 @@ def add_current_folderpath():
 
     folderpath = dpg.get_value("add_folderpath_input")
     folderpath_list: list = settings["folder_paths"]
-    if folderpath != "":
+    if len(folderpath) > 2:
         folderpath_list.append(folderpath)
         save_settings("Settings", "folder_paths", folderpath_list)
 
@@ -1354,8 +1362,9 @@ def show_windows():
                         height=20,
                         show=False,
                     )
-                    dpg.add_text("", tag="finder_text", show=False)
+                    dpg.add_text("", tag="finder_text", show=False, wrap=0)
                     dpg.add_separator()
+                    dpg.add_spacer(height=5)
                     dpg.add_text(
                         "Directories containing specified files will be listed below (click to copy to clipboard).",
                         tag="save_finder_text",
