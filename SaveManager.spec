@@ -35,5 +35,6 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    version='app_version_info.txt',
     icon=['C:\\Users\\Admin\\Documents\\work\\projects\\VSCode projects\\SaveManager\\docs\\icon.ico'],
 )

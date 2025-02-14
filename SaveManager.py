@@ -19,7 +19,7 @@ import dxcam
 import cv2
 
 
-app_version: str = "2.3.2_Windows"
+app_version: str = "2.3.3_Windows"
 release_date: str = "2/14/2025"
 
 sources: list = []
@@ -1583,7 +1583,9 @@ def show_windows():
                     with dpg.group(horizontal=True):
                         dpg.add_text("App settings", wrap=0)
                         dpg.add_spacer(width=10)
-                        dpg.add_button(label="Reset to default values", callback=reset_settings)
+                        dpg.add_button(
+                            label="Reset to default values", callback=reset_settings
+                        )
                         with dpg.tooltip(dpg.last_item()):
                             dpg.add_text("Takes effect after app restart")
                     dpg.add_spacer(height=5)
