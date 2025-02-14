@@ -1957,6 +1957,18 @@
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\pprint.py',
    'PYMODULE'),
+  ('psutil',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\psutil\\__init__.py',
+   'PYMODULE'),
+  ('psutil._common',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\psutil\\_common.py',
+   'PYMODULE'),
+  ('psutil._pswindows',
+   'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
+   'projects\\SaveManager\\.conda\\Lib\\site-packages\\psutil\\_pswindows.py',
+   'PYMODULE'),
   ('py_compile',
    'c:\\Users\\Admin\\Documents\\work\\projects\\VSCode '
    'projects\\SaveManager\\.conda\\Lib\\py_compile.py',

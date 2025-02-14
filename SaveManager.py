@@ -159,9 +159,11 @@ def load_setting(section, key, default=None):
     if os.path.exists(config_file):
         config.read(config_file)
         if config.has_section(section) and key in config[section]:
+            logging.debug(f"Loaded setting: {key}")
             return ast.literal_eval(
                 config[section][key]
             )  # Convert string back to its original type
+    logging.warning(f"Loading setting failed; Config file not found: {config_file}")
     return default
 
 
@@ -194,6 +196,11 @@ def load_settings():
                         case _:
                             # Convert string back to its original type
                             recording_settings[key] = ast.literal_eval(value)
+        logging.debug(f"Loaded settings from: {config_file}")
+    else:
+        logging.warning(
+            f"Loading settings failed; Config file not found: {config_file}"
+        )
 
 
 def save_settings(section, key, value):
@@ -243,6 +250,11 @@ def load_entries():
                         callback=text_click_handler,
                     )
                 dpg.bind_item_handler_registry(item_id, f"text_handler_{item_id}")
+        logging.debug(f"Copy Manager entries loaded: {json_file_path}")
+    else:
+        logging.warning(
+            f"Loading Copy Manager entries failed; JSON file not found: {json_file_path}"
+        )
 
 
 def save_entries():
@@ -380,6 +392,7 @@ def start_video_recording_thread():
         save_settings("Recording", "video_folder", video_folder)
         load_settings()
 
+    logging.debug("Video recording thread started")
     video_thread = threading.Thread(target=record_video_thread, daemon=True)
     video_thread.start()
 
@@ -438,6 +451,7 @@ def start_key_listener():
         save_settings("Recording", "screenshot_folder", screenshot_folder)
         load_settings()
 
+    logging.debug("Screnshot key listener thread started")
     key_thread = threading.Thread(target=key_listener, daemon=True)
     key_thread.start()
 
@@ -473,6 +487,7 @@ def start_keybind_recording():
         is_recording_keybind = True
         dpg.show_item("recording_status_text")
         dpg.set_value("recording_status_text", "Press any key...")
+        logging.debug("Screenshot keybind recording thread started")
         threading.Thread(target=keybind_recorder_thread, daemon=True).start()
 
 
@@ -814,10 +829,12 @@ def search_files():
 
 
 def start_search_thread():
+    logging.debug("Search thread started")
     threading.Thread(target=search_files).start()
 
 
 def check_for_updates(sender, app_data):
+    logging.debug("Update check thread started")
     threading.Thread(target=check_for_updates_thread).start()
 
 
@@ -1862,6 +1879,7 @@ def show_windows():
 
     dpg.bind_item_handler_registry("Primary Window", "window_handler")
     dpg.set_primary_window("Primary Window", True)
+    logging.debug("Primary window set and bound to handler")
     image_resize_callback()
 
 
