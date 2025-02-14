@@ -1635,6 +1635,10 @@ def show_windows():
         height=dpg.get_viewport_height() / 1.5,
     ):
         pass
+    if not os.path.exists(recording_settings["screenshot_folder"]):
+        screenshot_folder = os.path.join(os.path.expanduser("~"), "Documents")
+        dpg.configure_item("screenshot_file_dialog", default_path=screenshot_folder)
+        save_settings("Recording", "screenshot_folder", screenshot_folder)
 
     with dpg.file_dialog(
         directory_selector=True,
@@ -1647,6 +1651,10 @@ def show_windows():
         height=dpg.get_viewport_height() / 1.5,
     ):
         pass
+    if not os.path.exists(recording_settings["video_folder"]):
+        video_folder = os.path.join(os.path.expanduser("~"), "Documents")
+        dpg.configure_item("video_file_dialog", default_path=video_folder)
+        save_settings("Recording", "video_folder", video_folder)
 
     with dpg.file_dialog(
         directory_selector=False,
