@@ -124,13 +124,15 @@ def load_settings():
                     value = config.get("Recording", key)
                 except:
                     value = None
-                if value is not None and key == "screenshot_folder":
-                    recording_settings[key] = value
-                elif value is not None and key == "video_folder":
-                    recording_settings[key] = value
-                elif value is not None:
-                    # Convert string back to its original type
-                    recording_settings[key] = ast.literal_eval(value)
+                if value is not None:
+                    match key:
+                        case "screenshot_folder":
+                            recording_settings[key] = value
+                        case "video_folder":
+                            recording_settings[key] = value
+                        case _:
+                            # Convert string back to its original type
+                            recording_settings[key] = ast.literal_eval(value)
 
 
 def save_settings(section, key, value):
@@ -394,7 +396,7 @@ def get_folder_size(folder):
 
 
 def copy_thread(valid_entries, total_bytes):
-    global cancel_flag, settings
+    global cancel_flag, settings, sources, destinations, names
     try:
         progress_queue.put(("start", total_bytes))
         copied_bytes = 0
@@ -432,7 +434,7 @@ def copy_thread(valid_entries, total_bytes):
                     and settings["skip_existing_files"] == True
                 ):
                     dpg.add_text(
-                        f"Skipped (already exists): {rel_path}",
+                        f"Skipped (already exists): '{rel_path}'",
                         color=(139, 140, 0),
                         wrap=0,
                         parent="copy_log",
@@ -451,7 +453,7 @@ def copy_thread(valid_entries, total_bytes):
                         progress_queue.put(("progress", copied_bytes))
 
                 dpg.add_text(
-                    f"Copied: {rel_path}",
+                    f"Copied: '{rel_path}'",
                     wrap=0,
                     color=(0, 140, 139),
                     parent="copy_log",
@@ -466,7 +468,7 @@ def copy_thread(valid_entries, total_bytes):
 
 
 def copy_all_callback(sender, app_data):
-    global settings, cancel_flag
+    global settings, cancel_flag, sources, destinations, names
 
     cancel_flag.clear()
     dpg.delete_item("copy_log", children_only=True)
@@ -482,21 +484,60 @@ def copy_all_callback(sender, app_data):
     valid_entries = []
     for index in range(len(sources)):
         source = sources[index]
-        folder_size = get_folder_size(source)
-        if folder_size <= settings["file_size_limit"] * 1024**3:  # Check size limit
-            valid_entries.append(index)
-            total_bytes += folder_size
-        else:
-            dpg.add_text(
-                f"Skipped {source} as it exceeds size limit.",
-                color=(139, 140, 0),
-                wrap=0,
-                parent="copy_log",
-            )
+        dest = destinations[index]
+        name = names[index]
+        invalid_entry: bool = False
 
-    if not valid_entries:
-        dpg.set_value("status_text", "No entries to copy (all exceed size limit).")
-        return
+        match (os.path.exists(source), os.path.exists(dest)):
+            case (False, True):
+                dpg.add_text(
+                    f"Folder pair '{name}' skipped as folder '{source}' does not exist.",
+                    color=(229, 57, 53),
+                    wrap=0,
+                    parent="copy_log",
+                )
+                invalid_entry = True
+            case (True, False):
+                dpg.add_text(
+                    f"Folder pair '{name}' skipped as folder '{dest}' does not exist.",
+                    color=(229, 57, 53),
+                    wrap=0,
+                    parent="copy_log",
+                )
+                invalid_entry = True
+            case (False, False):
+                dpg.add_text(
+                    f"Folder pair '{name}' skipped as folders '{source}' and '{dest}' do not exist.",
+                    color=(229, 57, 53),
+                    wrap=0,
+                    parent="copy_log",
+                )
+                invalid_entry = True
+
+        if not invalid_entry:
+            folder_size = get_folder_size(source)
+            if folder_size <= settings["file_size_limit"] * 1024**3:  # Check size limit
+                valid_entries.append(index)
+                total_bytes += folder_size
+            else:
+                dpg.add_text(
+                    f"Skipped folder pair '{name}' as it exceeds size limit.",
+                    color=(139, 140, 0),
+                    wrap=0,
+                    parent="copy_log",
+                )
+
+    match invalid_entry:
+        case False:
+            if not valid_entries:
+                dpg.set_value(
+                    "status_text", "No entries to copy (all exceed size limit)."
+                )
+                return
+        case True:
+            if not valid_entries:
+                dpg.set_value("status_text", "No entries to copy (check log).")
+                return
 
     dpg.set_value("progress_bar", 0.0)
     dpg.set_value("status_text", "Copying directories...")
