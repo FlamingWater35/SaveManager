@@ -19,8 +19,8 @@ import dxcam
 import cv2
 
 
-app_version: str = "2.3.1_Windows"
-release_date: str = "2/13/2025"
+app_version: str = "2.3.2_Windows"
+release_date: str = "2/14/2025"
 
 sources: list = []
 destinations: list = []
@@ -40,7 +40,7 @@ settings: dict = {
         os.path.join(os.getenv("USERPROFILE"), "AppData", "Roaming"),
         os.getenv("LOCALAPPDATA"),
         os.path.join(os.path.expanduser("~"), "Documents"),
-        os.path.join("C:\\Users\\Public\\Documents"),
+        "C:\\Users\\Public\\Documents",
     ],
 }
 
@@ -68,8 +68,10 @@ drag_start_pos = None
 img_size = (0, 0)
 is_dragging = False
 
-json_file_path = "save_folders.json"
-config_file = "settings.ini"
+json_file_path = os.path.join(
+    os.getenv("LOCALAPPDATA"), "SaveManager\\save_folders.json"
+)
+config_file = os.path.join(os.getenv("LOCALAPPDATA"), "SaveManager\\settings.ini")
 
 config = configparser.ConfigParser()
 progress_queue = queue.Queue()
@@ -89,7 +91,7 @@ def resource_path(relative_path):
 
 
 font_path = resource_path("docs/font.otf")
-default_font_size = 18
+default_font_size = 24
 
 
 def load_setting(section, key, default=None):
@@ -132,6 +134,9 @@ def load_settings():
 
 
 def save_settings(section, key, value):
+    data_directory = os.path.join(os.getenv("LOCALAPPDATA"), "SaveManager")
+    if not os.path.exists(data_directory):
+        os.makedirs(data_directory)
     if not config.has_section(section):
         config.add_section(section)
     config[section][key] = str(value)
