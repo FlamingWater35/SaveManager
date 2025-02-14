@@ -204,9 +204,6 @@ def load_settings():
 
 
 def save_settings(section, key, value):
-    data_directory = os.path.join(os.getenv("LOCALAPPDATA"), "SaveManager")
-    if not os.path.exists(data_directory):
-        os.makedirs(data_directory)
     if not config.has_section(section):
         config.add_section(section)
     config[section][key] = str(value)
@@ -1930,6 +1927,9 @@ def setup_viewport():
 def main():
     global settings, target_app_frame_rate
 
+    data_directory = os.path.join(os.getenv("LOCALAPPDATA"), "SaveManager")
+    if not os.path.exists(data_directory):
+        os.makedirs(data_directory)
     run_application()
 
     dpg.create_context()
