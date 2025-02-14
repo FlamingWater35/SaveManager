@@ -1356,13 +1356,13 @@ def show_windows():
                     ):
                         pass
                     with dpg.group(horizontal=True):
-                        dpg.add_text("", tag="image_viewer_status_text")
+                        dpg.add_text("", tag="image_viewer_status_text", wrap=0)
 
-            with dpg.tab(label="Screenshot"):
+            with dpg.tab(label="Recorder"):
                 with dpg.child_window(
                     autosize_x=True, auto_resize_y=True, tag="recording_main_window"
                 ):
-                    dpg.add_text("Screenshot tool")
+                    dpg.add_text("Recorder")
                     dpg.add_separator()
                     dpg.add_spacer(height=10)
                     with dpg.group(horizontal=True):
@@ -1463,6 +1463,7 @@ def show_windows():
                         tag="recording_status_text",
                         color=(100, 200, 100),
                         show=False,
+                        wrap=0,
                     )
                     dpg.add_spacer(height=10)
 
