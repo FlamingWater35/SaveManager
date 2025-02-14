@@ -17,9 +17,11 @@ from datetime import datetime
 import ast
 import dxcam
 import cv2
+import psutil
+import logging
 
 
-app_version: str = "2.3.3_Windows"
+app_version: str = "2.3.4_Windows"
 release_date: str = "2/14/2025"
 
 sources: list = []
@@ -49,7 +51,7 @@ recording_settings: dict = {
     "screenshot_folder": os.path.join(os.path.expanduser("~"), "Documents"),
     "video_fps": 60,
     "video_folder": os.path.join(os.path.expanduser("~"), "Documents"),
-    "video_duration": 10,
+    "video_duration": 30,
 }
 
 img_id = None
@@ -77,6 +79,14 @@ config = configparser.ConfigParser()
 progress_queue = queue.Queue()
 cancel_flag = threading.Event()
 
+logging.basicConfig(
+    filename=os.path.join(os.getenv("LOCALAPPDATA"), "SaveManager\\SaveManager.log"),
+    level=logging.DEBUG,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
+LOCK_FILE = os.path.join(os.getenv("LOCALAPPDATA"), "SaveManager\\SaveManager.lock")
+APP_NAME = "SaveManager.py"
+
 
 def resource_path(relative_path):
     # Get the absolute path to the resource, works for dev and for PyInstaller
@@ -92,6 +102,57 @@ def resource_path(relative_path):
 
 font_path = resource_path("docs/font.otf")
 default_font_size = 24
+
+
+def create_lock_file():
+    with open(LOCK_FILE, "w") as f:
+        f.write(str(os.getpid()))
+    logging.info("Lock file created")
+
+
+def delete_lock_file():
+    if os.path.exists(LOCK_FILE):
+        os.remove(LOCK_FILE)
+        logging.info("Lock file deleted")
+
+
+def is_another_instance_running():
+    if not os.path.exists(LOCK_FILE):
+        return False
+
+    with open(LOCK_FILE, "r") as f:
+        pid = int(f.read().strip())
+
+    # Check if the process with the PID from the lock file is still running
+    if psutil.pid_exists(pid):
+        for proc in psutil.process_iter(["pid", "name"]):
+            if proc.info["pid"] == pid and APP_NAME in proc.info["name"]:
+                return True
+    return False
+
+
+def kill_previous_instance():
+    if not os.path.exists(LOCK_FILE):
+        return
+
+    with open(LOCK_FILE, "r") as f:
+        pid = int(f.read().strip())
+
+    if psutil.pid_exists(pid):
+        try:
+            process = psutil.Process(pid)
+            process.terminate()  # Terminate the process
+            process.wait(timeout=5)  # Wait for the process to terminate
+        except psutil.NoSuchProcess:
+            pass
+
+
+def run_application():
+    logging.info("\n\n--------- APPLICATION START ---------\n")
+    if is_another_instance_running():
+        logging.info("Another instance is running. Killing it...")
+        kill_previous_instance()
+    create_lock_file()
 
 
 def load_setting(section, key, default=None):
@@ -1230,6 +1291,7 @@ def show_windows():
         dpg.add_static_texture(
             width=width, height=height, default_value=data, tag="cute_image"
         )
+    logging.debug("Image initialized")
 
     with dpg.item_handler_registry(tag="window_handler") as handler:
         dpg.add_item_resize_handler(callback=image_resize_callback)
@@ -1254,6 +1316,7 @@ def show_windows():
             dpg.add_theme_color(dpg.mvThemeCol_ChildBg, (43, 35, 32))
 
     dpg.bind_font(custom_font)
+    logging.debug("Font bound to main window")
 
     with dpg.window(tag="Primary Window"):
         with dpg.menu_bar():
@@ -1849,11 +1912,12 @@ def setup_viewport():
 def main():
     global settings, target_app_frame_rate
 
+    run_application()
+
     dpg.create_context()
-    try:
-        load_settings()
-    except Exception as e:
-        print("Error loading settings: {e}")
+    logging.debug("DPG context created")
+    load_settings()
+
     setup_viewport()
     show_windows()
     load_entries()
@@ -1932,6 +1996,7 @@ def main():
     def cleanup():
         global cancel_flag, settings
 
+        logging.info("Application exited")
         cancel_flag.set()
         for thread in threading.enumerate():
             if thread is not threading.main_thread() and not thread.daemon:
@@ -1939,6 +2004,8 @@ def main():
 
         if settings["remember_window_pos"] == True:
             save_window_positions()
+
+        delete_lock_file()
 
     dpg.set_exit_callback(cleanup)
     dpg.destroy_context()
