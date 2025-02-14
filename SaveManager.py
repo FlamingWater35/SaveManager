@@ -1930,6 +1930,7 @@ def main():
     data_directory = os.path.join(os.getenv("LOCALAPPDATA"), "SaveManager")
     if not os.path.exists(data_directory):
         os.makedirs(data_directory)
+        logging.debug("Data directory created")
     run_application()
 
     dpg.create_context()
