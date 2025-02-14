@@ -9,3 +9,4 @@ dxcam[cv2]
 # Optional
 pyinstaller
 black
+pyinstaller_versionfile
