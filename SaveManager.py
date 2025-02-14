@@ -29,7 +29,7 @@ names: list = []
 settings: dict = {
     "copy_folder_checkbox_state": False,
     "file_size_limit": 5,
-    "show_image_status": True,
+    "show_image_status": False,
     "remember_window_pos": True,
     "skip_existing_files": True,
     "file_extensions": [".sav", ".save"],
@@ -146,6 +146,13 @@ def save_settings(section, key, value):
         config.write(configfile)
 
 
+def reset_settings():
+    if os.path.exists(config_file):
+        with open(config_file, "w"):
+            if config.has_section("Settings"):
+                config.remove_section("Settings")
+
+
 def load_entries():
     global sources, destinations, names
 
@@ -161,6 +168,7 @@ def load_entries():
                     f"{entry['name']}: {entry['source']} -> {entry['destination']}",
                     parent="entry_list",
                     wrap=0,
+                    color=(255, 140, 0),
                     user_data=[entry["source"], entry["destination"]],
                 )
 
@@ -1364,7 +1372,28 @@ def show_windows():
 
                     dpg.add_spacer(height=5)
                     with dpg.collapsing_header(label="Log"):
-                        dpg.add_text("Log:")
+                        with dpg.child_window(
+                            autosize_x=True, auto_resize_y=True, border=False
+                        ):
+                            dpg.add_spacer(height=5)
+                            with dpg.group(horizontal=True):
+                                dpg.add_text("Filters:", wrap=0)
+                                dpg.add_button(
+                                    label="Error",
+                                    callback=None,
+                                    tag="log_error_filter_button",
+                                )
+                                dpg.add_button(
+                                    label="Skip",
+                                    callback=None,
+                                    tag="log_skip_filter_button",
+                                )
+                                dpg.add_button(
+                                    label="Copy",
+                                    callback=None,
+                                    tag="log_copy_filter_button",
+                                )
+                            dpg.add_spacer(height=5)
                         with dpg.child_window(tag="copy_log", auto_resize_y=True):
                             pass
                     dpg.add_spacer(height=10)
@@ -1551,10 +1580,13 @@ def show_windows():
                 with dpg.child_window(
                     autosize_x=True, auto_resize_y=True, tag="settings_main_window"
                 ):
-                    dpg.add_text(
-                        "App settings",
-                        wrap=0,
-                    )
+                    with dpg.group(horizontal=True):
+                        dpg.add_text("App settings", wrap=0)
+                        dpg.add_spacer(width=10)
+                        dpg.add_button(label="Reset to default values", callback=reset_settings)
+                        with dpg.tooltip(dpg.last_item()):
+                            dpg.add_text("Takes effect after app restart")
+                    dpg.add_spacer(height=5)
                     dpg.add_separator()
 
                     dpg.add_spacer(height=10)
