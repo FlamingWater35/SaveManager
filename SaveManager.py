@@ -177,29 +177,56 @@ def load_entries():
 
 
 def save_entries():
+    global sources, destinations, names
+
     entries = []
     for name, source, destination in zip(names, sources, destinations):
         entries.append({"name": name, "source": source, "destination": destination})
     with open(json_file_path, "w") as f:
         json.dump(entries, f, indent=4)
-    dpg.set_value("status_text", "Entries saved successfully.")
+    dpg.set_value("status_text", "Folder pairs saved successfully.")
 
 
 def clear_entries_callback(sender, app_data):
     global sources, destinations, names
+
     sources.clear()
     destinations.clear()
     names.clear()
 
     dpg.delete_item("entry_list", children_only=True)
-    dpg.set_value("status_text", "All entries cleared.")
+    dpg.set_value("status_text", "All folder pairs cleared.")
 
     if os.path.exists(json_file_path):
         os.remove(json_file_path)
 
 
+def clear_latest_entry(sender, app_data):
+    global sources, destinations, names
+
+    sources.pop()
+    destinations.pop()
+    names.pop()
+
+    dpg.delete_item("entry_list", children_only=True)
+
+    if os.path.exists(json_file_path):
+        os.remove(json_file_path)
+    save_entries()
+    load_entries()
+    dpg.set_value("status_text", "The latest folder pair has been cleared.")
+
+
 def add_entry_callback(sender, app_data):
+    global sources, destinations, names
+
     name = dpg.get_value("name_input")
+    if name in names:
+        dpg.set_value(
+            "status_text", f"Folder pair '{name}' already exists; pick another name"
+        )
+        dpg.set_value("name_input", "")
+        return
 
     if name and sources and destinations:
         current_source = sources[-1]
@@ -227,7 +254,8 @@ def add_entry_callback(sender, app_data):
         dpg.set_value("source_display", "")
         dpg.set_value("destination_display", "")
         dpg.set_value("name_input", "")
-        dpg.set_value("status_text", f"Added entry: {name}")
+        dpg.set_value("status_text", f"Added folder pair: '{name}'")
+        save_entries()
     else:
         dpg.set_value("status_text", "Please fill the name and select folders.")
 
@@ -1299,7 +1327,9 @@ def show_windows():
                         dpg.add_button(
                             label="Clear all pairs", callback=clear_entries_callback
                         )
-                        dpg.add_button(label="Save pairs", callback=save_entries)
+                        dpg.add_button(
+                            label="Clear latest pair", callback=clear_latest_entry
+                        )
 
                     dpg.add_spacer(height=5)
                     dpg.add_separator()
