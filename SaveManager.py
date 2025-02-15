@@ -1767,6 +1767,8 @@ def show_windows():
         with dpg.theme_component(dpg.mvInputInt):
             dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 20, 2.5)
             dpg.add_theme_color(dpg.mvThemeCol_Border, (230, 81, 0))
+        with dpg.theme_component(dpg.mvInputText):
+            dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 20, 6)
         with dpg.theme_component(dpg.mvCheckbox):
             dpg.add_theme_color(dpg.mvThemeCol_Border, (230, 81, 0))
         with dpg.theme_component(dpg.mvCombo):
@@ -1851,8 +1853,12 @@ def show_windows():
                                 dpg.add_spacer(height=5)
                                 with dpg.group(horizontal=True):
                                     dpg.add_text("Name:")
-                                    dpg.add_input_text(tag="name_input", width=-300)
-                                dpg.add_spacer(height=5)
+                                    dpg.add_input_text(
+                                        tag="name_input",
+                                        width=400,
+                                        hint="write a name for the folder pair",
+                                    )
+                                dpg.add_spacer(height=10)
 
                                 dpg.add_button(
                                     label="Select Source Directory",
