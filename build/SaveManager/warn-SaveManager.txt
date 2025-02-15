@@ -14,7 +14,7 @@ Types if import:
 IMPORTANT: Do NOT post this list to the issue-tracker. Use it as a basis for
             tracking down the missing module yourself. Thanks!
 
-missing module named pwd - imported by posixpath (delayed, conditional, optional), shutil (delayed, optional), tarfile (optional), pathlib (delayed, optional), subprocess (delayed, conditional, optional), netrc (delayed, conditional), getpass (delayed), http.server (delayed, optional)
+missing module named pwd - imported by shutil (delayed, optional), tarfile (optional), pathlib (delayed, optional), subprocess (delayed, conditional, optional), posixpath (delayed, conditional, optional), netrc (delayed, conditional), getpass (delayed), http.server (delayed, optional)
 missing module named grp - imported by shutil (delayed, optional), tarfile (optional), pathlib (delayed, optional), subprocess (delayed, conditional, optional)
 missing module named _posixsubprocess - imported by subprocess (conditional), multiprocessing.util (delayed)
 missing module named fcntl - imported by subprocess (optional), keyboard._nixcommon (delayed)
@@ -25,7 +25,7 @@ missing module named multiprocessing.BufferTooShort - imported by multiprocessin
 missing module named multiprocessing.AuthenticationError - imported by multiprocessing (top-level), multiprocessing.connection (top-level)
 missing module named multiprocessing.get_context - imported by multiprocessing (top-level), multiprocessing.pool (top-level), multiprocessing.managers (top-level), multiprocessing.sharedctypes (top-level)
 missing module named multiprocessing.TimeoutError - imported by multiprocessing (top-level), multiprocessing.pool (top-level)
-missing module named posix - imported by os (conditional, optional), shutil (conditional), importlib._bootstrap_external (conditional), posixpath (optional)
+missing module named posix - imported by shutil (conditional), importlib._bootstrap_external (conditional), os (conditional, optional), posixpath (optional)
 missing module named resource - imported by posix (top-level)
 missing module named _frozen_importlib_external - imported by importlib._bootstrap (delayed), importlib (optional), importlib.abc (optional), zipimport (top-level)
 excluded module named _frozen_importlib - imported by importlib (optional), importlib.abc (optional), zipimport (top-level)
@@ -221,6 +221,7 @@ missing module named numpy._core.ndarray - imported by numpy._core (top-level), 
 missing module named numpy._core.asarray - imported by numpy._core (top-level), numpy.lib._array_utils_impl (top-level), numpy.linalg._linalg (top-level), numpy (conditional), numpy.fft._pocketfft (top-level), numpy.fft._helper (top-level)
 missing module named ctypes._CArgObject - imported by ctypes (conditional), comtypes.automation (conditional), comtypes._comobject (conditional)
 missing module named ctypes._FuncPointer - imported by ctypes (conditional), comtypes._vtbl (conditional)
+missing module named comtypes.gen - imported by comtypes (delayed), comtypes.client._code_cache (delayed, optional), comtypes.client._generate (delayed, conditional), comtypes.client (top-level)
 missing module named ctypes._CData - imported by ctypes (conditional), comtypes (conditional)
 missing module named AppKit - imported by pyperclip (delayed, conditional, optional), keyboard._darwinkeyboard (top-level)
 missing module named Quartz - imported by keyboard._darwinkeyboard (top-level)

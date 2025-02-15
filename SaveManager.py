@@ -81,6 +81,10 @@ config = configparser.ConfigParser()
 progress_queue = queue.Queue()
 cancel_flag = threading.Event()
 
+app_data_directory = os.path.join(os.getenv("LOCALAPPDATA"), "SaveManager")
+if not os.path.exists(app_data_directory):
+    os.makedirs(app_data_directory, exist_ok=True)
+
 logging.basicConfig(
     filename=os.path.join(os.getenv("LOCALAPPDATA"), "SaveManager\\SaveManager.log"),
     level=logging.DEBUG,
@@ -2291,10 +2295,6 @@ def setup_viewport():
 def main():
     global settings, target_app_frame_rate
 
-    data_directory = os.path.join(os.getenv("LOCALAPPDATA"), "SaveManager")
-    if not os.path.exists(data_directory):
-        os.makedirs(data_directory)
-        logging.debug("Data directory created")
     run_application()
 
     dpg.create_context()
