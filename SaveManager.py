@@ -464,14 +464,26 @@ def set_cancel_to_true():
     logging.debug("Non-daemon threads signaled to exit")
 
 
-def get_folder_size(folder):
+def get_folder_size(source):
+    global settings
+
     total_size = 0
-    for dirpath, dirnames, filenames in os.walk(folder):
-        for f in filenames:
-            fp = os.path.join(dirpath, f)
-            # Check if file exists to avoid errors
-            if os.path.exists(fp):
-                total_size += os.path.getsize(fp)
+    for root, dirs, files in os.walk(source):
+        # Check if the current folder should be ignored
+        current_folder_abs = os.path.abspath(root)
+        if current_folder_abs in settings["ignored_folders"]:
+            # Skip this folder and its contents by clearing the dirs list
+            dirs[:] = []
+            continue
+
+        # Add the size of files in non-ignored folders
+        for file in files:
+            file_path = os.path.join(root, file)
+            try:
+                total_size += os.path.getsize(file_path)
+            except FileNotFoundError:
+                logging.error("File deleted during folder size calculation")
+                continue
     return total_size
 
 
@@ -495,7 +507,24 @@ def copy_thread(valid_entries, total_bytes):
 
             # Get all files with sizes
             file_list = []
-            for root, _, files in os.walk(source):
+            ignored_folders = settings["ignored_folders"]
+            for root, dirs, files in os.walk(source):
+                # Check if the current folder is in the ignored_folders list
+                current_folder_abs = os.path.abspath(root)
+                if current_folder_abs in ignored_folders:
+                    # Log the ignored folder
+                    rel_ignored_path = os.path.relpath(current_folder_abs, source)
+                    dpg.add_text(
+                        f"Ignored because of a setting: '{rel_ignored_path}'",
+                        color=(139, 140, 0),
+                        wrap=0,
+                        parent="copy_log",
+                    )
+                    # Skip this folder and its contents by clearing the dirs list
+                    dirs[:] = []
+                    continue
+
+                # Collect files from non-ignored folders
                 for file in files:
                     path = os.path.join(root, file)
                     file_list.append((path, os.path.getsize(path)))
@@ -1588,7 +1617,7 @@ def show_windows():
                             callback=lambda: dpg.show_item("screenshot_file_dialog"),
                         )
                         with dpg.tooltip(dpg.last_item()):
-                            dpg.add_text("Where to save screenshots")
+                            dpg.add_text("Where to save screenshots", wrap=400)
                     dpg.add_spacer(height=10)
                     dpg.add_separator()
                     dpg.add_spacer(height=10)
@@ -1616,7 +1645,8 @@ def show_windows():
                                     )
                                     with dpg.tooltip(dpg.last_item()):
                                         dpg.add_text(
-                                            "Record this many frames every second"
+                                            "Record this many frames every second",
+                                            wrap=400,
                                         )
                                     dpg.add_spacer(width=10)
                                     dpg.add_button(
@@ -1645,7 +1675,8 @@ def show_windows():
                                     )
                                     with dpg.tooltip(dpg.last_item()):
                                         dpg.add_text(
-                                            "How long to record (over a few minutes not recommended)"
+                                            "How long to record (over a few minutes not recommended)",
+                                            wrap=400,
                                         )
                                 dpg.add_spacer(height=5)
                                 dpg.add_separator()
@@ -1718,7 +1749,7 @@ def show_windows():
     with dpg.group(horizontal=True, parent="display_settings_child_window"):
         dpg.add_text("Font size", wrap=0)
         with dpg.tooltip(dpg.last_item()):
-            dpg.add_text("Sets the size for text and GUI elements")
+            dpg.add_text("Sets the size for text and GUI elements", wrap=400)
         dpg.add_input_int(
             min_value=8,
             max_value=40,
@@ -1735,7 +1766,7 @@ def show_windows():
             wrap=0,
         )
         with dpg.tooltip(dpg.last_item()):
-            dpg.add_text("Whether to remember main window position and size")
+            dpg.add_text("Whether to remember main window position and size", wrap=400)
         dpg.add_checkbox(
             default_value=settings["remember_window_pos"],
             callback=settings_change_callback,
@@ -1745,7 +1776,7 @@ def show_windows():
     with dpg.group(horizontal=True, parent="display_settings_child_window"):
         dpg.add_text("Show image", wrap=0)
         with dpg.tooltip(dpg.last_item()):
-            dpg.add_text("Cute image in Copy Manager :3")
+            dpg.add_text("Cute image in Copy Manager :3", wrap=400)
         dpg.add_checkbox(
             default_value=settings["show_image_status"],
             callback=settings_change_callback,
@@ -1759,7 +1790,9 @@ def show_windows():
             wrap=0,
         )
         with dpg.tooltip(dpg.last_item()):
-            dpg.add_text("If disabled, only files inside the folder will be copied")
+            dpg.add_text(
+                "If disabled, only files inside the folder will be copied", wrap=400
+            )
         dpg.add_checkbox(
             default_value=settings["copy_folder_checkbox_state"],
             callback=settings_change_callback,
@@ -1769,7 +1802,7 @@ def show_windows():
     with dpg.group(horizontal=True, parent="copy_manager_settings_child_window"):
         dpg.add_text("Folder size limit", wrap=0)
         with dpg.tooltip(dpg.last_item()):
-            dpg.add_text("Skip folders over set size")
+            dpg.add_text("Skip folders over set size", wrap=400)
         dpg.add_input_int(
             label="GB",
             min_value=1,
@@ -1788,7 +1821,7 @@ def show_windows():
             wrap=0,
         )
         with dpg.tooltip(dpg.last_item()):
-            dpg.add_text("Don't override files")
+            dpg.add_text("Don't override files", wrap=400)
         dpg.add_checkbox(
             default_value=settings["skip_existing_files"],
             callback=settings_change_callback,
@@ -1801,7 +1834,10 @@ def show_windows():
         parent="copy_manager_settings_child_window",
     )
     with dpg.tooltip(dpg.last_item()):
-        dpg.add_text("Skip these folders when copying")
+        dpg.add_text(
+            "Skip these folders when copying (note that this only affects subfolders)",
+            wrap=400,
+        )
     with dpg.tree_node(
         label="Manage",
         parent="copy_manager_settings_child_window",
