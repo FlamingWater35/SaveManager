@@ -205,6 +205,10 @@ def load_entries():
         logging.warning(
             f"Loading Copy Manager entries failed; JSON file not found: {json_file_path}"
         )
+    if dpg.get_item_children("entry_list", slot=1) == []:
+        dpg.add_text(
+            "No folder pairs added", tag="no_entries_text", parent="entry_list", wrap=0
+        )
 
 
 def save_entries():
@@ -232,14 +236,18 @@ def clear_entries_callback(sender, app_data):
     if os.path.exists(json_file_path):
         os.remove(json_file_path)
         logging.debug("JSON file deleted upon clearing entries")
+    load_entries()
 
 
 def clear_latest_entry(sender, app_data):
     global sources, destinations, names
 
-    sources.pop()
-    destinations.pop()
-    names.pop()
+    try:
+        sources.pop()
+        destinations.pop()
+        names.pop()
+    except IndexError:
+        return
 
     dpg.delete_item("entry_list", children_only=True)
 
@@ -290,6 +298,8 @@ def add_entry_callback(sender, app_data):
         dpg.set_value("destination_display", "")
         dpg.set_value("name_input", "")
         dpg.set_value("status_text", f"Added folder pair: '{name}'")
+        if dpg.does_item_exist("no_entries_text"):
+            dpg.delete_item("no_entries_text")
         save_entries()
     else:
         dpg.set_value("status_text", "Please fill the name and select folders.")
@@ -1046,7 +1056,9 @@ def remove_current_extension(sender, app_data):
 
     dpg.delete_item("extension_list", children_only=True)
     for index, extension in enumerate(file_extension_list, start=1):
-        dpg.add_text(f"{index}: {extension}", parent="extension_list")
+        dpg.add_text(f"{index}: {extension}", parent="extension_list", wrap=0)
+    if dpg.get_item_children("extension_list", slot=1) == []:
+        dpg.add_text("No extensions added", parent="extension_list", wrap=0)
     dpg.hide_item("select_extension_text")
     dpg.show_item("extension_remove_button")
     dpg.show_item("extension_add_button")
@@ -1090,7 +1102,7 @@ def add_current_extension():
 
         dpg.delete_item("extension_list", children_only=True)
         for index, extension in enumerate(file_extension_list, start=1):
-            dpg.add_text(f"{index}: {extension}", parent="extension_list")
+            dpg.add_text(f"{index}: {extension}", parent="extension_list", wrap=0)
         dpg.hide_item("add_extension_group")
         dpg.hide_item("comfirm_add_extension")
         dpg.show_item("extension_remove_button")
@@ -1132,16 +1144,18 @@ def open_file_extension_menu():
                 callback=add_current_extension,
             )
         with dpg.group(horizontal=True, show=False, tag="add_extension_group"):
-            dpg.add_text("Extension name")
+            dpg.add_text("Extension name", wrap=0)
             dpg.add_input_text(width=-1, tag="add_extension_input")
         dpg.add_text(
-            "Select an item to remove:", tag="select_extension_text", show=False
+            "Select an item to remove:", tag="select_extension_text", show=False, wrap=0
         )
         with dpg.child_window(
             autosize_x=True, auto_resize_y=True, tag="extension_list"
         ):
             for index, extension in enumerate(settings["file_extensions"], start=1):
-                dpg.add_text(f"{index}: {extension}")
+                dpg.add_text(f"{index}: {extension}", wrap=0)
+            if dpg.get_item_children("extension_list", slot=1) == []:
+                dpg.add_text("No extensions added", wrap=0)
 
 
 def remove_current_folderpath(sender, app_data):
@@ -1153,7 +1167,9 @@ def remove_current_folderpath(sender, app_data):
 
     dpg.delete_item("folderpath_list", children_only=True)
     for index, folderpath in enumerate(folderpath_list, start=1):
-        dpg.add_text(f"{index}: {folderpath}", parent="folderpath_list")
+        dpg.add_text(f"{index}: {folderpath}", parent="folderpath_list", wrap=0)
+    if dpg.get_item_children("folderpath_list", slot=1) == []:
+        dpg.add_text("No folder paths added", parent="folderpath_list", wrap=0)
     dpg.hide_item("select_folderpath_text")
     dpg.show_item("folderpath_remove_button")
     dpg.show_item("folderpath_add_button")
@@ -1193,7 +1209,7 @@ def add_current_folderpath():
 
         dpg.delete_item("folderpath_list", children_only=True)
         for index, folderpath in enumerate(folderpath_list, start=1):
-            dpg.add_text(f"{index}: {folderpath}", parent="folderpath_list")
+            dpg.add_text(f"{index}: {folderpath}", parent="folderpath_list", wrap=0)
         dpg.hide_item("add_folderpath_group")
         dpg.hide_item("comfirm_add_folderpath")
         dpg.show_item("folderpath_remove_button")
@@ -1235,16 +1251,21 @@ def open_folder_path_menu():
                 callback=add_current_folderpath,
             )
         with dpg.group(horizontal=True, show=False, tag="add_folderpath_group"):
-            dpg.add_text("Folder path")
+            dpg.add_text("Folder path", wrap=0)
             dpg.add_input_text(width=-1, tag="add_folderpath_input")
         dpg.add_text(
-            "Select an item to remove:", tag="select_folderpath_text", show=False
+            "Select an item to remove:",
+            tag="select_folderpath_text",
+            show=False,
+            wrap=0,
         )
         with dpg.child_window(
             autosize_x=True, auto_resize_y=True, tag="folderpath_list"
         ):
             for index, folderpath in enumerate(settings["folder_paths"], start=1):
-                dpg.add_text(f"{index}: {folderpath}")
+                dpg.add_text(f"{index}: {folderpath}", wrap=0)
+            if dpg.get_item_children("folderpath_list", slot=1) == []:
+                dpg.add_text("No folder paths added", wrap=0)
 
 
 def remove_current_ignored_folder(sender, app_data):
@@ -1257,6 +1278,8 @@ def remove_current_ignored_folder(sender, app_data):
     dpg.delete_item("ignored_folders_list", children_only=True)
     for index, folderpath in enumerate(ignored_folders_list, start=1):
         dpg.add_text(f"{index}: {folderpath}", parent="ignored_folders_list")
+    if dpg.get_item_children("ignored_folders_list", slot=1) == []:
+        dpg.add_text("No folders added", parent="ignored_folders_list")
     dpg.hide_item("select_ignored_folders_text")
     dpg.show_item("ignored_folders_remove_button")
     dpg.show_item("ignored_folders_add_button")
@@ -1289,7 +1312,9 @@ def ignored_folders_select_callback(sender, app_data):
         dpg.delete_item("ignored_folders_list", children_only=True)
         ignored_folders_list: list = settings["ignored_folders"]
         for index, folderpath in enumerate(ignored_folders_list, start=1):
-            dpg.add_text(f"{index}: {folderpath}", parent="ignored_folders_list")
+            dpg.add_text(
+                f"{index}: {folderpath}", parent="ignored_folders_list", wrap=0
+            )
     else:
         logging.debug("Trying to add already added folder to ignored folders")
 
@@ -1437,7 +1462,7 @@ def show_windows():
                 with dpg.child_window(
                     autosize_x=True, auto_resize_y=True, tag="copy_manager_main_window"
                 ):
-                    dpg.add_text("Copy Manager")
+                    dpg.add_text("Copy Manager", wrap=0)
                     dpg.add_separator()
                     dpg.add_spacer(height=10)
 
@@ -1457,7 +1482,7 @@ def show_windows():
                                 label="Select Source Directory",
                                 callback=lambda: dpg.show_item("source_file_dialog"),
                             )
-                            dpg.add_text("", tag="source_display")
+                            dpg.add_text("", tag="source_display", wrap=0)
                             dpg.add_spacer(height=5)
 
                             dpg.add_button(
@@ -1466,7 +1491,7 @@ def show_windows():
                                     "destination_file_dialog"
                                 ),
                             )
-                            dpg.add_text("", tag="destination_display")
+                            dpg.add_text("", tag="destination_display", wrap=0)
                             dpg.add_spacer(height=5)
 
                             dpg.add_button(
@@ -1571,7 +1596,7 @@ def show_windows():
                 with dpg.child_window(
                     autosize_x=True, auto_resize_y=True, tag="save_finder_main_window"
                 ):
-                    dpg.add_text("File Finder")
+                    dpg.add_text("File Finder", wrap=0)
                     dpg.add_separator()
                     dpg.add_spacer(height=10)
                     dpg.add_button(
@@ -1610,7 +1635,7 @@ def show_windows():
                 with dpg.child_window(
                     autosize_x=True, auto_resize_y=True, tag="image_viewer_main_window"
                 ):
-                    dpg.add_text("Image viewer")
+                    dpg.add_text("Image viewer", wrap=0)
                     dpg.add_separator()
                     dpg.add_spacer(height=10)
                     with dpg.group(horizontal=True):
@@ -1619,7 +1644,7 @@ def show_windows():
                             callback=lambda: dpg.show_item("open_image_dialog"),
                         )
                         dpg.add_spacer(width=10)
-                        dpg.add_text("", tag="image_information")
+                        dpg.add_text("", tag="image_information", wrap=0)
                     dpg.add_spacer(height=10)
                     with dpg.child_window(
                         autosize_x=True,
@@ -1635,7 +1660,7 @@ def show_windows():
                 with dpg.child_window(
                     autosize_x=True, auto_resize_y=True, tag="recording_main_window"
                 ):
-                    dpg.add_text("Recorder")
+                    dpg.add_text("Recorder", wrap=0)
                     dpg.add_separator()
                     dpg.add_spacer(height=10)
                     with dpg.group(horizontal=True):
@@ -1644,7 +1669,7 @@ def show_windows():
                             callback=start_key_listener,
                         )
                         dpg.add_spacer(width=10)
-                        dpg.add_text("Set keybind:")
+                        dpg.add_text("Set keybind:", wrap=0)
                         screenshot_binding = recording_settings["screenshot_key"]
                         dpg.add_button(
                             label=f"{screenshot_binding}",
@@ -1696,10 +1721,12 @@ def show_windows():
                                         ),
                                     )
                                     with dpg.tooltip(dpg.last_item()):
-                                        dpg.add_text("Where to save screen recordings")
+                                        dpg.add_text(
+                                            "Where to save screen recordings", wrap=400
+                                        )
                                 dpg.add_spacer(height=10)
                                 with dpg.group(horizontal=True):
-                                    dpg.add_text("Duration:")
+                                    dpg.add_text("Duration:", wrap=0)
                                     dpg.add_input_int(
                                         label="sec",
                                         min_value=5,
@@ -1722,11 +1749,11 @@ def show_windows():
                                 dpg.add_separator()
                                 dpg.add_spacer(height=5)
                                 with dpg.tree_node(
-                                    label="Advanced settings", span_full_width=True
+                                    label="Advanced settings",  # span_full_width=True
                                 ):
                                     dpg.add_spacer(height=5)
                                     with dpg.group(horizontal=True):
-                                        dpg.add_text("Codec")
+                                        dpg.add_text("Codec", wrap=0)
                                         dpg.add_combo(
                                             items=[".avc1"],
                                             default_value=".avc1",
@@ -1755,7 +1782,7 @@ def show_windows():
                             label="Reset to default values", callback=reset_settings
                         )
                         with dpg.tooltip(dpg.last_item()):
-                            dpg.add_text("Takes effect after app restart")
+                            dpg.add_text("Takes effect after app restart", wrap=400)
                     dpg.add_spacer(height=5)
                     dpg.add_separator()
 
@@ -1868,23 +1895,18 @@ def show_windows():
             user_data="skip_existing_files",
         )
     dpg.add_spacer(height=20, parent="copy_manager_settings_child_window")
-    dpg.add_text(
-        "Ignored folders",
-        wrap=0,
-        parent="copy_manager_settings_child_window",
-    )
-    with dpg.tooltip(dpg.last_item()):
-        dpg.add_text(
-            "Skip these folders when copying (note that this only affects subfolders)",
-            wrap=400,
-        )
     with dpg.tree_node(
-        label="Manage",
+        label="Manage ignored folders",
         parent="copy_manager_settings_child_window",
-        span_full_width=True,
+        # span_full_width=True,
     ):
+        with dpg.tooltip(dpg.last_item()):
+            dpg.add_text(
+                "Skip these folders when copying (note that this only affects subfolders)",
+                wrap=400,
+            )
+        dpg.add_spacer(height=5)
         with dpg.child_window(
-            label="Manage ignored folders",
             tag="ignored_folders_manager_window",
             autosize_x=True,
             auto_resize_y=True,
@@ -1904,6 +1926,7 @@ def show_windows():
                 "Select an item to remove:",
                 tag="select_ignored_folders_text",
                 show=False,
+                wrap=0,
             )
             dpg.add_spacer(height=5)
             with dpg.child_window(
@@ -1912,7 +1935,9 @@ def show_windows():
                 for index, folderpath in enumerate(
                     settings["ignored_folders"], start=1
                 ):
-                    dpg.add_text(f"{index}: {folderpath}")
+                    dpg.add_text(f"{index}: {folderpath}", wrap=0)
+                if dpg.get_item_children("ignored_folders_list", slot=1) == []:
+                    dpg.add_text("No folders added", wrap=0)
 
     dpg.add_spacer(height=10, parent="copy_manager_settings_child_window")
     dpg.add_spacer(height=10, parent="save_finder_settings_child_window")
@@ -1941,6 +1966,7 @@ def show_windows():
         cancel_callback=cancel_callback,
         width=dpg.get_viewport_width() / 1.5,
         height=dpg.get_viewport_height() / 1.5,
+        label="Select source",
     ):
         pass  # Just add some settings or extension filters
 
@@ -1952,6 +1978,7 @@ def show_windows():
         cancel_callback=cancel_callback,
         width=dpg.get_viewport_width() / 1.5,
         height=dpg.get_viewport_height() / 1.5,
+        label="Select destination",
     ):
         pass
 
@@ -1964,6 +1991,7 @@ def show_windows():
         cancel_callback=recording_cancel_callback,
         width=dpg.get_viewport_width() / 1.5,
         height=dpg.get_viewport_height() / 1.5,
+        label="Select screenshot folder",
     ):
         pass
     if not os.path.exists(recording_settings["screenshot_folder"]):
@@ -1980,6 +2008,7 @@ def show_windows():
         cancel_callback=recording_cancel_callback,
         width=dpg.get_viewport_width() / 1.5,
         height=dpg.get_viewport_height() / 1.5,
+        label="Select video folder",
     ):
         pass
     if not os.path.exists(recording_settings["video_folder"]):
@@ -2007,6 +2036,7 @@ def show_windows():
         tag="open_image_dialog",
         width=dpg.get_viewport_width() / 1.5,
         height=dpg.get_viewport_height() / 1.5,
+        label="Open an image",
     ):
         dpg.add_file_extension(
             "Image files (*.png *.jpg *.jpeg *.bmp *.gif){.png,.jpg,.jpeg,.bmp,.gif}"
