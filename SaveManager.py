@@ -18,6 +18,7 @@ import ast
 import dxcam
 import cv2
 import logging
+import shutil
 
 
 app_version: str = "2.4.0_Windows"
@@ -33,6 +34,7 @@ settings: dict = {
     "show_image_status": False,
     "remember_window_pos": True,
     "skip_existing_files": True,
+    "clear_destination_folder": False,
     "file_extensions": [".sav", ".save"],
     "folder_paths": [
         "C:\\Program Files",
@@ -498,6 +500,50 @@ def set_log_filter(sender, app_data):
         dpg.configure_item(sender, label=f"{new_label}")
 
 
+def delete_folder_with_children():
+    global destinations
+
+    for destination_folder in destinations:
+        if not os.path.exists(destination_folder):
+            logging.error(
+                f"The folder '{destination_folder}' does not exist. (this error should not be possible if everything above works correctly)"
+            )
+            return
+
+        for item in os.listdir(destination_folder):
+            item_path = os.path.join(destination_folder, item)
+            try:
+                if os.path.isfile(item_path) or os.path.islink(item_path):
+                    # Delete files and symbolic links
+                    os.unlink(item_path)
+                    dpg.add_text(
+                        f"Deleted file: '{item_path}'",
+                        color=(139, 140, 0),
+                        wrap=0,
+                        parent="copy_log",
+                        user_data="delete",
+                    )
+                elif os.path.isdir(item_path):
+                    # Optionally, delete subfolders and their contents
+                    shutil.rmtree(item_path)
+                    dpg.add_text(
+                        f"Deleted folder and its contents: '{item_path}'",
+                        color=(139, 140, 0),
+                        wrap=0,
+                        parent="copy_log",
+                        user_data="delete",
+                    )
+            except Exception as e:
+                dpg.add_text(
+                    f"Failed to delete '{item_path}': {e}",
+                    color=(229, 57, 53),
+                    wrap=0,
+                    parent="copy_log",
+                    user_data="error",
+                )
+                logging.error(f"Deleting files failed: {e}")
+
+
 def get_folder_size(source):
     global settings
 
@@ -688,6 +734,9 @@ def copy_all_callback(sender, app_data):
             if not valid_entries:
                 dpg.set_value("status_text", "No entries to copy (check log).")
                 return
+
+    if settings["clear_destination_folder"]:
+        delete_folder_with_children()
 
     dpg.set_value("progress_bar", 0.0)
     dpg.set_value("status_text", "Copying directories...")
@@ -1348,6 +1397,8 @@ def settings_change_callback(sender, app_data):
         save_settings("Settings", "remember_window_pos", app_data)
     elif setting == "skip_existing_files":
         save_settings("Settings", "skip_existing_files", app_data)
+    elif setting == "clear_destination_folder":
+        save_settings("Settings", "clear_destination_folder", app_data)
     else:
         dpg.set_value(
             "status_text", "Changing setting failed; user_data incorrect or missing"
@@ -1581,6 +1632,12 @@ def show_windows():
                                     callback=set_log_filter,
                                     tag="log_copy_filter_button",
                                     user_data=["copy", "shown"],
+                                )
+                                dpg.add_button(
+                                    label="Delete",
+                                    callback=set_log_filter,
+                                    tag="log_delete_filter_button",
+                                    user_data=["delete", "shown"],
                                 )
                             dpg.add_spacer(height=5)
                         with dpg.child_window(tag="copy_log", auto_resize_y=True):
@@ -1893,6 +1950,19 @@ def show_windows():
             default_value=settings["skip_existing_files"],
             callback=settings_change_callback,
             user_data="skip_existing_files",
+        )
+    dpg.add_spacer(height=20, parent="copy_manager_settings_child_window")
+    with dpg.group(horizontal=True, parent="copy_manager_settings_child_window"):
+        dpg.add_text(
+            "Clear destination",
+            wrap=0,
+        )
+        with dpg.tooltip(dpg.last_item()):
+            dpg.add_text("Clear destination folder before copy operation", wrap=400)
+        dpg.add_checkbox(
+            default_value=settings["clear_destination_folder"],
+            callback=settings_change_callback,
+            user_data="clear_destination_folder",
         )
     dpg.add_spacer(height=20, parent="copy_manager_settings_child_window")
     with dpg.tree_node(
