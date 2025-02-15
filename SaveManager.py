@@ -349,6 +349,7 @@ def record_video_thread():
     camera.stop()
     writer.release()
     target_app_frame_rate = -1
+    dpg.show_item("start_video_recording_button")
     dpg.set_value("recording_status_text", f"Recording saved as: {filename}")
     logging.debug("Video recorded successfully")
 
@@ -356,6 +357,7 @@ def record_video_thread():
 def start_video_recording_thread():
     global recording_settings
 
+    dpg.hide_item("start_video_recording_button")
     video_folder = recording_settings["video_folder"]
     if not os.path.exists(video_folder):
         dpg.set_value(
@@ -423,6 +425,7 @@ def key_listener():
 def start_key_listener():
     global recording_settings
 
+    dpg.hide_item("start_key_listener_button")
     screenshot_folder = recording_settings["screenshot_folder"]
     if not os.path.exists(screenshot_folder):
         dpg.set_value(
@@ -462,11 +465,13 @@ def keybind_recorder_thread():
         logging.error(f"Error during keybind recorder thread: {e}")
     finally:
         is_recording_keybind = False
+        dpg.show_item("start_keybind_recording_button")
 
 
 def start_keybind_recording():
     global is_recording_keybind
     if not is_recording_keybind:
+        dpg.hide_item("start_keybind_recording_button")
         is_recording_keybind = True
         dpg.show_item("recording_status_text")
         dpg.set_value("recording_status_text", "Press any key...")
@@ -806,6 +811,7 @@ def recording_cancel_callback(sender, app_data):
 def search_files():
     global settings, cancel_flag
 
+    dpg.hide_item("file_search_button")
     cancel_flag.clear()
     sav_directories = set()
     file_extensions_tuple = tuple(settings["file_extensions"])
@@ -930,6 +936,7 @@ def search_files():
                 wrap=0,
                 parent="directory_list",
             )
+        dpg.show_item("file_search_button")
 
     thread = threading.Thread(target=thread_target)
     thread.start()
@@ -1750,7 +1757,22 @@ def show_windows():
             dpg.add_theme_color(dpg.mvThemeCol_Border, (93, 64, 55))
         with dpg.theme_component(dpg.mvButton):
             dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 8, 5)
+            dpg.add_theme_style(dpg.mvStyleVar_FrameBorderSize, 2, 2)
+        with dpg.theme_component(dpg.mvProgressBar):
             dpg.add_theme_style(dpg.mvStyleVar_FrameRounding, 4, 4)
+            dpg.add_theme_style(dpg.mvStyleVar_FrameBorderSize, 2, 2)
+            dpg.add_theme_color(dpg.mvThemeCol_Border, (183, 28, 28))
+            dpg.add_theme_color(dpg.mvThemeCol_FrameBg, (40, 53, 147))
+            dpg.add_theme_color(dpg.mvThemeCol_PlotHistogram, (27, 94, 32))
+        with dpg.theme_component(dpg.mvInputInt):
+            dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 20, 2.5)
+        with dpg.theme_component(dpg.mvCombo):
+            dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 20, 2.5)
+        with dpg.theme_component(dpg.mvCollapsingHeader):
+            dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 0, 5)
+            dpg.add_theme_color(dpg.mvThemeCol_Border, (0, 96, 100))
+        with dpg.theme_component(dpg.mvAll):
+            dpg.add_theme_style(dpg.mvStyleVar_FrameRounding, 4)
             dpg.add_theme_style(dpg.mvStyleVar_FrameBorderSize, 2, 2)
 
     with dpg.theme() as main_window_theme:
@@ -1842,6 +1864,7 @@ def show_windows():
                             "Folder pairs will appear below (click or double click to copy to clipboard):",
                             wrap=0,
                         )
+                        dpg.add_spacer(height=5)
 
                         with dpg.child_window(tag="entry_list", auto_resize_y=True):
                             pass
@@ -1857,7 +1880,7 @@ def show_windows():
 
                         dpg.add_spacer(height=5)
                         dpg.add_separator()
-                        dpg.add_spacer(height=5)
+                        dpg.add_spacer(height=10)
                         with dpg.group(horizontal=True):
                             dpg.add_button(
                                 label="Run Copy Operation",
@@ -1878,10 +1901,10 @@ def show_windows():
                         dpg.add_progress_bar(
                             tag="progress_bar",
                             default_value=0.0,
-                            width=-200,
-                            height=30,
+                            width=-5,
+                            height=40,
                             show=False,
-                            overlay="0.00 GB / 0.00 GB",
+                            overlay="0.00 GB / 0.00 GB (0%)",
                         )
 
                         dpg.add_spacer(height=5)
@@ -1949,17 +1972,20 @@ def show_windows():
                         dpg.add_separator()
                         dpg.add_spacer(height=10)
                         dpg.add_button(
-                            label="Search for files", callback=start_search_thread
+                            label="Search for files",
+                            callback=start_search_thread,
+                            tag="file_search_button",
                         )
+                        dpg.add_text("", tag="finder_text", show=False, wrap=0)
                         dpg.add_spacer(height=5)
                         dpg.add_progress_bar(
                             tag="finder_progress_bar",
                             default_value=0.0,
-                            width=400,
-                            height=20,
+                            width=-5,
+                            height=30,
                             show=False,
                         )
-                        dpg.add_text("", tag="finder_text", show=False, wrap=0)
+                        dpg.add_spacer(height=5)
                         dpg.add_separator()
                         dpg.add_spacer(height=5)
                         dpg.add_text(
@@ -2018,6 +2044,7 @@ def show_windows():
                             dpg.add_button(
                                 label="Start process",
                                 callback=start_key_listener,
+                                tag="start_key_listener_button",
                             )
                             dpg.add_spacer(width=10)
                             dpg.add_text("Set keybind:", wrap=0)
@@ -2043,6 +2070,7 @@ def show_windows():
                             dpg.add_button(
                                 label="Record video",
                                 callback=start_video_recording_thread,
+                                tag="start_video_recording_button",
                             )
                         dpg.add_spacer(height=10)
                         with dpg.collapsing_header(label="Video settings"):
