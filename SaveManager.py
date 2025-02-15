@@ -477,6 +477,8 @@ def start_keybind_recording():
 def set_cancel_to_true():
     global cancel_flag
     cancel_flag.set()
+    dpg.show_item("copy_button")
+    dpg.hide_item("cancel_button")
     logging.debug("Non-daemon threads signaled to exit")
 
 
@@ -510,6 +512,7 @@ def set_log_filter(sender, app_data):
 def delete_folder_with_children():
     global destinations
 
+    dpg.set_value("status_text", "Clearing destination folders...")
     for destination_folder in destinations:
         if not os.path.exists(destination_folder):
             logging.error(
@@ -664,11 +667,15 @@ def copy_thread(valid_entries, total_bytes):
         progress_queue.put(("error", f"Error: {str(e)}"))
     finally:
         cancel_flag.clear()
+        dpg.show_item("copy_button")
+        dpg.hide_item("cancel_button")
 
 
 def copy_all_callback(sender, app_data):
     global settings, cancel_flag, sources, destinations, names
 
+    dpg.hide_item("copy_button")
+    dpg.show_item("cancel_button")
     cancel_flag.clear()
     dpg.delete_item("copy_log", children_only=True)
     dpg.set_value("speed_text", "")
@@ -1853,12 +1860,15 @@ def show_windows():
                         dpg.add_spacer(height=5)
                         with dpg.group(horizontal=True):
                             dpg.add_button(
-                                label="Run Copy Operation", callback=copy_all_callback
+                                label="Run Copy Operation",
+                                callback=copy_all_callback,
+                                tag="copy_button",
                             )
                             dpg.add_button(
-                                label="Cancel Copy",
+                                label="Cancel Copy Operation",
                                 callback=set_cancel_to_true,
                                 tag="cancel_button",
+                                show=False,
                             )
 
                         dpg.add_spacer(height=5)
