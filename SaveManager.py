@@ -20,8 +20,8 @@ import cv2
 import logging
 
 
-app_version: str = "2.3.4_Windows"
-release_date: str = "2/14/2025"
+app_version: str = "2.4.0_Windows"
+release_date: str = "2/15/2025"
 
 sources: list = []
 destinations: list = []
@@ -464,6 +464,30 @@ def set_cancel_to_true():
     logging.debug("Non-daemon threads signaled to exit")
 
 
+def set_log_filter(sender, app_data):
+    level = dpg.get_item_user_data(sender)[0]
+    show_flag = dpg.get_item_user_data(sender)[1]
+
+    if show_flag == "shown":
+        log_items = dpg.get_item_children("copy_log", slot=1)
+        for item in log_items:
+            if dpg.get_item_user_data(item) == level:
+                dpg.hide_item(item)
+        dpg.configure_item(sender, user_data=[level, "hidden"])
+        sender_label = dpg.get_item_configuration(sender)["label"]
+        dpg.configure_item(sender, label=f"{sender_label} (hidden)")
+
+    elif show_flag == "hidden":
+        log_items = dpg.get_item_children("copy_log", slot=1)
+        for item in log_items:
+            if dpg.get_item_user_data(item) == level:
+                dpg.show_item(item)
+        dpg.configure_item(sender, user_data=[level, "shown"])
+        sender_label = dpg.get_item_configuration(sender)["label"]
+        new_label = sender_label.replace(" (hidden)", "")
+        dpg.configure_item(sender, label=f"{new_label}")
+
+
 def get_folder_size(source):
     global settings
 
@@ -519,6 +543,7 @@ def copy_thread(valid_entries, total_bytes):
                         color=(139, 140, 0),
                         wrap=0,
                         parent="copy_log",
+                        user_data="ignore",
                     )
                     # Skip this folder and its contents by clearing the dirs list
                     dirs[:] = []
@@ -547,6 +572,7 @@ def copy_thread(valid_entries, total_bytes):
                         color=(139, 140, 0),
                         wrap=0,
                         parent="copy_log",
+                        user_data="skip",
                     )
                     total_bytes -= size  # Adjust total size
                     progress_queue.put(("adjust_total", total_bytes))
@@ -566,6 +592,7 @@ def copy_thread(valid_entries, total_bytes):
                     wrap=0,
                     color=(0, 140, 139),
                     parent="copy_log",
+                    user_data="copy",
                 )
 
         progress_queue.put(("complete", "Copying completed."))
@@ -604,6 +631,7 @@ def copy_all_callback(sender, app_data):
                     color=(229, 57, 53),
                     wrap=0,
                     parent="copy_log",
+                    user_data="skip",
                 )
                 invalid_entry = True
             case (True, False):
@@ -612,6 +640,7 @@ def copy_all_callback(sender, app_data):
                     color=(229, 57, 53),
                     wrap=0,
                     parent="copy_log",
+                    user_data="skip",
                 )
                 invalid_entry = True
             case (False, False):
@@ -620,6 +649,7 @@ def copy_all_callback(sender, app_data):
                     color=(229, 57, 53),
                     wrap=0,
                     parent="copy_log",
+                    user_data="skip",
                 )
                 invalid_entry = True
 
@@ -634,6 +664,7 @@ def copy_all_callback(sender, app_data):
                     color=(139, 140, 0),
                     wrap=0,
                     parent="copy_log",
+                    user_data="skip",
                 )
 
     match invalid_entry:
@@ -1504,18 +1535,27 @@ def show_windows():
                                 dpg.add_text("Filters:", wrap=0)
                                 dpg.add_button(
                                     label="Error",
-                                    callback=None,
+                                    callback=set_log_filter,
                                     tag="log_error_filter_button",
+                                    user_data=["error", "shown"],
                                 )
                                 dpg.add_button(
                                     label="Skip",
-                                    callback=None,
+                                    callback=set_log_filter,
                                     tag="log_skip_filter_button",
+                                    user_data=["skip", "shown"],
+                                )
+                                dpg.add_button(
+                                    label="Ignore",
+                                    callback=set_log_filter,
+                                    tag="log_ignore_filter_button",
+                                    user_data=["ignore", "shown"],
                                 )
                                 dpg.add_button(
                                     label="Copy",
-                                    callback=None,
+                                    callback=set_log_filter,
                                     tag="log_copy_filter_button",
+                                    user_data=["copy", "shown"],
                                 )
                             dpg.add_spacer(height=5)
                         with dpg.child_window(tag="copy_log", auto_resize_y=True):
@@ -2108,7 +2148,13 @@ def main():
                 dpg.hide_item("progress_bar")
                 dpg.hide_item("speed_text")
             elif item_type == "error":
-                dpg.add_text(data, color=(229, 57, 53), wrap=0, parent="copy_log")
+                dpg.add_text(
+                    data,
+                    color=(229, 57, 53),
+                    wrap=0,
+                    parent="copy_log",
+                    user_data="error",
+                )
                 dpg.hide_item("progress_bar")
                 dpg.hide_item("speed_text")
             elif item_type == "update":
