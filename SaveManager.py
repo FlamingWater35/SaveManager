@@ -317,11 +317,15 @@ def record_video_thread():
 
     user32 = ctypes.windll.user32
     screen_width, screen_height = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
-    openh264_path = resource_path("docs/openh264-1.8.0-win64.dll")
-    ctypes.cdll.LoadLibrary(openh264_path)
+    try:
+        openh264_path = resource_path("docs/openh264-1.8.0-win64.dll")
+        ctypes.cdll.LoadLibrary(openh264_path)
 
-    camera = dxcam.create(output_idx=0, output_color="BGR")
-    camera.start(target_fps=target_fps, video_mode=True)
+        camera = dxcam.create(output_idx=0, output_color="BGR")
+        camera.start(target_fps=target_fps, video_mode=True)
+    except Exception as e:
+        dpg.set_value("recording_status_text", f"Error initializing video: {e}")
+        logging.error(f"Initializing video failed: {e}")
 
     # VideoWriter configuration (adjust codec if needed)
     writer = cv2.VideoWriter(
@@ -409,8 +413,8 @@ def key_listener():
             keyboard.wait(recording_settings["screenshot_key"])
         except Exception as e:
             dpg.show_item("recording_status_text")
-            dpg.set_value("recording_status_text", "Screenshot key does not exist")
-            logging.error("Screenhot key not existing when called by key listener")
+            dpg.set_value("recording_status_text", f"Error with key listener: {e}")
+            logging.error(f"Screenhot key error when called by key listener: {e}")
             break
         take_screenshot()
         time.sleep(0.5)
@@ -454,7 +458,7 @@ def keybind_recorder_thread():
                 "recording_status_text", f"Keybind unchanged: {current_keybind}"
             )
     except Exception as e:
-        dpg.set_value("recording_status_text", f"Error: {str(e)}")
+        dpg.set_value("recording_status_text", f"Error when recording keybind: {e}")
         logging.error(f"Error during keybind recorder thread: {e}")
     finally:
         is_recording_keybind = False
@@ -477,27 +481,30 @@ def set_cancel_to_true():
 
 
 def set_log_filter(sender, app_data):
-    level = dpg.get_item_user_data(sender)[0]
-    show_flag = dpg.get_item_user_data(sender)[1]
+    try:
+        level = dpg.get_item_user_data(sender)[0]
+        show_flag = dpg.get_item_user_data(sender)[1]
 
-    if show_flag == "shown":
-        log_items = dpg.get_item_children("copy_log", slot=1)
-        for item in log_items:
-            if dpg.get_item_user_data(item) == level:
-                dpg.hide_item(item)
-        dpg.configure_item(sender, user_data=[level, "hidden"])
-        sender_label = dpg.get_item_configuration(sender)["label"]
-        dpg.configure_item(sender, label=f"{sender_label} (hidden)")
+        if show_flag == "shown":
+            log_items = dpg.get_item_children("copy_log", slot=1)
+            for item in log_items:
+                if dpg.get_item_user_data(item) == level:
+                    dpg.hide_item(item)
+            dpg.configure_item(sender, user_data=[level, "hidden"])
+            sender_label = dpg.get_item_configuration(sender)["label"]
+            dpg.configure_item(sender, label=f"{sender_label} (hidden)")
 
-    elif show_flag == "hidden":
-        log_items = dpg.get_item_children("copy_log", slot=1)
-        for item in log_items:
-            if dpg.get_item_user_data(item) == level:
-                dpg.show_item(item)
-        dpg.configure_item(sender, user_data=[level, "shown"])
-        sender_label = dpg.get_item_configuration(sender)["label"]
-        new_label = sender_label.replace(" (hidden)", "")
-        dpg.configure_item(sender, label=f"{new_label}")
+        elif show_flag == "hidden":
+            log_items = dpg.get_item_children("copy_log", slot=1)
+            for item in log_items:
+                if dpg.get_item_user_data(item) == level:
+                    dpg.show_item(item)
+            dpg.configure_item(sender, user_data=[level, "shown"])
+            sender_label = dpg.get_item_configuration(sender)["label"]
+            new_label = sender_label.replace(" (hidden)", "")
+            dpg.configure_item(sender, label=f"{new_label}")
+    except Exception as e:
+        logging.error(f"Exception occurred with log filter: {e}")
 
 
 def delete_folder_with_children():
@@ -860,6 +867,7 @@ def search_files():
             dpg.set_value(
                 "search_status_text", f"Error processing directory {directory}: {e}"
             )
+            logging.error(f"Error when processing directory during file search: {e}")
 
     # Using threading to prevent UI freezing
     def thread_target():
@@ -884,26 +892,31 @@ def search_files():
         color_index = 0
 
         if sav_directories:
-            for index, directory in enumerate(sorted(sav_directories), start=1):
-                if cancel_flag.is_set():
-                    return
-                cur_color = colors[color_index]
-                item_id = dpg.add_text(
-                    f"{index}. {directory}",
-                    wrap=0,
-                    parent="directory_list",
-                    color=cur_color,
-                    user_data=directory,
-                )
-
-                with dpg.item_handler_registry(tag=f"text_handler_{item_id}"):
-                    dpg.add_item_clicked_handler(
-                        user_data=dpg.get_item_user_data(item_id),
-                        callback=text_click_handler,
+            try:
+                for index, directory in enumerate(sorted(sav_directories), start=1):
+                    if cancel_flag.is_set():
+                        return
+                    cur_color = colors[color_index]
+                    item_id = dpg.add_text(
+                        f"{index}. {directory}",
+                        wrap=0,
+                        parent="directory_list",
+                        color=cur_color,
+                        user_data=directory,
                     )
-                dpg.bind_item_handler_registry(item_id, f"text_handler_{item_id}")
 
-                color_index = (color_index + 1) % len(colors)
+                    with dpg.item_handler_registry(tag=f"text_handler_{item_id}"):
+                        dpg.add_item_clicked_handler(
+                            user_data=dpg.get_item_user_data(item_id),
+                            callback=text_click_handler,
+                        )
+                    dpg.bind_item_handler_registry(item_id, f"text_handler_{item_id}")
+
+                    color_index = (color_index + 1) % len(colors)
+            except Exception as e:
+                logging.error(
+                    f"Error occurred while adding searched files as text items: {e}"
+                )
         else:
             dpg.add_text(
                 "No files found.",
@@ -965,6 +978,7 @@ def check_for_updates_thread():
             progress_queue.put(("update", "You have the latest version"))
     except Exception as e:
         progress_queue.put(("update", f"Update check failed: {str(e)}"))
+        logging.error(f"Update check failed: {e}")
 
 
 def open_image(sender, app_data):
@@ -1015,26 +1029,29 @@ def update_image_display():
     if drawlist_tag and dpg.does_item_exist(drawlist_tag):
         dpg.delete_item(drawlist_tag)
 
-    drawlist_tag = dpg.generate_uuid()
-    with dpg.drawlist(
-        dpg.get_viewport_width(),
-        dpg.get_viewport_height() / 1.4,
-        tag=drawlist_tag,
-        parent="image_viewer_child_window",
-    ):
-        if texture_tag:
-            # Calculate scaled dimensions
-            scaled_width = img_size[0] * zoom_level
-            scaled_height = img_size[1] * zoom_level
+    try:
+        drawlist_tag = dpg.generate_uuid()
+        with dpg.drawlist(
+            dpg.get_viewport_width(),
+            dpg.get_viewport_height() / 1.4,
+            tag=drawlist_tag,
+            parent="image_viewer_child_window",
+        ):
+            if texture_tag:
+                # Calculate scaled dimensions
+                scaled_width = img_size[0] * zoom_level
+                scaled_height = img_size[1] * zoom_level
 
-            # Draw image with current zoom and pan
-            dpg.draw_image(
-                texture_tag,
-                (pan_offset[0], pan_offset[1]),
-                (pan_offset[0] + scaled_width, pan_offset[1] + scaled_height),
-                uv_min=(0, 0),
-                uv_max=(1, 1),
-            )
+                # Draw image with current zoom and pan
+                dpg.draw_image(
+                    texture_tag,
+                    (pan_offset[0], pan_offset[1]),
+                    (pan_offset[0] + scaled_width, pan_offset[1] + scaled_height),
+                    uv_min=(0, 0),
+                    uv_max=(1, 1),
+                )
+    except Exception as e:
+        logging.error(f"Updating image display failed: {e}")
 
 
 def zoom_callback(sender, app_data):
@@ -1107,7 +1124,7 @@ def remove_current_extension(sender, app_data):
     for index, extension in enumerate(file_extension_list, start=1):
         dpg.add_text(f"{index}: {extension}", parent="extension_list", wrap=0)
     if dpg.get_item_children("extension_list", slot=1) == []:
-        dpg.add_text("No extensions added", parent="extension_list", wrap=0)
+        dpg.add_text("No file extensions added", parent="extension_list", wrap=0)
     dpg.hide_item("select_extension_text")
     dpg.show_item("extension_remove_button")
     dpg.show_item("extension_add_button")
@@ -1204,7 +1221,7 @@ def open_file_extension_menu():
             for index, extension in enumerate(settings["file_extensions"], start=1):
                 dpg.add_text(f"{index}: {extension}", wrap=0)
             if dpg.get_item_children("extension_list", slot=1) == []:
-                dpg.add_text("No extensions added", wrap=0)
+                dpg.add_text("No file extensions added", wrap=0)
 
 
 def remove_current_folderpath(sender, app_data):
@@ -1433,441 +1450,8 @@ def text_click_handler(sender, app_data, user_data):
     dpg.set_value("status_text", f"Copied to clipboard: {user_data}")
 
 
-def show_windows():
-    global img_id, settings, recording_settings
-
-    with dpg.handler_registry():
-        # Mouse wheel for zoom
-        dpg.add_mouse_wheel_handler(callback=zoom_callback)
-
-        # Mouse drag for panning
-        dpg.add_mouse_down_handler(button=dpg.mvMouseButton_Left, callback=start_drag)
-        dpg.add_mouse_release_handler(button=dpg.mvMouseButton_Left, callback=end_drag)
-        dpg.add_mouse_move_handler(callback=handle_drag)
-
-    with dpg.font_registry(tag="font_registry"):
-        # Add font file and size
-        font_size = load_setting("DisplayOptions", "font_size")
-        if font_size == None:
-            font_size = default_font_size
-        custom_font = dpg.add_font(font_path, font_size)
-
-    with dpg.texture_registry(tag="image_registry"):
-        width, height, channels, data = dpg.load_image(
-            resource_path("docs/cute_image.png")
-        )
-        dpg.add_static_texture(
-            width=width, height=height, default_value=data, tag="cute_image"
-        )
-    logging.debug("Image initialized")
-
-    with dpg.item_handler_registry(tag="window_handler") as handler:
-        dpg.add_item_resize_handler(callback=image_resize_callback)
-
-    with dpg.theme() as child_window_theme:
-        with dpg.theme_component(dpg.mvChildWindow):
-            dpg.add_theme_style(dpg.mvStyleVar_WindowPadding, 15, 10)
-            dpg.add_theme_style(dpg.mvStyleVar_ChildRounding, 3, 3)
-            dpg.add_theme_style(dpg.mvStyleVar_ChildBorderSize, 4, 4)
-            dpg.add_theme_color(dpg.mvThemeCol_Border, (93, 64, 55))
-        with dpg.theme_component(dpg.mvButton):
-            dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 8, 5)
-            dpg.add_theme_style(dpg.mvStyleVar_FrameRounding, 4, 4)
-            dpg.add_theme_style(dpg.mvStyleVar_FrameBorderSize, 2, 2)
-
-    with dpg.theme() as main_window_theme:
-        with dpg.theme_component(dpg.mvChildWindow):
-            dpg.add_theme_color(dpg.mvThemeCol_Border, (21, 101, 192))
-
-    with dpg.theme() as main_window_add_folder_theme:
-        with dpg.theme_component(dpg.mvChildWindow):
-            dpg.add_theme_color(dpg.mvThemeCol_ChildBg, (43, 35, 32))
-
-    dpg.bind_font(custom_font)
-    logging.debug("Font bound to main window")
-
-    with dpg.window(tag="Primary Window"):
-        with dpg.menu_bar():
-            with dpg.menu(label="About"):
-                with dpg.menu(label="Information"):
-                    dpg.add_text(f"Version: {app_version}")
-                    dpg.add_text(f"Released: {release_date}")
-                    with dpg.group(horizontal=True):
-                        dpg.add_text(f"Creator: ")
-                        dpg.add_button(
-                            label="Flaming Water",
-                            callback=lambda: webbrowser.open(
-                                "https://github.com/FlamingWater35"
-                            ),
-                            small=True,
-                        )
-                dpg.add_menu_item(label="Check For Updates", callback=check_for_updates)
-            with dpg.menu(label="Debug"):
-                dpg.add_menu_item(
-                    label="Show Metrics",
-                    callback=lambda: dpg.show_tool(dpg.mvTool_Metrics),
-                )
-
-        with dpg.tab_bar(reorderable=True):
-            with dpg.tab(label="Copy Manager"):
-                with dpg.child_window(
-                    autosize_x=True, auto_resize_y=True, tag="copy_manager_main_window"
-                ):
-                    dpg.add_text("Copy Manager", wrap=0)
-                    dpg.add_separator()
-                    dpg.add_spacer(height=10)
-
-                    with dpg.collapsing_header(label="Add folder pairs"):
-                        with dpg.child_window(
-                            autosize_x=True,
-                            auto_resize_y=True,
-                            tag="copy_manager_add_folder_window",
-                        ):
-                            dpg.add_spacer(height=5)
-                            dpg.add_input_text(
-                                label="Name", tag="name_input", width=-300
-                            )
-                            dpg.add_spacer(height=5)
-
-                            dpg.add_button(
-                                label="Select Source Directory",
-                                callback=lambda: dpg.show_item("source_file_dialog"),
-                            )
-                            dpg.add_text("", tag="source_display", wrap=0)
-                            dpg.add_spacer(height=5)
-
-                            dpg.add_button(
-                                label="Select Destination Directory",
-                                callback=lambda: dpg.show_item(
-                                    "destination_file_dialog"
-                                ),
-                            )
-                            dpg.add_text("", tag="destination_display", wrap=0)
-                            dpg.add_spacer(height=5)
-
-                            dpg.add_button(
-                                label="Add folder pair", callback=add_entry_callback
-                            )
-                            dpg.add_spacer(height=5)
-
-                    dpg.add_spacer(height=5)
-                    dpg.add_separator()
-
-                    dpg.add_text(
-                        "Folder pairs will appear below (click or double click to copy to clipboard):",
-                        wrap=0,
-                    )
-
-                    with dpg.child_window(tag="entry_list", auto_resize_y=True):
-                        pass
-
-                    dpg.add_spacer(height=5)
-                    with dpg.group(horizontal=True):
-                        dpg.add_button(
-                            label="Clear all pairs", callback=clear_entries_callback
-                        )
-                        dpg.add_button(
-                            label="Clear latest pair", callback=clear_latest_entry
-                        )
-
-                    dpg.add_spacer(height=5)
-                    dpg.add_separator()
-                    dpg.add_spacer(height=5)
-                    with dpg.group(horizontal=True):
-                        dpg.add_button(
-                            label="Run Copy Operation", callback=copy_all_callback
-                        )
-                        dpg.add_button(
-                            label="Cancel Copy",
-                            callback=set_cancel_to_true,
-                            tag="cancel_button",
-                        )
-
-                    dpg.add_spacer(height=5)
-                    dpg.add_text("", tag="status_text", color=(255, 140, 0), wrap=0)
-
-                    dpg.add_spacer(height=5)
-                    dpg.add_progress_bar(
-                        tag="progress_bar",
-                        default_value=0.0,
-                        width=-200,
-                        height=30,
-                        show=False,
-                        overlay="0.00 GB / 0.00 GB",
-                    )
-
-                    dpg.add_spacer(height=5)
-                    dpg.add_text(
-                        "", tag="speed_text", color=(0, 255, 0), show=False, wrap=0
-                    )
-
-                    dpg.add_spacer(height=5)
-                    with dpg.collapsing_header(label="Log"):
-                        with dpg.child_window(
-                            autosize_x=True, auto_resize_y=True, border=False
-                        ):
-                            dpg.add_spacer(height=5)
-                            with dpg.group(horizontal=True):
-                                dpg.add_text("Filters:", wrap=0)
-                                dpg.add_button(
-                                    label="Error",
-                                    callback=set_log_filter,
-                                    tag="log_error_filter_button",
-                                    user_data=["error", "shown"],
-                                )
-                                dpg.add_button(
-                                    label="Skip",
-                                    callback=set_log_filter,
-                                    tag="log_skip_filter_button",
-                                    user_data=["skip", "shown"],
-                                )
-                                dpg.add_button(
-                                    label="Ignore",
-                                    callback=set_log_filter,
-                                    tag="log_ignore_filter_button",
-                                    user_data=["ignore", "shown"],
-                                )
-                                dpg.add_button(
-                                    label="Copy",
-                                    callback=set_log_filter,
-                                    tag="log_copy_filter_button",
-                                    user_data=["copy", "shown"],
-                                )
-                                dpg.add_button(
-                                    label="Delete",
-                                    callback=set_log_filter,
-                                    tag="log_delete_filter_button",
-                                    user_data=["delete", "shown"],
-                                )
-                            dpg.add_spacer(height=5)
-                        with dpg.child_window(tag="copy_log", auto_resize_y=True):
-                            pass
-                    dpg.add_spacer(height=10)
-
-                    if settings["show_image_status"] == True:
-                        img_id = dpg.add_image(
-                            "cute_image", pos=(0, 0), parent="copy_manager_main_window"
-                        )
-
-            with dpg.tab(label="File Finder"):
-                with dpg.child_window(
-                    autosize_x=True, auto_resize_y=True, tag="save_finder_main_window"
-                ):
-                    dpg.add_text("File Finder", wrap=0)
-                    dpg.add_separator()
-                    dpg.add_spacer(height=10)
-                    dpg.add_button(
-                        label="Search for files", callback=start_search_thread
-                    )
-                    dpg.add_spacer(height=5)
-                    dpg.add_progress_bar(
-                        tag="finder_progress_bar",
-                        default_value=0.0,
-                        width=400,
-                        height=20,
-                        show=False,
-                    )
-                    dpg.add_text("", tag="finder_text", show=False, wrap=0)
-                    dpg.add_separator()
-                    dpg.add_spacer(height=5)
-                    dpg.add_text(
-                        "Directories containing specified files will be listed below (click to copy to clipboard).",
-                        tag="save_finder_text",
-                        wrap=0,
-                    )
-                    dpg.add_spacer(height=5)
-                    dpg.add_text(
-                        "",
-                        tag="search_status_text",
-                        color=(229, 57, 53),
-                        wrap=0,
-                        show=False,
-                    )
-                    dpg.add_spacer(height=5)
-                    with dpg.child_window(tag="directory_list", auto_resize_y=True):
-                        pass
-                    dpg.add_spacer(height=10)
-
-            with dpg.tab(label="Image viewer"):
-                with dpg.child_window(
-                    autosize_x=True, auto_resize_y=True, tag="image_viewer_main_window"
-                ):
-                    dpg.add_text("Image viewer", wrap=0)
-                    dpg.add_separator()
-                    dpg.add_spacer(height=10)
-                    with dpg.group(horizontal=True):
-                        dpg.add_button(
-                            label="Open Image",
-                            callback=lambda: dpg.show_item("open_image_dialog"),
-                        )
-                        dpg.add_spacer(width=10)
-                        dpg.add_text("", tag="image_information", wrap=0)
-                    dpg.add_spacer(height=10)
-                    with dpg.child_window(
-                        autosize_x=True,
-                        auto_resize_y=True,
-                        tag="image_viewer_child_window",
-                        # border=False,
-                    ):
-                        pass
-                    with dpg.group(horizontal=True):
-                        dpg.add_text("", tag="image_viewer_status_text", wrap=0)
-
-            with dpg.tab(label="Recorder"):
-                with dpg.child_window(
-                    autosize_x=True, auto_resize_y=True, tag="recording_main_window"
-                ):
-                    dpg.add_text("Recorder", wrap=0)
-                    dpg.add_separator()
-                    dpg.add_spacer(height=10)
-                    with dpg.group(horizontal=True):
-                        dpg.add_button(
-                            label="Start process",
-                            callback=start_key_listener,
-                        )
-                        dpg.add_spacer(width=10)
-                        dpg.add_text("Set keybind:", wrap=0)
-                        screenshot_binding = recording_settings["screenshot_key"]
-                        dpg.add_button(
-                            label=f"{screenshot_binding}",
-                            tag="start_keybind_recording_button",
-                            callback=start_keybind_recording,
-                        )
-                        dpg.add_spacer(width=10)
-                        dpg.add_button(
-                            label="Change location",
-                            callback=lambda: dpg.show_item("screenshot_file_dialog"),
-                        )
-                        with dpg.tooltip(dpg.last_item()):
-                            dpg.add_text("Where to save screenshots", wrap=400)
-                    dpg.add_spacer(height=10)
-                    dpg.add_separator()
-                    dpg.add_spacer(height=10)
-                    with dpg.group(horizontal=True):
-                        dpg.add_button(
-                            label="Record video", callback=start_video_recording_thread
-                        )
-                    dpg.add_spacer(height=10)
-                    with dpg.collapsing_header(label="Video settings"):
-                        dpg.add_spacer(height=5)
-                        with dpg.child_window(
-                            autosize_x=True,
-                            auto_resize_y=True,
-                        ):
-                            dpg.add_spacer(height=5)
-                            with dpg.group():
-                                with dpg.group(horizontal=True):
-                                    dpg.add_combo(
-                                        items=[30, 45, 60, 75, 90, 120],
-                                        label="FPS",
-                                        default_value=recording_settings["video_fps"],
-                                        width=100,
-                                        user_data="FPS",
-                                        callback=set_video_setting,
-                                    )
-                                    with dpg.tooltip(dpg.last_item()):
-                                        dpg.add_text(
-                                            "Record this many frames every second",
-                                            wrap=400,
-                                        )
-                                    dpg.add_spacer(width=10)
-                                    dpg.add_button(
-                                        label="Change location",
-                                        callback=lambda: dpg.show_item(
-                                            "video_file_dialog"
-                                        ),
-                                    )
-                                    with dpg.tooltip(dpg.last_item()):
-                                        dpg.add_text(
-                                            "Where to save screen recordings", wrap=400
-                                        )
-                                dpg.add_spacer(height=10)
-                                with dpg.group(horizontal=True):
-                                    dpg.add_text("Duration:", wrap=0)
-                                    dpg.add_input_int(
-                                        label="sec",
-                                        min_value=5,
-                                        max_value=1200,
-                                        default_value=recording_settings[
-                                            "video_duration"
-                                        ],
-                                        step=1,
-                                        step_fast=1,
-                                        width=200,
-                                        user_data="duration",
-                                        callback=set_video_setting,
-                                    )
-                                    with dpg.tooltip(dpg.last_item()):
-                                        dpg.add_text(
-                                            "How long to record (over a few minutes not recommended)",
-                                            wrap=400,
-                                        )
-                                dpg.add_spacer(height=5)
-                                dpg.add_separator()
-                                dpg.add_spacer(height=5)
-                                with dpg.tree_node(
-                                    label="Advanced settings",  # span_full_width=True
-                                ):
-                                    dpg.add_spacer(height=5)
-                                    with dpg.group(horizontal=True):
-                                        dpg.add_text("Codec", wrap=0)
-                                        dpg.add_combo(
-                                            items=[".avc1"],
-                                            default_value=".avc1",
-                                            width=100,
-                                            callback=None,
-                                        )
-                                dpg.add_spacer(height=5)
-                    dpg.add_spacer(height=5)
-                    dpg.add_text(
-                        "",
-                        tag="recording_status_text",
-                        color=(100, 200, 100),
-                        show=False,
-                        wrap=0,
-                    )
-                    dpg.add_spacer(height=10)
-
-            with dpg.tab(label="Settings"):
-                with dpg.child_window(
-                    autosize_x=True, auto_resize_y=True, tag="settings_main_window"
-                ):
-                    with dpg.group(horizontal=True):
-                        dpg.add_text("App settings", wrap=0)
-                        dpg.add_spacer(width=10)
-                        dpg.add_button(
-                            label="Reset to default values", callback=reset_settings
-                        )
-                        with dpg.tooltip(dpg.last_item()):
-                            dpg.add_text("Takes effect after app restart", wrap=400)
-                    dpg.add_spacer(height=5)
-                    dpg.add_separator()
-
-                    dpg.add_spacer(height=10)
-                    dpg.add_text("Display", wrap=0)
-                    with dpg.child_window(
-                        autosize_x=True,
-                        auto_resize_y=True,
-                        tag="display_settings_child_window",
-                    ):
-                        pass
-                    dpg.add_spacer(height=10)
-                    dpg.add_text("Copy Manager", wrap=0)
-                    with dpg.child_window(
-                        autosize_x=True,
-                        auto_resize_y=True,
-                        tag="copy_manager_settings_child_window",
-                    ):
-                        pass
-                    dpg.add_spacer(height=10)
-                    dpg.add_text("File Finder", wrap=0)
-                    with dpg.child_window(
-                        autosize_x=True,
-                        auto_resize_y=True,
-                        tag="save_finder_settings_child_window",
-                    ):
-                        pass
-                    dpg.add_spacer(height=10)
+def setup_settings_window(font_size):
+    global settings, recording_settings
 
     dpg.add_spacer(height=10, parent="display_settings_child_window")
     with dpg.group(horizontal=True, parent="display_settings_child_window"):
@@ -2119,18 +1703,481 @@ def show_windows():
         f"Directories containing {file_extension_list} files will be listed below (click to copy to clipboard).",
     )
 
-    dpg.bind_item_theme("Primary Window", child_window_theme)
-    dpg.bind_item_theme("copy_manager_main_window", main_window_theme)
-    dpg.bind_item_theme("save_finder_main_window", main_window_theme)
-    dpg.bind_item_theme("image_viewer_main_window", main_window_theme)
-    dpg.bind_item_theme("recording_main_window", main_window_theme)
-    dpg.bind_item_theme("settings_main_window", main_window_theme)
-    dpg.bind_item_theme("copy_manager_add_folder_window", main_window_add_folder_theme)
 
-    dpg.bind_item_handler_registry("Primary Window", "window_handler")
-    dpg.set_primary_window("Primary Window", True)
-    logging.debug("Primary window set and bound to handler")
-    image_resize_callback()
+def show_windows():
+    global img_id, settings, recording_settings
+
+    with dpg.handler_registry():
+        # Mouse wheel for zoom
+        dpg.add_mouse_wheel_handler(callback=zoom_callback)
+
+        # Mouse drag for panning
+        dpg.add_mouse_down_handler(button=dpg.mvMouseButton_Left, callback=start_drag)
+        dpg.add_mouse_release_handler(button=dpg.mvMouseButton_Left, callback=end_drag)
+        dpg.add_mouse_move_handler(callback=handle_drag)
+
+    with dpg.font_registry(tag="font_registry"):
+        # Add font file and size
+        font_size = load_setting("DisplayOptions", "font_size")
+        if font_size == None:
+            font_size = default_font_size
+        custom_font = dpg.add_font(font_path, font_size)
+
+    with dpg.texture_registry(tag="image_registry"):
+        width, height, channels, data = dpg.load_image(
+            resource_path("docs/cute_image.png")
+        )
+        dpg.add_static_texture(
+            width=width, height=height, default_value=data, tag="cute_image"
+        )
+    logging.debug("Image initialized")
+
+    with dpg.item_handler_registry(tag="window_handler") as handler:
+        dpg.add_item_resize_handler(callback=image_resize_callback)
+
+    with dpg.theme() as child_window_theme:
+        with dpg.theme_component(dpg.mvChildWindow):
+            dpg.add_theme_style(dpg.mvStyleVar_WindowPadding, 15, 10)
+            dpg.add_theme_style(dpg.mvStyleVar_ChildRounding, 3, 3)
+            dpg.add_theme_style(dpg.mvStyleVar_ChildBorderSize, 4, 4)
+            dpg.add_theme_color(dpg.mvThemeCol_Border, (93, 64, 55))
+        with dpg.theme_component(dpg.mvButton):
+            dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 8, 5)
+            dpg.add_theme_style(dpg.mvStyleVar_FrameRounding, 4, 4)
+            dpg.add_theme_style(dpg.mvStyleVar_FrameBorderSize, 2, 2)
+
+    with dpg.theme() as main_window_theme:
+        with dpg.theme_component(dpg.mvChildWindow):
+            dpg.add_theme_color(dpg.mvThemeCol_Border, (21, 101, 192))
+
+    with dpg.theme() as main_window_add_folder_theme:
+        with dpg.theme_component(dpg.mvChildWindow):
+            dpg.add_theme_color(dpg.mvThemeCol_ChildBg, (43, 35, 32))
+
+    dpg.bind_font(custom_font)
+    logging.debug("Font bound to main window")
+
+    try:
+        with dpg.window(tag="Primary Window"):
+            with dpg.menu_bar():
+                with dpg.menu(label="About"):
+                    with dpg.menu(label="Information"):
+                        dpg.add_text(f"Version: {app_version}")
+                        dpg.add_text(f"Released: {release_date}")
+                        with dpg.group(horizontal=True):
+                            dpg.add_text(f"Creator: ")
+                            dpg.add_button(
+                                label="Flaming Water",
+                                callback=lambda: webbrowser.open(
+                                    "https://github.com/FlamingWater35"
+                                ),
+                                small=True,
+                            )
+                    dpg.add_menu_item(
+                        label="Check For Updates", callback=check_for_updates
+                    )
+                with dpg.menu(label="Debug"):
+                    dpg.add_menu_item(
+                        label="Show Metrics",
+                        callback=lambda: dpg.show_tool(dpg.mvTool_Metrics),
+                    )
+
+            with dpg.tab_bar(reorderable=True):
+                with dpg.tab(label="Copy Manager"):
+                    with dpg.child_window(
+                        autosize_x=True,
+                        auto_resize_y=True,
+                        tag="copy_manager_main_window",
+                    ):
+                        dpg.add_text("Copy Manager", wrap=0)
+                        dpg.add_separator()
+                        dpg.add_spacer(height=10)
+
+                        with dpg.collapsing_header(label="Add folder pairs"):
+                            with dpg.child_window(
+                                autosize_x=True,
+                                auto_resize_y=True,
+                                tag="copy_manager_add_folder_window",
+                            ):
+                                dpg.add_spacer(height=5)
+                                dpg.add_input_text(
+                                    label="Name", tag="name_input", width=-300
+                                )
+                                dpg.add_spacer(height=5)
+
+                                dpg.add_button(
+                                    label="Select Source Directory",
+                                    callback=lambda: dpg.show_item(
+                                        "source_file_dialog"
+                                    ),
+                                )
+                                dpg.add_text("", tag="source_display", wrap=0)
+                                dpg.add_spacer(height=5)
+
+                                dpg.add_button(
+                                    label="Select Destination Directory",
+                                    callback=lambda: dpg.show_item(
+                                        "destination_file_dialog"
+                                    ),
+                                )
+                                dpg.add_text("", tag="destination_display", wrap=0)
+                                dpg.add_spacer(height=5)
+
+                                dpg.add_button(
+                                    label="Add folder pair", callback=add_entry_callback
+                                )
+                                dpg.add_spacer(height=5)
+
+                        dpg.add_spacer(height=5)
+                        dpg.add_separator()
+
+                        dpg.add_text(
+                            "Folder pairs will appear below (click or double click to copy to clipboard):",
+                            wrap=0,
+                        )
+
+                        with dpg.child_window(tag="entry_list", auto_resize_y=True):
+                            pass
+
+                        dpg.add_spacer(height=5)
+                        with dpg.group(horizontal=True):
+                            dpg.add_button(
+                                label="Clear all pairs", callback=clear_entries_callback
+                            )
+                            dpg.add_button(
+                                label="Clear latest pair", callback=clear_latest_entry
+                            )
+
+                        dpg.add_spacer(height=5)
+                        dpg.add_separator()
+                        dpg.add_spacer(height=5)
+                        with dpg.group(horizontal=True):
+                            dpg.add_button(
+                                label="Run Copy Operation", callback=copy_all_callback
+                            )
+                            dpg.add_button(
+                                label="Cancel Copy",
+                                callback=set_cancel_to_true,
+                                tag="cancel_button",
+                            )
+
+                        dpg.add_spacer(height=5)
+                        dpg.add_text("", tag="status_text", color=(255, 140, 0), wrap=0)
+
+                        dpg.add_spacer(height=5)
+                        dpg.add_progress_bar(
+                            tag="progress_bar",
+                            default_value=0.0,
+                            width=-200,
+                            height=30,
+                            show=False,
+                            overlay="0.00 GB / 0.00 GB",
+                        )
+
+                        dpg.add_spacer(height=5)
+                        dpg.add_text(
+                            "", tag="speed_text", color=(0, 255, 0), show=False, wrap=0
+                        )
+
+                        dpg.add_spacer(height=5)
+                        with dpg.collapsing_header(label="Log"):
+                            with dpg.child_window(
+                                autosize_x=True, auto_resize_y=True, border=False
+                            ):
+                                dpg.add_spacer(height=5)
+                                with dpg.group(horizontal=True):
+                                    dpg.add_text("Filters:", wrap=0)
+                                    dpg.add_button(
+                                        label="Error",
+                                        callback=set_log_filter,
+                                        tag="log_error_filter_button",
+                                        user_data=["error", "shown"],
+                                    )
+                                    dpg.add_button(
+                                        label="Skip",
+                                        callback=set_log_filter,
+                                        tag="log_skip_filter_button",
+                                        user_data=["skip", "shown"],
+                                    )
+                                    dpg.add_button(
+                                        label="Ignore",
+                                        callback=set_log_filter,
+                                        tag="log_ignore_filter_button",
+                                        user_data=["ignore", "shown"],
+                                    )
+                                    dpg.add_button(
+                                        label="Copy",
+                                        callback=set_log_filter,
+                                        tag="log_copy_filter_button",
+                                        user_data=["copy", "shown"],
+                                    )
+                                    dpg.add_button(
+                                        label="Delete",
+                                        callback=set_log_filter,
+                                        tag="log_delete_filter_button",
+                                        user_data=["delete", "shown"],
+                                    )
+                                dpg.add_spacer(height=5)
+                            with dpg.child_window(tag="copy_log", auto_resize_y=True):
+                                pass
+                        dpg.add_spacer(height=10)
+
+                        if settings["show_image_status"] == True:
+                            img_id = dpg.add_image(
+                                "cute_image",
+                                pos=(0, 0),
+                                parent="copy_manager_main_window",
+                            )
+
+                with dpg.tab(label="File Finder"):
+                    with dpg.child_window(
+                        autosize_x=True,
+                        auto_resize_y=True,
+                        tag="save_finder_main_window",
+                    ):
+                        dpg.add_text("File Finder", wrap=0)
+                        dpg.add_separator()
+                        dpg.add_spacer(height=10)
+                        dpg.add_button(
+                            label="Search for files", callback=start_search_thread
+                        )
+                        dpg.add_spacer(height=5)
+                        dpg.add_progress_bar(
+                            tag="finder_progress_bar",
+                            default_value=0.0,
+                            width=400,
+                            height=20,
+                            show=False,
+                        )
+                        dpg.add_text("", tag="finder_text", show=False, wrap=0)
+                        dpg.add_separator()
+                        dpg.add_spacer(height=5)
+                        dpg.add_text(
+                            "Directories containing specified files will be listed below (click to copy to clipboard).",
+                            tag="save_finder_text",
+                            wrap=0,
+                        )
+                        dpg.add_spacer(height=5)
+                        dpg.add_text(
+                            "",
+                            tag="search_status_text",
+                            color=(229, 57, 53),
+                            wrap=0,
+                            show=False,
+                        )
+                        dpg.add_spacer(height=5)
+                        with dpg.child_window(tag="directory_list", auto_resize_y=True):
+                            pass
+                        dpg.add_spacer(height=10)
+
+                with dpg.tab(label="Image viewer"):
+                    with dpg.child_window(
+                        autosize_x=True,
+                        auto_resize_y=True,
+                        tag="image_viewer_main_window",
+                    ):
+                        dpg.add_text("Image viewer", wrap=0)
+                        dpg.add_separator()
+                        dpg.add_spacer(height=10)
+                        with dpg.group(horizontal=True):
+                            dpg.add_button(
+                                label="Open Image",
+                                callback=lambda: dpg.show_item("open_image_dialog"),
+                            )
+                            dpg.add_spacer(width=10)
+                            dpg.add_text("", tag="image_information", wrap=0)
+                        dpg.add_spacer(height=10)
+                        with dpg.child_window(
+                            autosize_x=True,
+                            auto_resize_y=True,
+                            tag="image_viewer_child_window",
+                            # border=False,
+                        ):
+                            pass
+                        with dpg.group(horizontal=True):
+                            dpg.add_text("", tag="image_viewer_status_text", wrap=0)
+
+                with dpg.tab(label="Recorder"):
+                    with dpg.child_window(
+                        autosize_x=True, auto_resize_y=True, tag="recording_main_window"
+                    ):
+                        dpg.add_text("Recorder", wrap=0)
+                        dpg.add_separator()
+                        dpg.add_spacer(height=10)
+                        with dpg.group(horizontal=True):
+                            dpg.add_button(
+                                label="Start process",
+                                callback=start_key_listener,
+                            )
+                            dpg.add_spacer(width=10)
+                            dpg.add_text("Set keybind:", wrap=0)
+                            screenshot_binding = recording_settings["screenshot_key"]
+                            dpg.add_button(
+                                label=f"{screenshot_binding}",
+                                tag="start_keybind_recording_button",
+                                callback=start_keybind_recording,
+                            )
+                            dpg.add_spacer(width=10)
+                            dpg.add_button(
+                                label="Change location",
+                                callback=lambda: dpg.show_item(
+                                    "screenshot_file_dialog"
+                                ),
+                            )
+                            with dpg.tooltip(dpg.last_item()):
+                                dpg.add_text("Where to save screenshots", wrap=400)
+                        dpg.add_spacer(height=10)
+                        dpg.add_separator()
+                        dpg.add_spacer(height=10)
+                        with dpg.group(horizontal=True):
+                            dpg.add_button(
+                                label="Record video",
+                                callback=start_video_recording_thread,
+                            )
+                        dpg.add_spacer(height=10)
+                        with dpg.collapsing_header(label="Video settings"):
+                            dpg.add_spacer(height=5)
+                            with dpg.child_window(
+                                autosize_x=True,
+                                auto_resize_y=True,
+                            ):
+                                dpg.add_spacer(height=5)
+                                with dpg.group():
+                                    with dpg.group(horizontal=True):
+                                        dpg.add_combo(
+                                            items=[30, 45, 60, 75, 90, 120],
+                                            label="FPS",
+                                            default_value=recording_settings[
+                                                "video_fps"
+                                            ],
+                                            width=100,
+                                            user_data="FPS",
+                                            callback=set_video_setting,
+                                        )
+                                        with dpg.tooltip(dpg.last_item()):
+                                            dpg.add_text(
+                                                "Record this many frames every second",
+                                                wrap=400,
+                                            )
+                                        dpg.add_spacer(width=10)
+                                        dpg.add_button(
+                                            label="Change location",
+                                            callback=lambda: dpg.show_item(
+                                                "video_file_dialog"
+                                            ),
+                                        )
+                                        with dpg.tooltip(dpg.last_item()):
+                                            dpg.add_text(
+                                                "Where to save screen recordings",
+                                                wrap=400,
+                                            )
+                                    dpg.add_spacer(height=10)
+                                    with dpg.group(horizontal=True):
+                                        dpg.add_text("Duration:", wrap=0)
+                                        dpg.add_input_int(
+                                            label="sec",
+                                            min_value=5,
+                                            max_value=1200,
+                                            default_value=recording_settings[
+                                                "video_duration"
+                                            ],
+                                            step=1,
+                                            step_fast=1,
+                                            width=200,
+                                            user_data="duration",
+                                            callback=set_video_setting,
+                                        )
+                                        with dpg.tooltip(dpg.last_item()):
+                                            dpg.add_text(
+                                                "How long to record (over a few minutes not recommended)",
+                                                wrap=400,
+                                            )
+                                    dpg.add_spacer(height=5)
+                                    dpg.add_separator()
+                                    dpg.add_spacer(height=5)
+                                    with dpg.tree_node(
+                                        label="Advanced settings",  # span_full_width=True
+                                    ):
+                                        dpg.add_spacer(height=5)
+                                        with dpg.group(horizontal=True):
+                                            dpg.add_text("Codec", wrap=0)
+                                            dpg.add_combo(
+                                                items=[".avc1"],
+                                                default_value=".avc1",
+                                                width=100,
+                                                callback=None,
+                                            )
+                                    dpg.add_spacer(height=5)
+                        dpg.add_spacer(height=5)
+                        dpg.add_text(
+                            "",
+                            tag="recording_status_text",
+                            color=(100, 200, 100),
+                            show=False,
+                            wrap=0,
+                        )
+                        dpg.add_spacer(height=10)
+
+                with dpg.tab(label="Settings"):
+                    with dpg.child_window(
+                        autosize_x=True, auto_resize_y=True, tag="settings_main_window"
+                    ):
+                        with dpg.group(horizontal=True):
+                            dpg.add_text("App settings", wrap=0)
+                            dpg.add_spacer(width=10)
+                            dpg.add_button(
+                                label="Reset to default values", callback=reset_settings
+                            )
+                            with dpg.tooltip(dpg.last_item()):
+                                dpg.add_text("Takes effect after app restart", wrap=400)
+                        dpg.add_spacer(height=5)
+                        dpg.add_separator()
+
+                        dpg.add_spacer(height=10)
+                        dpg.add_text("Display", wrap=0)
+                        with dpg.child_window(
+                            autosize_x=True,
+                            auto_resize_y=True,
+                            tag="display_settings_child_window",
+                        ):
+                            pass
+                        dpg.add_spacer(height=10)
+                        dpg.add_text("Copy Manager", wrap=0)
+                        with dpg.child_window(
+                            autosize_x=True,
+                            auto_resize_y=True,
+                            tag="copy_manager_settings_child_window",
+                        ):
+                            pass
+                        dpg.add_spacer(height=10)
+                        dpg.add_text("File Finder", wrap=0)
+                        with dpg.child_window(
+                            autosize_x=True,
+                            auto_resize_y=True,
+                            tag="save_finder_settings_child_window",
+                        ):
+                            pass
+                        dpg.add_spacer(height=10)
+
+        setup_settings_window(font_size)
+
+        dpg.bind_item_theme("Primary Window", child_window_theme)
+        dpg.bind_item_theme("copy_manager_main_window", main_window_theme)
+        dpg.bind_item_theme("save_finder_main_window", main_window_theme)
+        dpg.bind_item_theme("image_viewer_main_window", main_window_theme)
+        dpg.bind_item_theme("recording_main_window", main_window_theme)
+        dpg.bind_item_theme("settings_main_window", main_window_theme)
+        dpg.bind_item_theme(
+            "copy_manager_add_folder_window", main_window_add_folder_theme
+        )
+
+        dpg.bind_item_handler_registry("Primary Window", "window_handler")
+        dpg.set_primary_window("Primary Window", True)
+        logging.debug("Primary window set and bound to handler")
+        image_resize_callback()
+
+    except Exception as e:
+        logging.critical(f"Setting up primary window and/or themes failed: {e}")
 
 
 def setup_viewport():
@@ -2255,6 +2302,7 @@ def main():
                     parent="copy_log",
                     user_data="error",
                 )
+                logging.error(f"Error during copy thread: {data}")
                 dpg.hide_item("progress_bar")
                 dpg.hide_item("speed_text")
             elif item_type == "update":
