@@ -1766,8 +1766,12 @@ def show_windows():
             dpg.add_theme_color(dpg.mvThemeCol_PlotHistogram, (27, 94, 32))
         with dpg.theme_component(dpg.mvInputInt):
             dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 20, 2.5)
+            dpg.add_theme_color(dpg.mvThemeCol_Border, (230, 81, 0))
+        with dpg.theme_component(dpg.mvCheckbox):
+            dpg.add_theme_color(dpg.mvThemeCol_Border, (230, 81, 0))
         with dpg.theme_component(dpg.mvCombo):
             dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 20, 2.5)
+            dpg.add_theme_color(dpg.mvThemeCol_Border, (230, 81, 0))
         with dpg.theme_component(dpg.mvCollapsingHeader):
             dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 0, 5)
             dpg.add_theme_color(dpg.mvThemeCol_Border, (0, 96, 100))
@@ -1778,6 +1782,22 @@ def show_windows():
     with dpg.theme() as main_window_theme:
         with dpg.theme_component(dpg.mvChildWindow):
             dpg.add_theme_color(dpg.mvThemeCol_Border, (21, 101, 192))
+
+    with dpg.theme() as main_recording_window_theme:
+        with dpg.theme_component(dpg.mvChildWindow):
+            dpg.add_theme_color(dpg.mvThemeCol_Border, (21, 101, 192))
+        with dpg.theme_component(dpg.mvInputInt):
+            dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 20, 2.5)
+        with dpg.theme_component(dpg.mvCombo):
+            dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 20, 2.5)
+
+    with dpg.theme() as main_settings_window_theme:
+        with dpg.theme_component(dpg.mvChildWindow):
+            dpg.add_theme_color(dpg.mvThemeCol_Border, (21, 101, 192))
+        with dpg.theme_component(dpg.mvButton):
+            dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 8, 5)
+            dpg.add_theme_style(dpg.mvStyleVar_FrameBorderSize, 2, 2)
+            dpg.add_theme_color(dpg.mvThemeCol_Border, (230, 81, 0))
 
     with dpg.theme() as main_window_add_folder_theme:
         with dpg.theme_component(dpg.mvChildWindow):
@@ -1829,9 +1849,9 @@ def show_windows():
                                 tag="copy_manager_add_folder_window",
                             ):
                                 dpg.add_spacer(height=5)
-                                dpg.add_input_text(
-                                    label="Name", tag="name_input", width=-300
-                                )
+                                with dpg.group(horizontal=True):
+                                    dpg.add_text("Name:")
+                                    dpg.add_input_text(tag="name_input", width=-300)
                                 dpg.add_spacer(height=5)
 
                                 dpg.add_button(
@@ -2142,7 +2162,7 @@ def show_windows():
                                             dpg.add_combo(
                                                 items=[".avc1"],
                                                 default_value=".avc1",
-                                                width=100,
+                                                width=150,
                                                 callback=None,
                                             )
                                     dpg.add_spacer(height=5)
@@ -2203,8 +2223,8 @@ def show_windows():
         dpg.bind_item_theme("copy_manager_main_window", main_window_theme)
         dpg.bind_item_theme("save_finder_main_window", main_window_theme)
         dpg.bind_item_theme("image_viewer_main_window", main_window_theme)
-        dpg.bind_item_theme("recording_main_window", main_window_theme)
-        dpg.bind_item_theme("settings_main_window", main_window_theme)
+        dpg.bind_item_theme("recording_main_window", main_recording_window_theme)
+        dpg.bind_item_theme("settings_main_window", main_settings_window_theme)
         dpg.bind_item_theme(
             "copy_manager_add_folder_window", main_window_add_folder_theme
         )
