@@ -21,7 +21,7 @@ import logging
 import shutil
 
 
-app_version: str = "2.4.0_Windows"
+app_version: str = "2.4.1_Windows"
 release_date: str = "2/15/2025"
 
 sources: list = []
