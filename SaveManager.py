@@ -17,7 +17,6 @@ from datetime import datetime
 import ast
 import dxcam
 import cv2
-import psutil
 import logging
 
 
@@ -44,6 +43,7 @@ settings: dict = {
         os.path.join(os.path.expanduser("~"), "Documents"),
         "C:\\Users\\Public\\Documents",
     ],
+    "ignored_folders": [],
 }
 
 recording_settings: dict = {
@@ -84,8 +84,6 @@ logging.basicConfig(
     level=logging.DEBUG,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
-LOCK_FILE = os.path.join(os.getenv("LOCALAPPDATA"), "SaveManager\\SaveManager.lock")
-APP_NAME = "SaveManager.py"
 
 
 def resource_path(relative_path):
@@ -104,55 +102,8 @@ font_path = resource_path("docs/font.otf")
 default_font_size = 24
 
 
-def create_lock_file():
-    with open(LOCK_FILE, "w") as f:
-        f.write(str(os.getpid()))
-    logging.info("Lock file created")
-
-
-def delete_lock_file():
-    if os.path.exists(LOCK_FILE):
-        os.remove(LOCK_FILE)
-        logging.info("Lock file deleted")
-
-
-def is_another_instance_running():
-    if not os.path.exists(LOCK_FILE):
-        return False
-
-    with open(LOCK_FILE, "r") as f:
-        pid = int(f.read().strip())
-
-    # Check if the process with the PID from the lock file is still running
-    if psutil.pid_exists(pid):
-        for proc in psutil.process_iter(["pid", "name"]):
-            if proc.info["pid"] == pid and APP_NAME in proc.info["name"]:
-                return True
-    return False
-
-
-def kill_previous_instance():
-    if not os.path.exists(LOCK_FILE):
-        return
-
-    with open(LOCK_FILE, "r") as f:
-        pid = int(f.read().strip())
-
-    if psutil.pid_exists(pid):
-        try:
-            process = psutil.Process(pid)
-            process.terminate()  # Terminate the process
-            process.wait(timeout=5)  # Wait for the process to terminate
-        except psutil.NoSuchProcess:
-            pass
-
-
 def run_application():
     logging.info("\n\n--------- APPLICATION START ---------\n")
-    if is_another_instance_running():
-        logging.info("Another instance is running. Killing it...")
-        kill_previous_instance()
-    create_lock_file()
 
 
 def load_setting(section, key, default=None):
@@ -1236,6 +1187,53 @@ def open_folder_path_menu():
                 dpg.add_text(f"{index}: {folderpath}")
 
 
+def remove_current_ignored_folder(sender, app_data):
+    global settings
+
+    ignored_folders_list: list = settings["ignored_folders"]
+    ignored_folders_list.remove(dpg.get_item_user_data(sender))
+    save_settings("Settings", "ignored_folders", ignored_folders_list)
+
+    dpg.delete_item("ignored_folders_list", children_only=True)
+    for index, folderpath in enumerate(ignored_folders_list, start=1):
+        dpg.add_text(f"{index}: {folderpath}", parent="ignored_folders_list")
+    dpg.hide_item("select_ignored_folders_text")
+    dpg.show_item("ignored_folders_remove_button")
+    dpg.show_item("ignored_folders_add_button")
+
+
+def remove_ignored_folders():
+    global settings
+
+    dpg.delete_item("ignored_folders_list", children_only=True)
+    for index, folderpath in enumerate(settings["ignored_folders"], start=1):
+        dpg.add_selectable(
+            label=f"{index}: {folderpath}",
+            parent="ignored_folders_list",
+            callback=remove_current_ignored_folder,
+            user_data=folderpath,
+        )
+    dpg.show_item("select_ignored_folders_text")
+    dpg.hide_item("ignored_folders_remove_button")
+    dpg.hide_item("ignored_folders_add_button")
+
+
+def ignored_folders_select_callback(sender, app_data):
+    global settings
+
+    if not app_data["file_path_name"] in settings["ignored_folders"]:
+        settings["ignored_folders"].append(app_data["file_path_name"])
+        save_settings("Settings", "ignored_folders", settings["ignored_folders"])
+        load_settings()
+
+        dpg.delete_item("ignored_folders_list", children_only=True)
+        ignored_folders_list: list = settings["ignored_folders"]
+        for index, folderpath in enumerate(ignored_folders_list, start=1):
+            dpg.add_text(f"{index}: {folderpath}", parent="ignored_folders_list")
+    else:
+        logging.debug("Trying to add already added folder to ignored folders")
+
+
 def change_font_size(sender, app_data):
     save_settings("DisplayOptions", "font_size", app_data)
     dpg.delete_item("font_registry", children_only=True)
@@ -1652,7 +1650,9 @@ def show_windows():
                                 dpg.add_spacer(height=5)
                                 dpg.add_separator()
                                 dpg.add_spacer(height=5)
-                                with dpg.tree_node(label="Advanced settings"):
+                                with dpg.tree_node(
+                                    label="Advanced settings", span_full_width=True
+                                ):
                                     dpg.add_spacer(height=5)
                                     with dpg.group(horizontal=True):
                                         dpg.add_text("Codec")
@@ -1794,6 +1794,50 @@ def show_windows():
             callback=settings_change_callback,
             user_data="skip_existing_files",
         )
+    dpg.add_spacer(height=20, parent="copy_manager_settings_child_window")
+    dpg.add_text(
+        "Ignored folders",
+        wrap=0,
+        parent="copy_manager_settings_child_window",
+    )
+    with dpg.tooltip(dpg.last_item()):
+        dpg.add_text("Skip these folders when copying")
+    with dpg.tree_node(
+        label="Manage",
+        parent="copy_manager_settings_child_window",
+        span_full_width=True,
+    ):
+        with dpg.child_window(
+            label="Manage ignored folders",
+            tag="ignored_folders_manager_window",
+            autosize_x=True,
+            auto_resize_y=True,
+        ):
+            with dpg.group(horizontal=True):
+                dpg.add_button(
+                    label="Add",
+                    callback=lambda: dpg.show_item("ignored_folders_file_dialog"),
+                    tag="ignored_folders_add_button",
+                )
+                dpg.add_button(
+                    label="Remove",
+                    callback=remove_ignored_folders,
+                    tag="ignored_folders_remove_button",
+                )
+            dpg.add_text(
+                "Select an item to remove:",
+                tag="select_ignored_folders_text",
+                show=False,
+            )
+            dpg.add_spacer(height=5)
+            with dpg.child_window(
+                autosize_x=True, auto_resize_y=True, tag="ignored_folders_list"
+            ):
+                for index, folderpath in enumerate(
+                    settings["ignored_folders"], start=1
+                ):
+                    dpg.add_text(f"{index}: {folderpath}")
+
     dpg.add_spacer(height=10, parent="copy_manager_settings_child_window")
     dpg.add_spacer(height=10, parent="save_finder_settings_child_window")
     with dpg.group(horizontal=True, parent="save_finder_settings_child_window"):
@@ -1866,6 +1910,19 @@ def show_windows():
         video_folder = os.path.join(os.path.expanduser("~"), "Documents")
         dpg.configure_item("video_file_dialog", default_path=video_folder)
         save_settings("Recording", "video_folder", video_folder)
+
+    with dpg.file_dialog(
+        directory_selector=True,
+        show=False,
+        callback=ignored_folders_select_callback,
+        tag="ignored_folders_file_dialog",
+        cancel_callback=None,
+        width=dpg.get_viewport_width() / 1.5,
+        height=dpg.get_viewport_height() / 1.5,
+        modal=True,
+        label="Select folder to ignore",
+    ):
+        pass
 
     with dpg.file_dialog(
         directory_selector=False,
@@ -2043,8 +2100,6 @@ def main():
 
         if settings["remember_window_pos"] == True:
             save_window_positions()
-
-        delete_lock_file()
 
     dpg.set_exit_callback(cleanup)
     dpg.destroy_context()

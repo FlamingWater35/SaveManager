@@ -5,7 +5,6 @@ pillow
 numpy
 keyboard
 dxcam[cv2]
-psutil
 
 # Optional
 pyinstaller
