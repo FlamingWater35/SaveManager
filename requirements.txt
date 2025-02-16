@@ -10,3 +10,4 @@ dxcam[cv2]
 pyinstaller
 black
 pyinstaller_versionfile
+customtkinter

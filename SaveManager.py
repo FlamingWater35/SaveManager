@@ -21,8 +21,8 @@ import logging
 import shutil
 
 
-app_version: str = "2.4.2_Windows"
-release_date: str = "2/15/2025"
+app_version: str = "2.5.0_Windows"
+release_date: str = "2/16/2025"
 
 sources: list = []
 destinations: list = []
@@ -1770,14 +1770,14 @@ def show_windows():
             dpg.add_theme_color(dpg.mvThemeCol_PlotHistogram, (27, 94, 32))
         with dpg.theme_component(dpg.mvInputInt):
             dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 20, 2.5)
-            dpg.add_theme_color(dpg.mvThemeCol_Border, (230, 81, 0))
+            dpg.add_theme_color(dpg.mvThemeCol_Border, (191, 54, 12))
         with dpg.theme_component(dpg.mvInputText):
             dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 20, 6)
         with dpg.theme_component(dpg.mvCheckbox):
-            dpg.add_theme_color(dpg.mvThemeCol_Border, (230, 81, 0))
+            dpg.add_theme_color(dpg.mvThemeCol_Border, (191, 54, 12))
         with dpg.theme_component(dpg.mvCombo):
             dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 20, 2.5)
-            dpg.add_theme_color(dpg.mvThemeCol_Border, (230, 81, 0))
+            dpg.add_theme_color(dpg.mvThemeCol_Border, (191, 54, 12))
         with dpg.theme_component(dpg.mvCollapsingHeader):
             dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 0, 5)
             dpg.add_theme_color(dpg.mvThemeCol_Border, (0, 96, 100))
@@ -1803,7 +1803,7 @@ def show_windows():
         with dpg.theme_component(dpg.mvButton):
             dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 8, 5)
             dpg.add_theme_style(dpg.mvStyleVar_FrameBorderSize, 2, 2)
-            dpg.add_theme_color(dpg.mvThemeCol_Border, (230, 81, 0))
+            dpg.add_theme_color(dpg.mvThemeCol_Border, (191, 54, 12))
 
     with dpg.theme() as main_window_add_folder_theme:
         with dpg.theme_component(dpg.mvChildWindow):
@@ -2076,6 +2076,8 @@ def show_windows():
                                 callback=start_key_listener,
                                 tag="start_key_listener_button",
                             )
+                            with dpg.tooltip(dpg.last_item()):
+                                dpg.add_text("Begin taking screenshots", wrap=400)
                             dpg.add_spacer(width=10)
                             dpg.add_text("Set keybind:", wrap=0)
                             screenshot_binding = recording_settings["screenshot_key"]
@@ -2102,6 +2104,8 @@ def show_windows():
                                 callback=start_video_recording_thread,
                                 tag="start_video_recording_button",
                             )
+                            with dpg.tooltip(dpg.last_item()):
+                                dpg.add_text("Start screen recording", wrap=400)
                         dpg.add_spacer(height=10)
                         with dpg.collapsing_header(label="Video settings"):
                             dpg.add_spacer(height=5)
