@@ -21,7 +21,7 @@ import logging
 import shutil
 
 
-app_version: str = "2.5.0_Windows"
+app_version: str = "2.5.1_Windows"
 release_date: str = "2/16/2025"
 
 sources: list = []
@@ -180,32 +180,67 @@ def reset_settings():
 def load_entries():
     global sources, destinations, names
 
+    sources.clear()
+    destinations.clear()
+    names.clear()
+
     if os.path.exists(json_file_path):
         with open(json_file_path, "r") as f:
             entries = json.load(f)
             for entry in entries:
-                names.append(entry["name"])
-                sources.append(entry["source"])
-                destinations.append(entry["destination"])
+                entry_name = entry["name"]
+                entry_source = entry["source"]
+                entry_dest = entry["destination"]
 
-                item_id = dpg.add_text(
-                    f"{entry['name']}: {entry['source']} -> {entry['destination']}",
+                names.append(entry_name)
+                sources.append(entry_source)
+                destinations.append(entry_dest)
+
+                item_id = dpg.add_collapsing_header(
+                    label=f"Folder Pair: {entry_name}",
                     parent="entry_list",
+                )
+                with dpg.theme() as entry_item_theme:
+                    with dpg.theme_component(dpg.mvCollapsingHeader):
+                        dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 5, 5)
+                        dpg.add_theme_style(dpg.mvStyleVar_FrameBorderSize, 0, 0)
+                        dpg.add_theme_color(
+                            dpg.mvThemeCol_Header,
+                            (27, 94, 32),
+                            category=dpg.mvThemeCat_Core,
+                        )
+                dpg.bind_item_theme(item_id, entry_item_theme)
+                source_item_id = dpg.add_text(
+                    f" Source: {entry_source}",
                     wrap=0,
-                    color=(255, 140, 0),
-                    user_data=[entry["source"], entry["destination"]],
+                    color=(236, 64, 122),
+                    parent=item_id,
+                    user_data=entry_source,
+                )
+                dest_item_id = dpg.add_text(
+                    f" Destination: {entry_dest}",
+                    wrap=0,
+                    color=(171, 71, 188),
+                    parent=item_id,
+                    user_data=entry_dest,
                 )
 
-                with dpg.item_handler_registry(tag=f"text_handler_{item_id}"):
+                with dpg.item_handler_registry(tag=f"text_handler_{source_item_id}"):
                     dpg.add_item_clicked_handler(
-                        user_data=dpg.get_item_user_data(item_id)[0],
+                        user_data=dpg.get_item_user_data(source_item_id),
                         callback=text_click_handler,
                     )
-                    dpg.add_item_double_clicked_handler(
-                        user_data=dpg.get_item_user_data(item_id)[1],
+                with dpg.item_handler_registry(tag=f"text_handler_{dest_item_id}"):
+                    dpg.add_item_clicked_handler(
+                        user_data=dpg.get_item_user_data(dest_item_id),
                         callback=text_click_handler,
                     )
-                dpg.bind_item_handler_registry(item_id, f"text_handler_{item_id}")
+                dpg.bind_item_handler_registry(
+                    source_item_id, f"text_handler_{source_item_id}"
+                )
+                dpg.bind_item_handler_registry(
+                    dest_item_id, f"text_handler_{dest_item_id}"
+                )
         logging.debug(f"Copy Manager entries loaded: {json_file_path}")
     else:
         logging.warning(
@@ -281,24 +316,45 @@ def add_entry_callback(sender, app_data):
         current_destination = destinations[-1]
 
         names.append(name)
-        item_id = dpg.add_text(
-            f"{name}: {current_source} -> {current_destination}",
+        item_id = dpg.add_collapsing_header(
+            label=f"Folder Pair: {name}",
             parent="entry_list",
+        )
+        with dpg.theme() as entry_item_theme:
+            with dpg.theme_component(dpg.mvCollapsingHeader):
+                dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 5, 5)
+                dpg.add_theme_style(dpg.mvStyleVar_FrameBorderSize, 0, 0)
+                dpg.add_theme_color(
+                    dpg.mvThemeCol_Header, (27, 94, 32), category=dpg.mvThemeCat_Core
+                )
+        dpg.bind_item_theme(item_id, entry_item_theme)
+        source_item_id = dpg.add_text(
+            f" Source: {current_source}",
             wrap=0,
-            color=(255, 140, 0),
-            user_data=[current_source, current_destination],
+            color=(236, 64, 122),
+            parent=item_id,
+            user_data=current_source,
+        )
+        dest_item_id = dpg.add_text(
+            f" Destination: {current_destination}",
+            wrap=0,
+            color=(171, 71, 188),
+            parent=item_id,
+            user_data=current_destination,
         )
 
-        with dpg.item_handler_registry(tag=f"text_handler_{item_id}"):
+        with dpg.item_handler_registry(tag=f"text_handler_{source_item_id}"):
             dpg.add_item_clicked_handler(
-                user_data=dpg.get_item_user_data(item_id)[0],
+                user_data=dpg.get_item_user_data(source_item_id),
                 callback=text_click_handler,
             )
-            dpg.add_item_double_clicked_handler(
-                user_data=dpg.get_item_user_data(item_id)[1],
+        with dpg.item_handler_registry(tag=f"text_handler_{dest_item_id}"):
+            dpg.add_item_clicked_handler(
+                user_data=dpg.get_item_user_data(dest_item_id),
                 callback=text_click_handler,
             )
-        dpg.bind_item_handler_registry(item_id, f"text_handler_{item_id}")
+        dpg.bind_item_handler_registry(source_item_id, f"text_handler_{source_item_id}")
+        dpg.bind_item_handler_registry(dest_item_id, f"text_handler_{dest_item_id}")
 
         dpg.set_value("source_display", "")
         dpg.set_value("destination_display", "")
@@ -1779,7 +1835,7 @@ def show_windows():
             dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 20, 2.5)
             dpg.add_theme_color(dpg.mvThemeCol_Border, (191, 54, 12))
         with dpg.theme_component(dpg.mvCollapsingHeader):
-            dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 0, 5)
+            dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 5, 5)
             dpg.add_theme_color(dpg.mvThemeCol_Border, (0, 96, 100))
         with dpg.theme_component(dpg.mvAll):
             dpg.add_theme_style(dpg.mvStyleVar_FrameRounding, 4)
@@ -1891,7 +1947,7 @@ def show_windows():
                         dpg.add_separator()
 
                         dpg.add_text(
-                            "Folder pairs will appear below (click or double click to copy to clipboard):",
+                            "Folder pairs will appear below (copy paths to clipboard by clicking them):",
                             wrap=0,
                         )
                         dpg.add_spacer(height=5)
