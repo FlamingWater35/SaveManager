@@ -11,3 +11,4 @@ pyinstaller
 black
 pyinstaller_versionfile
 customtkinter
+nuitka

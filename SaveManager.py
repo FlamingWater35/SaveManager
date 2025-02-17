@@ -92,7 +92,7 @@ logging.basicConfig(
 )
 
 
-def resource_path(relative_path):
+"""def resource_path(relative_path):
     # Get the absolute path to the resource, works for dev and for PyInstaller
     if getattr(sys, "frozen", False):
         # If the application is frozen (i.e., running as a .exe)
@@ -101,7 +101,23 @@ def resource_path(relative_path):
         # If running in a normal Python environment
         base_path = os.path.abspath(".")
 
-    return os.path.join(base_path, relative_path)
+    return os.path.join(base_path, relative_path)"""
+
+
+def resource_path(relative_path):
+    # Get the directory of the executable (or script in development)
+    if "__compiled__" in globals():  # Check if running as a Nuitka bundle
+        base_path = os.path.dirname(sys.executable)  # Executable's directory
+    else:
+        base_path = os.path.abspath(".")
+
+    full_path = os.path.join(base_path, relative_path)
+    
+    if not os.path.exists(full_path):
+        logging.critical(f"Resource not found: {full_path}")
+        raise FileNotFoundError(f"Resource not found: {full_path}")
+    
+    return full_path
 
 
 font_path = resource_path("docs/font.otf")
@@ -1468,6 +1484,8 @@ def ignored_folders_select_callback(sender, app_data):
 
 
 def change_font_size(sender, app_data):
+    global font_path
+
     save_settings("DisplayOptions", "font_size", app_data)
     dpg.delete_item("font_registry", children_only=True)
     custom_font = dpg.add_font(font_path, app_data, parent="font_registry")
@@ -1787,7 +1805,7 @@ def setup_settings_window(font_size):
 
 
 def show_windows():
-    global img_id, settings, recording_settings
+    global img_id, settings, recording_settings, font_path
 
     with dpg.handler_registry():
         # Mouse wheel for zoom
