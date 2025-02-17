@@ -175,6 +175,14 @@ def reset_settings():
             if config.has_section("Settings"):
                 config.remove_section("Settings")
                 logging.debug("Reset section 'Settings' from config file")
+            if config.has_section("DisplayOptions"):
+                try:
+                    value = config.get("DisplayOptions", "font_size")
+                except:
+                    value = None
+                if value != None:
+                    config.remove_option("DisplayOptions", "font_size")
+                    logging.debug("Reset font_size from config file")
 
 
 def load_entries():
