@@ -21,8 +21,8 @@ import logging
 import shutil
 
 
-app_version: str = "2.5.1_Windows"
-release_date: str = "2/16/2025"
+app_version: str = "2.5.2_Windows"
+release_date: str = "2/17/2025"
 
 sources: list = []
 destinations: list = []
@@ -112,11 +112,11 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
 
     full_path = os.path.join(base_path, relative_path)
-    
+
     if not os.path.exists(full_path):
         logging.critical(f"Resource not found: {full_path}")
         raise FileNotFoundError(f"Resource not found: {full_path}")
-    
+
     return full_path
 
 
