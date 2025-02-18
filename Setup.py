@@ -7,9 +7,7 @@ from CTkMessagebox import CTkMessagebox
 import threading
 import queue
 import requests
-import zipfile
 import io
-import shutil
 import time
 
 
@@ -268,12 +266,6 @@ class App(ct.CTk):
             import py7zr
             with py7zr.SevenZipFile(archive_buffer, mode='r') as archive:
                 archive.extractall(path=self.installation_path)
-
-            # Move files from subfolder (assuming GitHub 7z structure)
-            """extracted_folder = os.path.join(self.installation_path, "repo-main")
-            for item in os.listdir(extracted_folder):
-                shutil.move(os.path.join(extracted_folder, item), self.installation_path)
-            shutil.rmtree(extracted_folder)"""
             
             # Create desktop shortcut
             if self.desktop_shortcut.get():
