@@ -62,11 +62,11 @@ class App(ct.CTk):
         self.set_page_2()
         self.set_page_3()
         self.set_page_4()
+        self.set_page_5()
         self.switch_page(0)
 
-    
     def switch_page(self, page_num):
-        if page_num > 2:
+        if page_num > 4:
             quit()
             return
 
@@ -80,9 +80,24 @@ class App(ct.CTk):
             page.grid_forget()
         self.pages[page_num].grid(column=0, columnspan=2, row=0, rowspan=2, padx=40, pady=40)
 
-        # self.back_button.configure(state="normal" if self.current_page > 0 else "disabled")
         self.current_page = page_num
         self.page_progress_bar.set(page_num / (len(self.pages) - 1))
+
+        if page_num == 3:
+            self.final_path_entry.configure(state="normal")
+            self.final_path_entry.delete(0, "end")
+            self.final_path_entry.insert(0, self.installation_path)
+            self.final_path_entry.configure(state="disabled")
+
+            desktop_shortcut_value = self.desktop_shortcut.get()
+            if desktop_shortcut_value == 1:
+                self.final_desktop_shortcut.configure(state="normal")
+                self.final_desktop_shortcut.select()
+                self.final_desktop_shortcut.configure(state="disabled")
+            else:
+                self.final_desktop_shortcut.configure(state="normal")
+                self.final_desktop_shortcut.deselect()
+                self.final_desktop_shortcut.configure(state="disabled")
         
         if page_num == len(self.pages) - 1:
             self.next_button.configure(text="Finish")
@@ -118,7 +133,7 @@ class App(ct.CTk):
         installation_folder_label.grid(row=0, column=0, columnspan=2, padx=10, pady=(40, 20), sticky="nsew")
         CTkToolTip(installation_folder_label, message="Where to install the app")
 
-        self.path_entry = ct.CTkEntry(page, width=600)
+        self.path_entry = ct.CTkEntry(page, width=600, border_color="#2E7D32")
         self.path_entry.grid(row=1, column=0, padx=(30, 5), pady=30, sticky="nsew")
         self.path_entry.insert(0, self.installation_path)
         self.path_entry.bind("<KeyRelease>", self.validate_folder_path)
@@ -134,8 +149,8 @@ class App(ct.CTk):
         page.grid_rowconfigure((0, 1, 2), weight=1)
         self.pages.append(page)
 
-        title_label = ct.CTkLabel(page, text="Additional options", font=ct.CTkFont(family="Comic Sans MS", size=22, weight="bold"))
-        title_label.grid(row=0, column=0, padx=120, pady=(40, 20), sticky="nsew")
+        option_label = ct.CTkLabel(page, text="Additional options", font=ct.CTkFont(family="Comic Sans MS", size=22, weight="bold"))
+        option_label.grid(row=0, column=0, padx=120, pady=(40, 20), sticky="nsew")
 
         self.desktop_shortcut = ct.CTkCheckBox(page, text="Create desktop shortcut")
         self.desktop_shortcut.grid(row=1, column=0, padx=30, pady=(30, 10))
@@ -144,6 +159,31 @@ class App(ct.CTk):
         self.start_menu.grid(row=2, column=0, padx=30, pady=(10, 30))
     
     def set_page_4(self):
+        page = ct.CTkFrame(self, border_width=4, corner_radius=10)
+        page.grid(column=0, columnspan=2, row=0, rowspan=2, padx=40, pady=40)
+        page.grid_columnconfigure(0, weight=1)
+        page.grid_rowconfigure((0, 1, 2, 3, 4, 5), weight=1)
+        self.pages.append(page)
+
+        confirm_label = ct.CTkLabel(page, text="Confirm choices", font=ct.CTkFont(family="Comic Sans MS", size=22, weight="bold"))
+        confirm_label.grid(row=0, column=0, padx=120, pady=(40, 20), sticky="nsew")
+
+        path_label = ct.CTkLabel(page, text="Install in:", font=ct.CTkFont(family="Microsoft JhengHei", size=14))
+        path_label.grid(row=1, column=0, padx=30, pady=(30, 0), sticky="nsew")
+
+        self.final_path_entry = ct.CTkEntry(page, width=600, state="disabled", border_color="#FF6F00")
+        self.final_path_entry.grid(row=2, column=0, padx=30, pady=(0, 30), sticky="nsew")
+
+        other_options_label = ct.CTkLabel(page, text="Other options:", font=ct.CTkFont(family="Microsoft JhengHei", size=14))
+        other_options_label.grid(row=3, column=0, padx=30, pady=(10, 0), sticky="nsew")
+
+        self.final_desktop_shortcut = ct.CTkCheckBox(page, text="Create desktop shortcut", state="disabled", border_color="#FF6F00", fg_color="#FF6F00", text_color_disabled=("gray10", "#DCE4EE"))
+        self.final_desktop_shortcut.grid(row=4, column=0, padx=30, pady=(10, 10))
+
+        final_start_menu = ct.CTkCheckBox(page, text="Add to start menu", state="disabled", border_color="#FF6F00", fg_color="#FF6F00", text_color_disabled=("gray10", "#DCE4EE"))
+        final_start_menu.grid(row=5, column=0, padx=30, pady=(10, 30))
+    
+    def set_page_5(self):
         page = ct.CTkFrame(self, border_width=4, corner_radius=10)
         page.grid(column=0, columnspan=2, row=0, rowspan=2, padx=40, pady=40)
         page.grid_columnconfigure(0, weight=1)
@@ -166,7 +206,7 @@ class App(ct.CTk):
             folder_path = self.path_entry.get()
             if os.path.exists(folder_path):
                 self.installation_path = folder_path.replace(" ", "")
-                self.path_entry.configure(border_color=("#979DA2", "#565B5E"))
+                self.path_entry.configure(border_color="#2E7D32")
             else:
                 self.installation_path = None
                 self.path_entry.configure(border_color="#B71C1C")
@@ -175,17 +215,17 @@ class App(ct.CTk):
             logging.error(f"Error in validate_folder_path: {e}")
 
     def show_error_popup(self, e):
-        msg = CTkMessagebox(title="Error", message=f"An error occurred: {e}", icon="cancel", border_width=4, option_1="Exit", border_color="#F4511E", fade_in_duration=50, button_width=378)
+        msg = CTkMessagebox(title="Error", message=f"An error occurred: {e}", icon="cancel", border_width=4, option_1="Exit", border_color="#F4511E", fade_in_duration=50, justify="center")
         if msg.get() == "Exit":
             self.destroy()
     
     def show_close_popup(self):
-        msg = CTkMessagebox(title="Exit?", message="Do you want to cancel the install?", icon="question", option_1="No", option_2="Yes", border_width=4, border_color="#43A047", fade_in_duration=50, button_width=200)
+        msg = CTkMessagebox(title="Confirm exit", message="Do you want to cancel the install?", icon="question", option_2="No", option_1="Yes", border_width=4, border_color="#43A047", fade_in_duration=50, justify="center")
         if msg.get() == "Yes":
             self.destroy()
     
     def show_warning(self):
-        msg = CTkMessagebox(title="Warning", message="Unable to connect to internet", icon="warning", option_1="Cancel", option_2="Retry", border_color="#43A047", fade_in_duration=50, button_width=200)
+        msg = CTkMessagebox(title="Warning", message="Unable to connect to internet", icon="warning", option_2="Cancel", option_1="Retry", border_color="#43A047", fade_in_duration=50, justify="center")
         if msg.get() == "Retry":
             pass
 
