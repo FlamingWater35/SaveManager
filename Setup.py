@@ -6,6 +6,11 @@ from CTkToolTip import CTkToolTip
 from CTkMessagebox import CTkMessagebox
 import threading
 import queue
+import requests
+import zipfile
+import io
+import shutil
+import time
 
 
 logging.basicConfig(
@@ -16,6 +21,7 @@ logging.basicConfig(
 class App(ct.CTk):
     def __init__(self):
         super().__init__()
+        self.queue = queue.Queue()
 
         self.title("SaveManager Setup")
         window_width = 1000
@@ -86,7 +92,7 @@ class App(ct.CTk):
         self.page_progress_bar.set(page_num / (len(self.pages) - 1))
 
         if page_num == 3:
-            self.next_button.configure(text="Install")
+            self.next_button.configure(text="Install", command=self.start_installation)
 
             self.final_path_entry.configure(state="normal")
             self.final_path_entry.delete(0, "end")
@@ -112,6 +118,11 @@ class App(ct.CTk):
             self.back_button.configure(text="Back", command=lambda: self.switch_page(self.current_page - 1))
         else:
             self.back_button.configure(text="Cancel", command=self.show_close_popup)
+
+    def start_installation(self):
+        self.next_button.configure(state="disabled")
+        thread = threading.Thread(target=self.install_thread, daemon=True)
+        thread.start()
 
     def set_page_1(self):
         page = ct.CTkFrame(self, border_width=4, corner_radius=10)
@@ -202,18 +213,92 @@ class App(ct.CTk):
         copy_label = ct.CTkLabel(page, text="", font=ct.CTkFont(family="Microsoft JhengHei", size=14))
         copy_label.grid(row=1, column=0, padx=30, pady=(20, 5), sticky="nsew")
 
-        install_progressbar = ct.CTkProgressBar(page, orientation="horizontal", height=20, corner_radius=8)
-        install_progressbar.grid(row=2, column=0, padx=30, pady=(5, 20), sticky="nsew")
-        install_progressbar.set(0)
+        self.install_progressbar = ct.CTkProgressBar(page, orientation="horizontal", height=20, corner_radius=8)
+        self.install_progressbar.grid(row=2, column=0, padx=30, pady=(5, 20), sticky="nsew")
+        self.install_progressbar.set(0)
 
-        install_log = ct.CTkTextbox(page, width=500)
-        install_log.grid(row=3, column=0, padx=30, pady=(10, 30), sticky="nsew")
+        self.install_log = ct.CTkTextbox(page, width=500)
+        self.install_log.grid(row=3, column=0, padx=30, pady=(10, 30), sticky="nsew")
 
-        thread = threading.Thread(target=self.install_thread, daemon=True)
-        thread.start()
+        self.process_queue()
     
+    def process_queue(self):
+        while not self.queue.empty():
+            try:
+                msg = self.queue.get_nowait()
+                if msg["type"] == "progress":
+                    self.install_progressbar.set(msg["value"])
+                elif msg["type"] == "log":
+                    self.install_log.insert("end", msg["message"] + "\n")
+                    self.install_log.see("end")
+                elif msg["type"] == "complete":
+                    self.next_button.configure(text="Finish", state="normal")
+                    CTkMessagebox(title="Success", message="Installation completed!")
+                elif msg["type"] == "error":
+                    self.show_error_popup(msg["error"])
+            except queue.Empty:
+                pass
+        self.after(100, self.process_queue)
+
     def install_thread(self):
-        pass
+        try:
+            repo_url = "https://github.com/username/repo/archive/main.zip"
+            self.queue.put({"type": "log", "message": "Downloading files..."})
+            
+            # Download ZIP
+            response = requests.get(repo_url, stream=True)
+            response.raise_for_status()
+            
+            total_size = int(response.headers.get('content-length', 0))
+            downloaded = 0
+            zip_buffer = io.BytesIO()
+            
+            for chunk in response.iter_content(chunk_size=8192):
+                zip_buffer.write(chunk)
+                downloaded += len(chunk)
+                if total_size > 0:
+                    self.queue.put({"type": "progress", "value": downloaded / total_size})
+            
+            self.queue.put({"type": "log", "message": "Extracting files..."})
+            zip_buffer.seek(0)
+            
+            # Extract ZIP
+            with zipfile.ZipFile(zip_buffer) as zip_ref:
+                zip_ref.extractall(self.installation_path)
+            
+            # Move files from subfolder (assuming GitHub ZIP structure)
+            extracted_folder = os.path.join(self.installation_path, "repo-main")
+            for item in os.listdir(extracted_folder):
+                shutil.move(os.path.join(extracted_folder, item), self.installation_path)
+            shutil.rmtree(extracted_folder)
+            
+            # Create desktop shortcut
+            if self.desktop_shortcut.get():
+                self.create_desktop_shortcut()
+            
+            self.queue.put({"type": "progress", "value": 1.0})
+            self.queue.put({"type": "log", "message": "Installation complete!"})
+            self.queue.put({"type": "complete"})
+        
+        except Exception as e:
+            self.queue.put({"type": "error", "error": str(e)})
+            logging.error(f"Installation failed: {e}")
+        
+    def create_desktop_shortcut(self):
+        try:
+            desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
+            shortcut_path = os.path.join(desktop_path, "SaveManager.lnk")
+            target = os.path.join(self.installation_path, "SaveManager.exe")
+            
+            from win32com.client import Dispatch
+            shell = Dispatch('WScript.Shell')
+            shortcut = shell.CreateShortCut(shortcut_path)
+            shortcut.TargetPath = target
+            shortcut.WorkingDirectory = self.installation_path
+            shortcut.save()
+            
+        except Exception as e:
+            self.queue.put({"type": "log", "message": f"Failed to create shortcut: {str(e)}"})
 
     def select_folder(self):
         try:
