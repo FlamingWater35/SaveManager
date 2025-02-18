@@ -121,6 +121,7 @@ class App(ct.CTk):
 
     def start_installation(self):
         self.next_button.configure(state="disabled", command=lambda: self.switch_page(self.current_page + 1))
+        self.back_button.configure(state="disabled")
         self.switch_page(4)
         thread = threading.Thread(target=self.install_thread, daemon=True)
         thread.start()
