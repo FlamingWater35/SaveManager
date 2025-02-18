@@ -120,7 +120,8 @@ class App(ct.CTk):
             self.back_button.configure(text="Cancel", command=self.show_close_popup)
 
     def start_installation(self):
-        self.next_button.configure(state="disabled")
+        self.next_button.configure(state="disabled", command=lambda: self.switch_page(self.current_page + 1))
+        self.switch_page(4)
         thread = threading.Thread(target=self.install_thread, daemon=True)
         thread.start()
 
@@ -242,7 +243,7 @@ class App(ct.CTk):
 
     def install_thread(self):
         try:
-            repo_url = "https://github.com/username/repo/archive/main.7z"
+            repo_url = "https://github.com/FlamingWater35/SaveManager/releases/download/v2.5.3/SaveManager.7z"
             self.queue.put({"type": "log", "message": "Downloading files..."})
 
             # Download 7z archive
@@ -268,10 +269,10 @@ class App(ct.CTk):
                 archive.extractall(path=self.installation_path)
 
             # Move files from subfolder (assuming GitHub 7z structure)
-            extracted_folder = os.path.join(self.installation_path, "repo-main")
+            """extracted_folder = os.path.join(self.installation_path, "repo-main")
             for item in os.listdir(extracted_folder):
                 shutil.move(os.path.join(extracted_folder, item), self.installation_path)
-            shutil.rmtree(extracted_folder)
+            shutil.rmtree(extracted_folder)"""
             
             # Create desktop shortcut
             if self.desktop_shortcut.get():
