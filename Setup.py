@@ -242,31 +242,32 @@ class App(ct.CTk):
 
     def install_thread(self):
         try:
-            repo_url = "https://github.com/username/repo/archive/main.zip"
+            repo_url = "https://github.com/username/repo/archive/main.7z"
             self.queue.put({"type": "log", "message": "Downloading files..."})
-            
-            # Download ZIP
+
+            # Download 7z archive
             response = requests.get(repo_url, stream=True)
             response.raise_for_status()
-            
+
             total_size = int(response.headers.get('content-length', 0))
             downloaded = 0
-            zip_buffer = io.BytesIO()
-            
+            archive_buffer = io.BytesIO()
+
             for chunk in response.iter_content(chunk_size=8192):
-                zip_buffer.write(chunk)
+                archive_buffer.write(chunk)
                 downloaded += len(chunk)
                 if total_size > 0:
                     self.queue.put({"type": "progress", "value": downloaded / total_size})
-            
+
             self.queue.put({"type": "log", "message": "Extracting files..."})
-            zip_buffer.seek(0)
-            
-            # Extract ZIP
-            with zipfile.ZipFile(zip_buffer) as zip_ref:
-                zip_ref.extractall(self.installation_path)
-            
-            # Move files from subfolder (assuming GitHub ZIP structure)
+            archive_buffer.seek(0)
+
+            # Extract 7z archive
+            import py7zr
+            with py7zr.SevenZipFile(archive_buffer, mode='r') as archive:
+                archive.extractall(path=self.installation_path)
+
+            # Move files from subfolder (assuming GitHub 7z structure)
             extracted_folder = os.path.join(self.installation_path, "repo-main")
             for item in os.listdir(extracted_folder):
                 shutil.move(os.path.join(extracted_folder, item), self.installation_path)
