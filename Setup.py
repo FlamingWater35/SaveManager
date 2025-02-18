@@ -124,6 +124,7 @@ class App(ct.CTk):
         self.back_button.configure(state="disabled")
         self.switch_page(4)
         thread = threading.Thread(target=self.install_thread, daemon=True)
+        self.process_queue()
         thread.start()
 
     def set_page_1(self):
@@ -221,8 +222,6 @@ class App(ct.CTk):
 
         self.install_log = ct.CTkTextbox(page, width=500)
         self.install_log.grid(row=3, column=0, padx=30, pady=(10, 30), sticky="nsew")
-
-        self.process_queue()
     
     def process_queue(self):
         while not self.queue.empty():
@@ -230,6 +229,7 @@ class App(ct.CTk):
                 msg = self.queue.get_nowait()
                 if msg["type"] == "progress":
                     self.install_progressbar.set(msg["value"])
+                    self.update()
                 elif msg["type"] == "log":
                     self.install_log.insert("end", msg["message"] + "\n")
                     self.install_log.see("end")
