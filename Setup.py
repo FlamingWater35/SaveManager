@@ -4,6 +4,8 @@ import os
 import logging
 from CTkToolTip import CTkToolTip
 from CTkMessagebox import CTkMessagebox
+import threading
+import queue
 
 
 logging.basicConfig(
@@ -16,8 +18,8 @@ class App(ct.CTk):
         super().__init__()
 
         self.title("SaveManager Setup")
-        window_width = 1100
-        window_height = 580
+        window_width = 1000
+        window_height = 600
 
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
@@ -84,6 +86,8 @@ class App(ct.CTk):
         self.page_progress_bar.set(page_num / (len(self.pages) - 1))
 
         if page_num == 3:
+            self.next_button.configure(text="Install")
+
             self.final_path_entry.configure(state="normal")
             self.final_path_entry.delete(0, "end")
             self.final_path_entry.insert(0, self.installation_path)
@@ -99,9 +103,9 @@ class App(ct.CTk):
                 self.final_desktop_shortcut.deselect()
                 self.final_desktop_shortcut.configure(state="disabled")
         
-        if page_num == len(self.pages) - 1:
+        if page_num == len(self.pages) - 1 and page_num != 3:
             self.next_button.configure(text="Finish")
-        else:
+        elif page_num != len(self.pages) - 1 and page_num != 3:
             self.next_button.configure(text="Next")
 
         if page_num > 0:
@@ -187,8 +191,29 @@ class App(ct.CTk):
         page = ct.CTkFrame(self, border_width=4, corner_radius=10)
         page.grid(column=0, columnspan=2, row=0, rowspan=2, padx=40, pady=40)
         page.grid_columnconfigure(0, weight=1)
-        page.grid_rowconfigure((0, 1, 2), weight=1)
+        page.grid_rowconfigure((0, 1), weight=1)
+        page.grid_rowconfigure(2, weight=0)
+        page.grid_rowconfigure(3, weight=10)
         self.pages.append(page)
+
+        install_label = ct.CTkLabel(page, text="Installing...", font=ct.CTkFont(family="Comic Sans MS", size=22, weight="bold"))
+        install_label.grid(row=0, column=0, padx=120, pady=(40, 20), sticky="nsew")
+
+        copy_label = ct.CTkLabel(page, text="", font=ct.CTkFont(family="Microsoft JhengHei", size=14))
+        copy_label.grid(row=1, column=0, padx=30, pady=(20, 5), sticky="nsew")
+
+        install_progressbar = ct.CTkProgressBar(page, orientation="horizontal", height=20, corner_radius=8)
+        install_progressbar.grid(row=2, column=0, padx=30, pady=(5, 20), sticky="nsew")
+        install_progressbar.set(0)
+
+        install_log = ct.CTkTextbox(page, width=500)
+        install_log.grid(row=3, column=0, padx=30, pady=(10, 30), sticky="nsew")
+
+        thread = threading.Thread(target=self.install_thread, daemon=True)
+        thread.start()
+    
+    def install_thread(self):
+        pass
 
     def select_folder(self):
         try:
