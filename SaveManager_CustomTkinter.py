@@ -109,7 +109,7 @@ class CopyManager(ct.CTkFrame):
         self.copy_manager_tabs.add("Folder Pairs")
         self.copy_manager_tabs.add("Copy Operation")
 
-        self.copy_manager_tabs.tab("Folder Pairs").grid_columnconfigure((0, 2), weight=1)
+        self.copy_manager_tabs.tab("Folder Pairs").grid_columnconfigure((0, 1), weight=1)
         self.copy_manager_tabs.tab("Folder Pairs").grid_rowconfigure((0, 1, 2, 3), weight=1)
         self.copy_manager_tabs.tab("Folder Pairs").grid_rowconfigure(4, weight=10)
         self.copy_manager_tabs.tab("Folder Pairs").grid_rowconfigure(5, weight=20)

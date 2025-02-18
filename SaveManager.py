@@ -19,10 +19,12 @@ import dxcam
 import cv2
 import logging
 import shutil
+import pywinstyles
+from win32 import win32gui
 
 
-app_version: str = "2.5.2_Windows"
-release_date: str = "2/17/2025"
+app_version: str = "2.5.3_Windows"
+release_date: str = "2/18/2025"
 
 sources: list = []
 destinations: list = []
@@ -2393,6 +2395,12 @@ def main():
 
     dpg.setup_dearpygui()
     dpg.show_viewport()
+
+    hwnd = win32gui.FindWindow(None, "Save Manager")
+    if hwnd == 0:
+        logging.error("Window not found for pywinstyles")
+    else:
+        pywinstyles.apply_style(hwnd, "mica")
 
     while dpg.is_dearpygui_running():
         start_time = time.time()

@@ -1,3 +1,4 @@
+# SaveManager dependencies
 dearpygui
 pyperclip
 requests
@@ -5,10 +6,16 @@ pillow
 numpy
 keyboard
 dxcam[cv2]
+pywinstyles
+pywin32
 
-# Optional
+# Installing and formatting
+nuitka
 pyinstaller
 black
 pyinstaller_versionfile
+
+# Other projects
 customtkinter
-nuitka
+CTkToolTip
+CTkMessagebox
