@@ -202,23 +202,20 @@ class App(ct.CTk):
         page = ct.CTkFrame(self, border_width=4, corner_radius=10)
         page.grid(column=0, columnspan=2, row=0, rowspan=2, padx=40, pady=40)
         page.grid_columnconfigure(0, weight=1)
-        page.grid_rowconfigure((0, 1), weight=1)
-        page.grid_rowconfigure(2, weight=0)
-        page.grid_rowconfigure(3, weight=10)
+        page.grid_rowconfigure(0, weight=1)
+        page.grid_rowconfigure(1, weight=0)
+        page.grid_rowconfigure(2, weight=5)
         self.pages.append(page)
 
         install_label = ct.CTkLabel(page, text="Installing...", font=ct.CTkFont(family="Comic Sans MS", size=22, weight="bold"))
         install_label.grid(row=0, column=0, padx=120, pady=(40, 20), sticky="nsew")
 
-        copy_label = ct.CTkLabel(page, text="", font=ct.CTkFont(family="Microsoft JhengHei", size=14))
-        copy_label.grid(row=1, column=0, padx=30, pady=(20, 5), sticky="nsew")
-
         self.install_progressbar = ct.CTkProgressBar(page, orientation="horizontal", height=20, corner_radius=8)
-        self.install_progressbar.grid(row=2, column=0, padx=30, pady=(5, 20), sticky="nsew")
+        self.install_progressbar.grid(row=1, column=0, padx=30, pady=(5, 20), sticky="nsew")
         self.install_progressbar.set(0)
 
-        self.install_log = ct.CTkTextbox(page, width=500)
-        self.install_log.grid(row=3, column=0, padx=30, pady=(10, 30), sticky="nsew")
+        self.install_log = ct.CTkTextbox(page, width=500, height=130, font=ct.CTkFont(family="Microsoft JhengHei", size=13))
+        self.install_log.grid(row=2, column=0, padx=30, pady=(10, 30), sticky="nsew")
     
     def process_queue(self):
         while not self.queue.empty():
@@ -232,7 +229,6 @@ class App(ct.CTk):
                     self.install_log.see("end")
                 elif msg["type"] == "complete":
                     self.next_button.configure(text="Finish", state="normal")
-                    CTkMessagebox(title="Success", message="Installation completed!")
                 elif msg["type"] == "error":
                     self.show_error_popup(msg["error"])
             except queue.Empty:
@@ -241,11 +237,27 @@ class App(ct.CTk):
 
     def install_thread(self):
         try:
-            repo_url = "https://github.com/FlamingWater35/SaveManager/releases/download/v2.5.3/SaveManager.7z"
-            self.queue.put({"type": "log", "message": "Downloading files..."})
+            repo_api_url = "https://api.github.com/repos/FlamingWater35/SaveManager/releases/latest"
+            
+            self.queue.put({"type": "log", "message": "Fetching latest release information..."})
+            response = requests.get(repo_api_url)
+            response.raise_for_status()
+            release_data = response.json()
+            
+            asset_url = None
+            for asset in release_data.get("assets", []):
+                if asset["name"].endswith(".7z"):
+                    asset_url = asset["browser_download_url"]
+                    break
+
+            if not asset_url:
+                self.queue.put({"type": "error", "error": "No .7z file found in latest release."})
+                return
+            
+            self.queue.put({"type": "log", "message": f"Downloading files from {asset_url}..."})
 
             # Download 7z archive
-            response = requests.get(repo_url, stream=True)
+            response = requests.get(asset_url, stream=True)
             response.raise_for_status()
 
             total_size = int(response.headers.get('content-length', 0))
