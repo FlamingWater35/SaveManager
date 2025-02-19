@@ -8,6 +8,9 @@ import threading
 import queue
 import requests
 import io
+from win32com.client import Dispatch
+import py7zr
+import pythoncom
 
 
 logging.basicConfig(
@@ -286,13 +289,14 @@ class App(ct.CTk):
             archive_buffer.seek(0)
 
             # Extract 7z archive
-            import py7zr
             with py7zr.SevenZipFile(archive_buffer, mode='r') as archive:
                 archive.extractall(path=self.installation_path)
             
             # Create desktop shortcut
             if self.desktop_shortcut.get():
                 self.create_desktop_shortcut()
+            if self.start_menu.get():
+                self.create_start_menu_shortcut()
             
             self.queue.put({"type": "progress", "value": 1.0})
             self.queue.put({"type": "log", "message": "Installation complete!"})
@@ -304,19 +308,37 @@ class App(ct.CTk):
         
     def create_desktop_shortcut(self):
         try:
+            pythoncom.CoInitialize()
             desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
             shortcut_path = os.path.join(desktop_path, "SaveManager.lnk")
             target = os.path.join(self.installation_path, "SaveManager.exe")
             
-            from win32com.client import Dispatch
             shell = Dispatch('WScript.Shell')
             shortcut = shell.CreateShortCut(shortcut_path)
             shortcut.TargetPath = target
             shortcut.WorkingDirectory = self.installation_path
-            shortcut.save()
+            shortcut.Save()
+            self.queue.put({"type": "log", "message": f"Desktop shortcut created"})
             
         except Exception as e:
-            self.queue.put({"type": "log", "message": f"Failed to create shortcut: {str(e)}"})
+            self.queue.put({"type": "log", "message": f"Failed to create desktop shortcut: {str(e)}"})
+    
+    def create_start_menu_shortcut(self):
+        try:
+            pythoncom.CoInitialize()
+            start_menu_path = os.path.join(os.getenv("USERPROFILE"), "AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs")
+            shortcut_path = os.path.join(start_menu_path, "SaveManager.lnk")
+            target = os.path.join(self.installation_path, "SaveManager.exe")
+            
+            shell = Dispatch('WScript.Shell')
+            shortcut = shell.CreateShortCut(shortcut_path)
+            shortcut.TargetPath = target
+            shortcut.WorkingDirectory = self.installation_path
+            shortcut.Save()
+            self.queue.put({"type": "log", "message": f"Start Menu shortcut created"})
+            
+        except Exception as e:
+            self.queue.put({"type": "log", "message": f"Failed to create start menu shortcut: {str(e)}"})
 
     def select_folder(self):
         try:
