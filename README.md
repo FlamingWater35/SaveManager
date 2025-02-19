@@ -12,5 +12,11 @@ A simple Python application to save multiple folder pairs and copy them with the
 </ul> 
 
 ## Installing
-1. Download the executable from releases
+
+### Option 1 (installer):
+1. Download Setup.exe from releases
+2. Run the file
+
+### Option 2 (no installer):
+1. Download Savemanager.exe from releases
 2. Run the file
