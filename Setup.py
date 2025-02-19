@@ -89,7 +89,7 @@ class App(ct.CTk):
         self.page_progress_bar.set(page_num / (len(self.pages) - 1))
 
         if page_num == 3:
-            self.next_button.configure(text="Install", command=self.start_installation)
+            self.next_button.configure(text="Install")
 
             self.final_path_entry.configure(state="normal")
             self.final_path_entry.delete(0, "end")
@@ -105,6 +105,19 @@ class App(ct.CTk):
                 self.final_desktop_shortcut.configure(state="normal")
                 self.final_desktop_shortcut.deselect()
                 self.final_desktop_shortcut.configure(state="disabled")
+            
+            start_menu_value = self.start_menu.get()
+            if start_menu_value == 1:
+                self.final_start_menu.configure(state="normal")
+                self.final_start_menu.select()
+                self.final_start_menu.configure(state="disabled")
+            else:
+                self.final_start_menu.configure(state="normal")
+                self.final_start_menu.deselect()
+                self.final_start_menu.configure(state="disabled")
+        
+        if page_num == 4:
+            self.start_installation()
         
         if page_num == len(self.pages) - 1 and page_num != 3:
             self.next_button.configure(text="Finish")
@@ -117,9 +130,8 @@ class App(ct.CTk):
             self.back_button.configure(text="Cancel", command=self.show_close_popup)
 
     def start_installation(self):
-        self.next_button.configure(state="disabled", command=lambda: self.switch_page(self.current_page + 1))
+        self.next_button.configure(state="disabled")
         self.back_button.configure(state="disabled")
-        self.switch_page(4)
         thread = threading.Thread(target=self.install_thread, daemon=True)
         self.process_queue()
         thread.start()
@@ -195,8 +207,8 @@ class App(ct.CTk):
         self.final_desktop_shortcut = ct.CTkCheckBox(page, text="Create desktop shortcut", state="disabled", border_color="#FF6F00", fg_color="#FF6F00", text_color_disabled=("gray10", "#DCE4EE"))
         self.final_desktop_shortcut.grid(row=4, column=0, padx=30, pady=(10, 10))
 
-        final_start_menu = ct.CTkCheckBox(page, text="Add to start menu", state="disabled", border_color="#FF6F00", fg_color="#FF6F00", text_color_disabled=("gray10", "#DCE4EE"))
-        final_start_menu.grid(row=5, column=0, padx=30, pady=(10, 30))
+        self.final_start_menu = ct.CTkCheckBox(page, text="Add to start menu", state="disabled", border_color="#FF6F00", fg_color="#FF6F00", text_color_disabled=("gray10", "#DCE4EE"))
+        self.final_start_menu.grid(row=5, column=0, padx=30, pady=(10, 30))
     
     def set_page_5(self):
         page = ct.CTkFrame(self, border_width=4, corner_radius=10)
