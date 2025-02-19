@@ -1,4 +1,4 @@
-# SaveManager dependencies
+# SaveManager
 dearpygui
 pyperclip
 requests
@@ -9,14 +9,14 @@ dxcam[cv2]
 pywinstyles
 pywin32
 
+# Installer
+customtkinter
+CTkToolTip
+CTkMessagebox
+py7zr
+
 # Installing and formatting
 nuitka
 pyinstaller
 black
 pyinstaller_versionfile
-
-# Other projects
-customtkinter
-CTkToolTip
-CTkMessagebox
-py7zr

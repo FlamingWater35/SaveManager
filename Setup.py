@@ -8,6 +8,7 @@ import threading
 import queue
 import requests
 import io
+import sys
 from win32com.client import Dispatch
 import py7zr
 import pythoncom
@@ -17,6 +18,21 @@ logging.basicConfig(
     level=logging.DEBUG,
     format="%(asctime)s - %(levelname)s - %(message)s",
 )
+
+def resource_path(relative_path):
+    # Get the directory of the executable (or script in development)
+    if "__compiled__" in globals():  # Check if running as a Nuitka bundle
+        base_path = os.path.dirname(sys.executable)  # Executable's directory
+    else:
+        base_path = os.path.abspath(".")
+
+    full_path = os.path.join(base_path, relative_path)
+
+    if not os.path.exists(full_path):
+        os.makedirs(full_path, exist_ok=True)
+        logging.error(f"Resource not found: {full_path}")
+
+    return full_path
 
 class App(ct.CTk):
     def __init__(self):
@@ -33,7 +49,7 @@ class App(ct.CTk):
         y = (screen_height - window_height) // 2
         self.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
-        self.iconbitmap(os.path.join(os.path.dirname(os.path.realpath(__file__)), "docs\\icon.ico"))
+        self.iconbitmap(resource_path("docs/icon.ico"))
         self.protocol("WM_DELETE_WINDOW", self.show_close_popup)
 
         self.pages: list = []
@@ -75,7 +91,7 @@ class App(ct.CTk):
 
     def switch_page(self, page_num):
         if page_num > 4:
-            quit()
+            self.destroy()
             return
 
         if self.current_page == 1 and page_num == 2:
@@ -322,7 +338,7 @@ class App(ct.CTk):
             
         except Exception as e:
             self.queue.put({"type": "log", "message": f"Failed to create desktop shortcut: {str(e)}"})
-    
+
     def create_start_menu_shortcut(self):
         try:
             pythoncom.CoInitialize()
