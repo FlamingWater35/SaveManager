@@ -23,8 +23,8 @@ import pywinstyles
 from win32 import win32gui
 
 
-app_version: str = "2.5.3_Windows"
-release_date: str = "2/18/2025"
+app_version: str = "2.5.4_Windows"
+release_date: str = "2/19/2025"
 
 sources: list = []
 destinations: list = []
@@ -74,24 +74,10 @@ drag_start_pos = None
 img_size = (0, 0)
 is_dragging = False
 
-json_file_path = os.path.join(
-    os.getenv("LOCALAPPDATA"), "SaveManager\\save_folders.json"
-)
-config_file = os.path.join(os.getenv("LOCALAPPDATA"), "SaveManager\\settings.ini")
 
 config = configparser.ConfigParser()
 progress_queue = queue.Queue()
 cancel_flag = threading.Event()
-
-app_data_directory = os.path.join(os.getenv("LOCALAPPDATA"), "SaveManager")
-if not os.path.exists(app_data_directory):
-    os.makedirs(app_data_directory, exist_ok=True)
-
-logging.basicConfig(
-    filename=os.path.join(os.getenv("LOCALAPPDATA"), "SaveManager\\SaveManager.log"),
-    level=logging.DEBUG,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-)
 
 
 """def resource_path(relative_path):
@@ -116,11 +102,20 @@ def resource_path(relative_path):
     full_path = os.path.join(base_path, relative_path)
 
     if not os.path.exists(full_path):
-        logging.critical(f"Resource not found: {full_path}")
-        raise FileNotFoundError(f"Resource not found: {full_path}")
+        os.makedirs(full_path, exist_ok=True)
+        logging.error(f"Resource not found: {full_path}")
 
     return full_path
 
+
+data_dir = resource_path("app_data")
+json_file_path = os.path.join(data_dir, "save_folders.json")
+config_file = os.path.join(data_dir, "settings.ini")
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+)
 
 font_path = resource_path("docs/font.otf")
 default_font_size = 24

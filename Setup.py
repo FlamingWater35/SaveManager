@@ -8,7 +8,6 @@ import threading
 import queue
 import requests
 import io
-import time
 
 
 logging.basicConfig(

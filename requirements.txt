@@ -19,3 +19,4 @@ pyinstaller_versionfile
 customtkinter
 CTkToolTip
 CTkMessagebox
+py7zr
