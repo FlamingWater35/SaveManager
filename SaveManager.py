@@ -36,6 +36,7 @@ settings: dict = {
     "remember_window_pos": True,
     "skip_existing_files": True,
     "clear_destination_folder": False,
+    "skip_hidden_files": False,
     "file_extensions": [".sav", ".save"],
     "folder_paths": [
         "C:\\Program Files",
@@ -639,12 +640,17 @@ def get_folder_size(source):
         # Check if the current folder should be ignored
         current_folder_abs = os.path.abspath(root)
         if current_folder_abs in settings["ignored_folders"]:
-            # Skip this folder and its contents by clearing the dirs list
+            dirs[:] = []
+            continue
+        # Prevent hidden folders
+        if settings["skip_hidden_files"] and os.path.basename(root).startswith("."):
             dirs[:] = []
             continue
 
         # Add the size of files in non-ignored folders
         for file in files:
+            if settings["skip_hidden_files"] and file.startswith("."):
+                continue
             file_path = os.path.join(root, file)
             try:
                 total_size += os.path.getsize(file_path)
@@ -676,10 +682,11 @@ def copy_thread(valid_entries, total_bytes):
             file_list = []
             ignored_folders = settings["ignored_folders"]
             for root, dirs, files in os.walk(source):
-                # Check if the current folder is in the ignored_folders list
+                rel_dir_path = os.path.relpath(root, source)
                 current_folder_abs = os.path.abspath(root)
+
+                # Skip ignored folders
                 if current_folder_abs in ignored_folders:
-                    # Log the ignored folder
                     rel_ignored_path = os.path.relpath(current_folder_abs, source)
                     dpg.add_text(
                         f"Ignored because of a setting: '{rel_ignored_path}'",
@@ -691,9 +698,34 @@ def copy_thread(valid_entries, total_bytes):
                     # Skip this folder and its contents by clearing the dirs list
                     dirs[:] = []
                     continue
+                
+                 # Skip hidden folders
+                if settings["skip_hidden_files"] and os.path.basename(root).startswith("."):
+                    dpg.add_text(
+                        f"Skipped (hidden folder): '{rel_dir_path}'",
+                        color=(139, 140, 0),
+                        wrap=0,
+                        parent="copy_log",
+                        user_data="skip",
+                    )
+                    dirs[:] = []  # Prevent traversal into hidden folders
+                    continue
+
+                # Ensure empty folders are copied
+                dest_dir_path = os.path.join(dest, rel_dir_path)
+                os.makedirs(dest_dir_path, exist_ok=True)
 
                 # Collect files from non-ignored folders
                 for file in files:
+                    if settings["skip_hidden_files"] and file.startswith("."):  # Skip hidden files
+                        dpg.add_text(
+                            f"Skipped (hidden file): '{file}'",
+                            color=(139, 140, 0),
+                            wrap=0,
+                            parent="copy_log",
+                            user_data="skip",
+                        )
+                        continue
                     path = os.path.join(root, file)
                     file_list.append((path, os.path.getsize(path)))
 
@@ -1373,6 +1405,8 @@ def settings_change_callback(sender, app_data):
         save_settings("Settings", "skip_existing_files", app_data)
     elif setting == "clear_destination_folder":
         save_settings("Settings", "clear_destination_folder", app_data)
+    elif setting == "skip_hidden_files":
+        save_settings("Settings", "skip_hidden_files", app_data)
     else:
         dpg.set_value(
             "status_text", "Changing setting failed; user_data incorrect or missing"
@@ -1504,6 +1538,19 @@ def setup_settings_window(font_size):
             default_value=settings["clear_destination_folder"],
             callback=settings_change_callback,
             user_data="clear_destination_folder",
+        )
+    dpg.add_spacer(height=20, parent="copy_manager_settings_child_window")
+    with dpg.group(horizontal=True, parent="copy_manager_settings_child_window"):
+        dpg.add_text(
+            "Skip hidden files",
+            wrap=0,
+        )
+        with dpg.tooltip(dpg.last_item()):
+            dpg.add_text("Skip files and folders starting with '.'", wrap=400)
+        dpg.add_checkbox(
+            default_value=settings["skip_hidden_files"],
+            callback=settings_change_callback,
+            user_data="skip_hidden_files",
         )
     dpg.add_spacer(height=20, parent="copy_manager_settings_child_window")
     with dpg.tree_node(
