@@ -6,7 +6,6 @@ A simple Python application to save multiple folder pairs and copy them with the
 ## Other features
 <ul>
   <li>File finder</li>
-  <li>Image viewer </li>
   <li>Screenshot tool</li>
   <li>Screen recorder</li>
 </ul> 
