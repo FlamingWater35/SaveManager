@@ -700,9 +700,11 @@ def copy_thread(valid_entries, total_bytes):
                     # Skip this folder and its contents by clearing the dirs list
                     dirs[:] = []
                     continue
-                
-                 # Skip hidden folders
-                if settings["skip_hidden_files"] and os.path.basename(root).startswith("."):
+
+                # Skip hidden folders
+                if settings["skip_hidden_files"] and os.path.basename(root).startswith(
+                    "."
+                ):
                     dpg.add_text(
                         f"Skipped (hidden folder): '{rel_dir_path}'",
                         color=(139, 140, 0),
@@ -719,7 +721,9 @@ def copy_thread(valid_entries, total_bytes):
 
                 # Collect files from non-ignored folders
                 for file in files:
-                    if settings["skip_hidden_files"] and file.startswith("."):  # Skip hidden files
+                    if settings["skip_hidden_files"] and file.startswith(
+                        "."
+                    ):  # Skip hidden files
                         dpg.add_text(
                             f"Skipped (hidden file): '{file}'",
                             color=(139, 140, 0),
@@ -1296,6 +1300,7 @@ def add_current_folderpath():
         dpg.show_item("folderpath_remove_button")
         dpg.show_item("folderpath_add_button")
 
+
 def open_folderpath_file_dialog():
     global settings
 
@@ -1323,6 +1328,7 @@ def open_folderpath_file_dialog():
             dpg.hide_item("add_folderpath_dialog_group")
             dpg.show_item("folderpath_remove_button")
             dpg.show_item("folderpath_add_button")
+
 
 def open_folder_path_menu():
     global settings
