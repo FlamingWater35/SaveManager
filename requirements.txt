@@ -7,9 +7,9 @@ keyboard
 dxcam[cv2]
 pywinstyles
 pywin32
+customtkinter
 
 # Installer
-customtkinter
 CTkToolTip
 CTkMessagebox
 py7zr
