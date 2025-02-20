@@ -20,6 +20,8 @@ import logging
 import shutil
 import pywinstyles
 from win32 import win32gui
+import customtkinter as ct
+from tkinter import filedialog
 
 
 app_version: str = "2.6.0_Windows"
@@ -36,6 +38,7 @@ settings: dict = {
     "remember_window_pos": True,
     "skip_existing_files": True,
     "clear_destination_folder": False,
+    "skip_hidden_files": False,
     "file_extensions": [".sav", ".save"],
     "folder_paths": [
         "C:\\Program Files",
@@ -642,12 +645,17 @@ def get_folder_size(source):
         # Check if the current folder should be ignored
         current_folder_abs = os.path.abspath(root)
         if current_folder_abs in settings["ignored_folders"]:
-            # Skip this folder and its contents by clearing the dirs list
+            dirs[:] = []
+            continue
+        # Prevent hidden folders
+        if settings["skip_hidden_files"] and os.path.basename(root).startswith("."):
             dirs[:] = []
             continue
 
         # Add the size of files in non-ignored folders
         for file in files:
+            if settings["skip_hidden_files"] and file.startswith("."):
+                continue
             file_path = os.path.join(root, file)
             try:
                 total_size += os.path.getsize(file_path)
@@ -679,10 +687,11 @@ def copy_thread(valid_entries, total_bytes):
             file_list = []
             ignored_folders = settings["ignored_folders"]
             for root, dirs, files in os.walk(source):
-                # Check if the current folder is in the ignored_folders list
+                rel_dir_path = os.path.relpath(root, source)
                 current_folder_abs = os.path.abspath(root)
+
+                # Skip ignored folders
                 if current_folder_abs in ignored_folders:
-                    # Log the ignored folder
                     rel_ignored_path = os.path.relpath(current_folder_abs, source)
                     dpg.add_text(
                         f"Ignored because of a setting: '{rel_ignored_path}'",
@@ -694,9 +703,34 @@ def copy_thread(valid_entries, total_bytes):
                     # Skip this folder and its contents by clearing the dirs list
                     dirs[:] = []
                     continue
+                
+                 # Skip hidden folders
+                if settings["skip_hidden_files"] and os.path.basename(root).startswith("."):
+                    dpg.add_text(
+                        f"Skipped (hidden folder): '{rel_dir_path}'",
+                        color=(139, 140, 0),
+                        wrap=0,
+                        parent="copy_log",
+                        user_data="skip",
+                    )
+                    dirs[:] = []  # Prevent traversal into hidden folders
+                    continue
+
+                # Ensure empty folders are copied
+                dest_dir_path = os.path.join(dest, rel_dir_path)
+                os.makedirs(dest_dir_path, exist_ok=True)
 
                 # Collect files from non-ignored folders
                 for file in files:
+                    if settings["skip_hidden_files"] and file.startswith("."):  # Skip hidden files
+                        dpg.add_text(
+                            f"Skipped (hidden file): '{file}'",
+                            color=(139, 140, 0),
+                            wrap=0,
+                            parent="copy_log",
+                            user_data="skip",
+                        )
+                        continue
                     path = os.path.join(root, file)
                     file_list.append((path, os.path.getsize(path)))
 
@@ -839,18 +873,42 @@ def copy_all_callback(sender, app_data):
     threading.Thread(target=copy_thread, args=(valid_entries, total_bytes)).start()
 
 
-def source_callback(sender, app_data):
+def open_source_file_dialog():
     global sources
 
-    sources.append(app_data["file_path_name"])
-    dpg.set_value("source_display", app_data["file_path_name"])
+    try:
+        main = ct.CTk()
+        main.iconbitmap(resource_path("docs/icon.ico"))
+        main.withdraw()
+        folder_path = filedialog.askdirectory(title="Select folder to copy")
+        main.destroy()
+    except Exception as e:
+        logging.error(f"Exception occurred during folder select: {e}")
+
+    if folder_path:
+        sources.append(folder_path)
+        dpg.set_value("source_display", folder_path)
+    else:
+        dpg.set_value("status_text", "Folder not selected")
 
 
-def destination_callback(sender, app_data):
+def open_destination_file_dialog():
     global destinations
 
-    destinations.append(app_data["file_path_name"])
-    dpg.set_value("destination_display", app_data["file_path_name"])
+    try:
+        main = ct.CTk()
+        main.iconbitmap(resource_path("docs/icon.ico"))
+        main.withdraw()
+        folder_path = filedialog.askdirectory(title="Select folder to copy in")
+        main.destroy()
+    except Exception as e:
+        logging.error(f"Exception occurred during folder select: {e}")
+
+    if folder_path:
+        destinations.append(folder_path)
+        dpg.set_value("destination_display", folder_path)
+    else:
+        dpg.set_value("status_text", "Folder not selected")
 
 
 def screenshot_folder_select_callback(sender, app_data):
@@ -1218,6 +1276,7 @@ def remove_folderpaths():
 def add_folderpath():
     dpg.show_item("add_folderpath_group")
     dpg.show_item("comfirm_add_folderpath")
+    dpg.show_item("add_folderpath_dialog_group")
     dpg.hide_item("folderpath_remove_button")
     dpg.hide_item("folderpath_add_button")
 
@@ -1227,7 +1286,7 @@ def add_current_folderpath():
 
     folderpath = dpg.get_value("add_folderpath_input")
     folderpath_list: list = settings["folder_paths"]
-    if len(folderpath) > 2:
+    if len(folderpath) > 2 and folderpath not in folderpath_list:
         folderpath_list.append(folderpath)
         save_settings("Settings", "folder_paths", folderpath_list)
 
@@ -1236,9 +1295,37 @@ def add_current_folderpath():
             dpg.add_text(f"{index}: {folderpath}", parent="folderpath_list", wrap=0)
         dpg.hide_item("add_folderpath_group")
         dpg.hide_item("comfirm_add_folderpath")
+        dpg.hide_item("add_folderpath_dialog_group")
         dpg.show_item("folderpath_remove_button")
         dpg.show_item("folderpath_add_button")
 
+def open_folderpath_file_dialog():
+    global settings
+
+    try:
+        main = ct.CTk()
+        main.iconbitmap(resource_path("docs/icon.ico"))
+        main.withdraw()
+        folder_path = filedialog.askdirectory(title="Add folder to search in")
+        main.destroy()
+    except Exception as e:
+        logging.error(f"Exception occurred during folder select: {e}")
+
+    if folder_path:
+        folderpath_list: list = settings["folder_paths"]
+        true_folderpath = folder_path.replace("/", "\\")
+        if true_folderpath not in folderpath_list:
+            folderpath_list.append(true_folderpath)
+            save_settings("Settings", "folder_paths", folderpath_list)
+
+            dpg.delete_item("folderpath_list", children_only=True)
+            for index, folderpath in enumerate(folderpath_list, start=1):
+                dpg.add_text(f"{index}: {folderpath}", parent="folderpath_list", wrap=0)
+            dpg.hide_item("add_folderpath_group")
+            dpg.hide_item("comfirm_add_folderpath")
+            dpg.hide_item("add_folderpath_dialog_group")
+            dpg.show_item("folderpath_remove_button")
+            dpg.show_item("folderpath_add_button")
 
 def open_folder_path_menu():
     global settings
@@ -1268,15 +1355,20 @@ def open_folder_path_menu():
                 callback=remove_folderpaths,
                 tag="folderpath_remove_button",
             )
+        with dpg.group(horizontal=True, show=False, tag="add_folderpath_group"):
+            dpg.add_text("Enter folder path", wrap=0)
+            dpg.add_input_text(width=-120, tag="add_folderpath_input")
             dpg.add_button(
                 label="Comfirm",
                 tag="comfirm_add_folderpath",
                 show=False,
                 callback=add_current_folderpath,
             )
-        with dpg.group(horizontal=True, show=False, tag="add_folderpath_group"):
-            dpg.add_text("Folder path", wrap=0)
-            dpg.add_input_text(width=-1, tag="add_folderpath_input")
+        dpg.add_spacer(height=3)
+        with dpg.group(horizontal=True, show=False, tag="add_folderpath_dialog_group"):
+            dpg.add_text("Select folder", wrap=0)
+            dpg.add_button(label="Browse", callback=open_folderpath_file_dialog)
+        dpg.add_spacer(height=3)
         dpg.add_text(
             "Select an item to remove:",
             tag="select_folderpath_text",
@@ -1376,6 +1468,8 @@ def settings_change_callback(sender, app_data):
         save_settings("Settings", "skip_existing_files", app_data)
     elif setting == "clear_destination_folder":
         save_settings("Settings", "clear_destination_folder", app_data)
+    elif setting == "skip_hidden_files":
+        save_settings("Settings", "skip_hidden_files", app_data)
     else:
         dpg.set_value(
             "status_text", "Changing setting failed; user_data incorrect or missing"
@@ -1509,6 +1603,19 @@ def setup_settings_window(font_size):
             user_data="clear_destination_folder",
         )
     dpg.add_spacer(height=20, parent="copy_manager_settings_child_window")
+    with dpg.group(horizontal=True, parent="copy_manager_settings_child_window"):
+        dpg.add_text(
+            "Skip hidden files",
+            wrap=0,
+        )
+        with dpg.tooltip(dpg.last_item()):
+            dpg.add_text("Skip files and folders starting with '.'", wrap=400)
+        dpg.add_checkbox(
+            default_value=settings["skip_hidden_files"],
+            callback=settings_change_callback,
+            user_data="skip_hidden_files",
+        )
+    dpg.add_spacer(height=20, parent="copy_manager_settings_child_window")
     with dpg.tree_node(
         label="Manage ignored folders",
         parent="copy_manager_settings_child_window",
@@ -1571,30 +1678,6 @@ def setup_settings_window(font_size):
         dpg.add_spacer(width=10)
         dpg.add_button(label="Manage folder paths", callback=open_folder_path_menu)
     dpg.add_spacer(height=10, parent="save_finder_settings_child_window")
-
-    with dpg.file_dialog(
-        directory_selector=True,
-        show=False,
-        callback=source_callback,
-        tag="source_file_dialog",
-        cancel_callback=cancel_callback,
-        width=dpg.get_viewport_width() / 1.5,
-        height=dpg.get_viewport_height() / 1.5,
-        label="Select source",
-    ):
-        pass  # Just add some settings or extension filters
-
-    with dpg.file_dialog(
-        directory_selector=True,
-        show=False,
-        callback=destination_callback,
-        tag="destination_file_dialog",
-        cancel_callback=cancel_callback,
-        width=dpg.get_viewport_width() / 1.5,
-        height=dpg.get_viewport_height() / 1.5,
-        label="Select destination",
-    ):
-        pass
 
     with dpg.file_dialog(
         directory_selector=True,
@@ -1785,18 +1868,14 @@ def show_windows():
 
                                 dpg.add_button(
                                     label="Select Source Directory",
-                                    callback=lambda: dpg.show_item(
-                                        "source_file_dialog"
-                                    ),
+                                    callback=open_source_file_dialog,
                                 )
                                 dpg.add_text("", tag="source_display", wrap=0)
                                 dpg.add_spacer(height=5)
 
                                 dpg.add_button(
                                     label="Select Destination Directory",
-                                    callback=lambda: dpg.show_item(
-                                        "destination_file_dialog"
-                                    ),
+                                    callback=open_destination_file_dialog,
                                 )
                                 dpg.add_text("", tag="destination_display", wrap=0)
                                 dpg.add_spacer(height=5)
