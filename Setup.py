@@ -12,6 +12,7 @@ import sys
 from win32com.client import Dispatch
 import py7zr
 import pythoncom
+import shutil
 
 
 logging.basicConfig(
@@ -268,6 +269,20 @@ class App(ct.CTk):
 
     def install_thread(self):
         try:
+            file_path = os.path.join(self.installation_path, "SaveManager.exe")
+            if os.path.isfile(file_path):
+                self.queue.put({"type": "log", "message": "Existing installation detected, proceeding to remove it..."})
+                for item in os.listdir(self.installation_path):
+                    item_path = os.path.join(self.installation_path, item)
+                    
+                    if item == "app_data":
+                        continue
+                    
+                    if os.path.isdir(item_path):
+                        shutil.rmtree(item_path)
+                    elif os.path.isfile(item_path):
+                        os.remove(item_path)
+
             repo_api_url = "https://api.github.com/repos/FlamingWater35/SaveManager/releases/latest"
             
             self.queue.put({"type": "log", "message": "Fetching latest release information..."})
