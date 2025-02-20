@@ -15,7 +15,5 @@ CTkMessagebox
 py7zr
 
 # Installing and formatting
-nuitka
-pyinstaller
 black
-pyinstaller_versionfile
+nuitka
