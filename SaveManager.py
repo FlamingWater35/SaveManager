@@ -11,7 +11,6 @@ import ctypes
 import webbrowser
 import requests
 from PIL import ImageGrab
-import numpy as np
 import keyboard
 from datetime import datetime
 import ast
@@ -23,8 +22,8 @@ import pywinstyles
 from win32 import win32gui
 
 
-app_version: str = "2.5.4_Windows"
-release_date: str = "2/19/2025"
+app_version: str = "2.6.0_Windows"
+release_date: str = "2/20/2025"
 
 sources: list = []
 destinations: list = []
@@ -916,14 +915,11 @@ def search_files():
                     f"Skipped directories '{invalid_paths}' as they do not exist.",
                 )
 
-    total_dirs = np.fromiter(
-        (
-            len(dirs)
-            for dirpath in directories_to_search
-            for _, dirs, _ in os.walk(dirpath)
-        ),
-        dtype=int,
-    ).sum()
+    total_dirs = sum(
+        len(dirs)
+        for dirpath in directories_to_search
+        for _, dirs, _ in os.walk(dirpath)
+    )
     dpg.set_value("finder_text", "Searching...")
 
     processed_dirs: int = 0
