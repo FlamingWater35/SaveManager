@@ -153,8 +153,7 @@ class App(ct.CTk):
     def start_installation(self):
         self.next_button.configure(state="disabled")
         self.back_button.configure(state="disabled")
-        future = self.executor.submit(self.install_process)
-        future.add_done_callback(self.install_complete)
+        self.executor.submit(self.install_process)
         self.update_ui()
 
     def set_page_1(self):
@@ -258,14 +257,6 @@ class App(ct.CTk):
             self.install_progressbar.set(1.0)
             self.next_button.configure(text="Finish", state="normal")
 
-    def install_complete(self, future):
-        self.install_is_completed = True
-        try:
-            future.result()
-            logging.info("Installation process finished successfully.")
-        except Exception as e:
-            logging.error(f"Installation encountered an error: {e}")
-
     def log_text(self, text):
         self.install_log.insert("end", text + "\n")
         self.install_log.see("end")
@@ -333,6 +324,7 @@ class App(ct.CTk):
                 self.create_start_menu_shortcut()
             
             self.log_text("Installation complete!")
+            self.install_is_completed = True
         
         except Exception as e:
             self.show_error_popup(e)
