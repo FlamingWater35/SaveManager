@@ -4,8 +4,6 @@ import os
 import logging
 from CTkToolTip import CTkToolTip
 from CTkMessagebox import CTkMessagebox
-import threading
-import queue
 import requests
 import io
 import sys
@@ -13,6 +11,7 @@ from win32com.client import Dispatch
 import py7zr
 import pythoncom
 import shutil
+import concurrent.futures
 
 
 logging.basicConfig(
@@ -38,7 +37,7 @@ def resource_path(relative_path):
 class App(ct.CTk):
     def __init__(self):
         super().__init__()
-        self.queue = queue.Queue()
+        self.executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
 
         self.title("SaveManager Setup")
         window_width = 1000
@@ -52,7 +51,9 @@ class App(ct.CTk):
 
         self.iconbitmap(resource_path("docs/icon.ico"))
         self.protocol("WM_DELETE_WINDOW", self.show_close_popup)
-
+  
+        self.install_is_completed: bool = False
+        self.install_progress_bar_value = 0
         self.pages: list = []
         self.page_progress: float = 0
         self.current_page: int = 0
@@ -152,9 +153,9 @@ class App(ct.CTk):
     def start_installation(self):
         self.next_button.configure(state="disabled")
         self.back_button.configure(state="disabled")
-        thread = threading.Thread(target=self.install_thread, daemon=True)
-        self.process_queue()
-        thread.start()
+        future = self.executor.submit(self.install_process)
+        future.add_done_callback(self.install_complete)
+        self.update_ui()
 
     def set_page_1(self):
         page = ct.CTkFrame(self, border_width=4, corner_radius=10)
@@ -249,29 +250,31 @@ class App(ct.CTk):
         self.install_log = ct.CTkTextbox(page, width=500, height=130, font=ct.CTkFont(family="Microsoft JhengHei", size=13))
         self.install_log.grid(row=2, column=0, padx=30, pady=(10, 30), sticky="nsew")
     
-    def process_queue(self):
-        while not self.queue.empty():
-            try:
-                msg = self.queue.get_nowait()
-                if msg["type"] == "progress":
-                    self.install_progressbar.set(msg["value"])
-                    self.update()
-                elif msg["type"] == "log":
-                    self.install_log.insert("end", msg["message"] + "\n")
-                    self.install_log.see("end")
-                elif msg["type"] == "complete":
-                    self.next_button.configure(text="Finish", state="normal")
-                elif msg["type"] == "error":
-                    self.show_error_popup(msg["error"])
-            except queue.Empty:
-                pass
-        self.after(100, self.process_queue)
+    def update_ui(self):
+        if not self.install_is_completed:
+            self.install_progressbar.set(self.install_progress_bar_value)
+            self.after(5, self.update_ui)
+        else:
+            self.install_progressbar.set(1.0)
+            self.next_button.configure(text="Finish", state="normal")
 
-    def install_thread(self):
+    def install_complete(self, future):
+        self.install_is_completed = True
+        try:
+            future.result()
+            logging.info("Installation process finished successfully.")
+        except Exception as e:
+            logging.error(f"Installation encountered an error: {e}")
+
+    def log_text(self, text):
+        self.install_log.insert("end", text + "\n")
+        self.install_log.see("end")
+
+    def install_process(self):
         try:
             file_path = os.path.join(self.installation_path, "SaveManager.exe")
             if os.path.isfile(file_path):
-                self.queue.put({"type": "log", "message": "Existing installation detected, proceeding to remove it..."})
+                self.log_text("Existing installation detected, proceeding to remove it...")
                 for item in os.listdir(self.installation_path):
                     item_path = os.path.join(self.installation_path, item)
                     
@@ -285,7 +288,7 @@ class App(ct.CTk):
 
             repo_api_url = "https://api.github.com/repos/FlamingWater35/SaveManager/releases/latest"
             
-            self.queue.put({"type": "log", "message": "Fetching latest release information..."})
+            self.log_text("Fetching latest release information...")
             response = requests.get(repo_api_url)
             response.raise_for_status()
             release_data = response.json()
@@ -297,10 +300,10 @@ class App(ct.CTk):
                     break
 
             if not asset_url:
-                self.queue.put({"type": "error", "error": "No .7z file found in latest release."})
+                self.show_error_popup("No .7z file found in latest release.")
                 return
             
-            self.queue.put({"type": "log", "message": f"Downloading files from {asset_url}..."})
+            self.log_text(f"Downloading files from {asset_url}...")
 
             # Download 7z archive
             response = requests.get(asset_url, stream=True)
@@ -314,9 +317,9 @@ class App(ct.CTk):
                 archive_buffer.write(chunk)
                 downloaded += len(chunk)
                 if total_size > 0:
-                    self.queue.put({"type": "progress", "value": downloaded / total_size})
+                    self.install_progress_bar_value = downloaded / total_size
 
-            self.queue.put({"type": "log", "message": "Extracting files..."})
+            self.log_text("Extracting files...")
             archive_buffer.seek(0)
 
             # Extract 7z archive
@@ -329,12 +332,10 @@ class App(ct.CTk):
             if self.start_menu.get():
                 self.create_start_menu_shortcut()
             
-            self.queue.put({"type": "progress", "value": 1.0})
-            self.queue.put({"type": "log", "message": "Installation complete!"})
-            self.queue.put({"type": "complete"})
+            self.log_text("Installation complete!")
         
         except Exception as e:
-            self.queue.put({"type": "error", "error": str(e)})
+            self.show_error_popup(e)
             logging.error(f"Installation failed: {e}")
         
     def create_desktop_shortcut(self):
@@ -349,10 +350,10 @@ class App(ct.CTk):
             shortcut.TargetPath = target
             shortcut.WorkingDirectory = self.installation_path
             shortcut.Save()
-            self.queue.put({"type": "log", "message": f"Desktop shortcut created"})
+            self.log_text(f"Desktop shortcut created")
             
         except Exception as e:
-            self.queue.put({"type": "log", "message": f"Failed to create desktop shortcut: {str(e)}"})
+            self.log_text(f"Failed to create desktop shortcut: {e}")
 
     def create_start_menu_shortcut(self):
         try:
@@ -366,10 +367,10 @@ class App(ct.CTk):
             shortcut.TargetPath = target
             shortcut.WorkingDirectory = self.installation_path
             shortcut.Save()
-            self.queue.put({"type": "log", "message": f"Start Menu shortcut created"})
+            self.log_text(f"Start Menu shortcut created")
             
         except Exception as e:
-            self.queue.put({"type": "log", "message": f"Failed to create start menu shortcut: {str(e)}"})
+            self.log_text(f"Failed to create start menu shortcut: {e}")
 
     def select_folder(self):
         try:
