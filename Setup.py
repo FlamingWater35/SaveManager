@@ -246,7 +246,7 @@ class App(ct.CTk):
         self.install_progressbar.grid(row=1, column=0, padx=30, pady=(5, 20), sticky="nsew")
         self.install_progressbar.set(0)
 
-        self.install_log = ct.CTkTextbox(page, width=500, height=130, font=ct.CTkFont(family="Microsoft JhengHei", size=13))
+        self.install_log = ct.CTkTextbox(page, width=500, height=130, font=ct.CTkFont(family="Microsoft JhengHei", size=13), state="disabled")
         self.install_log.grid(row=2, column=0, padx=30, pady=(10, 30), sticky="nsew")
     
     def update_ui(self):
@@ -258,8 +258,10 @@ class App(ct.CTk):
             self.next_button.configure(text="Finish", state="normal")
 
     def log_text(self, text):
+        self.install_log.configure(state="normal")
         self.install_log.insert("end", text + "\n")
         self.install_log.see("end")
+        self.install_log.configure(state="disabled")
 
     def install_process(self):
         try:
