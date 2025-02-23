@@ -10,6 +10,9 @@ A simple Python application to save multiple folder pairs and copy them with the
   <li>Screen recorder</li>
 </ul> 
 
+## Showcase
+![Image of main page](https://github.com/FlamingWater35/SaveManager/raw/main/showcase/Screenshot_2025-02-23_11-50-47.png)
+
 ## Installing
 
 ### Option 1 (installer, recommended):
