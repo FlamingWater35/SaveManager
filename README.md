@@ -10,10 +10,10 @@ A simple Python application to save multiple folder pairs and copy them with the
   <li>Screen recorder</li>
 </ul> 
 
-## Showcase (taken using built-in screenshot tool)
+## Images (taken using built-in screenshot tool)
 <div style="display: flex;">
-  <img src="showcase/Screenshot_2025-02-23_12-08-23.png" alt="Main page" width="500">
-  <img src="showcase/Screenshot_2025-02-23_12-08-32.png" alt="Settings page" width="500">
+  <img src="showcase/Screenshot_2025-02-23_12-08-23.png" alt="Main page" width="600">
+  <img src="showcase/Screenshot_2025-02-23_12-08-32.png" alt="Settings page" width="600">
 </div>
 
 ## Installing
