@@ -27,3 +27,5 @@ The installer will download and extract the latest release to specified director
 ### Option 2 (no installer):
 1. Download SaveManager.exe from releases
 2. Run the file
+
+This will store config files in localappdata without your consent (that's why I don't recommend it)
