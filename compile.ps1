@@ -1,3 +1,5 @@
+# Tested on Python 3.12.9
+
 Set-Location -Path "C:\Users\Admin\Documents\work\projects\VSCodeProjects\SaveManager"
 
 conda activate
