@@ -11,8 +11,10 @@ A simple Python application to save multiple folder pairs and copy them with the
 </ul> 
 
 ## Showcase (taken using Save Manager)
-<img src="showcase/Screenshot_2025-02-23_11-50-47.png" alt="Main page" width="500">
-<img src="showcase/Screenshot_2025-02-23_11-51-16.png" alt="Settings page" width="500">
+<div style="display: flex;">
+  <img src="showcase/Screenshot_2025-02-23_11-50-47.png" alt="Main page" width="500" style="margin-right: 10px;">
+  <img src="showcase/Screenshot_2025-02-23_11-51-16.png" alt="Settings page" width="500">
+</div>
 
 ## Installing
 
