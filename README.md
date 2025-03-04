@@ -4,11 +4,9 @@
 A simple Python application to save multiple folder pairs and copy them with the click of a button. 
 
 ## Other features
-<ul>
-  <li>File finder</li>
-  <li>Screenshot tool</li>
-  <li>Screen recorder</li>
-</ul> 
+- File finder
+- Screenshot tool
+- Screen recorder
 
 ## Images (taken using built-in screenshot tool)
 <div style="display: flex;">
