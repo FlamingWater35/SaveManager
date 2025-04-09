@@ -24,8 +24,8 @@ import customtkinter as ct
 from tkinter import filedialog
 
 
-app_version: str = "2.6.0_Windows"
-release_date: str = "2/20/2025"
+app_version: str = "2.6.1_Windows"
+release_date: str = "3/9/2025"
 
 sources: list = []
 destinations: list = []
@@ -877,42 +877,24 @@ def copy_all_callback(sender, app_data):
     threading.Thread(target=copy_thread, args=(valid_entries, total_bytes)).start()
 
 
-def open_source_file_dialog():
+def source_folder_select_callback(sender, app_data):
     global sources
 
-    try:
-        main = ct.CTk()
-        main.iconbitmap(resource_path("docs/icon.ico"))
-        main.withdraw()
-        folder_path = filedialog.askdirectory(title="Select folder to copy")
-        main.destroy()
-    except Exception as e:
-        logging.error(f"Exception occurred during folder select: {e}")
-
-    if folder_path:
-        sources.append(folder_path)
-        dpg.set_value("source_display", folder_path)
-    else:
-        dpg.set_value("status_text", "Folder not selected")
+    sources.append(app_data["file_path_name"])
+    dpg.set_value("source_display", app_data["file_path_name"])
+    dpg.set_value("status_text", "Folder selected")
 
 
-def open_destination_file_dialog():
+def destination_folder_select_callback(sender, app_data):
     global destinations
 
-    try:
-        main = ct.CTk()
-        main.iconbitmap(resource_path("docs/icon.ico"))
-        main.withdraw()
-        folder_path = filedialog.askdirectory(title="Select folder to copy in")
-        main.destroy()
-    except Exception as e:
-        logging.error(f"Exception occurred during folder select: {e}")
+    destinations.append(app_data["file_path_name"])
+    dpg.set_value("destination_display", app_data["file_path_name"])
+    dpg.set_value("status_text", "Folder selected")
 
-    if folder_path:
-        destinations.append(folder_path)
-        dpg.set_value("destination_display", folder_path)
-    else:
-        dpg.set_value("status_text", "Folder not selected")
+
+def copy_manager_folder_cancel_callback():
+    dpg.set_value("status_text", "Folder select canceled")
 
 
 def screenshot_folder_select_callback(sender, app_data):
@@ -935,10 +917,6 @@ def video_folder_select_callback(sender, app_data):
         "video_file_dialog", default_path=recording_settings["video_folder"]
     )
     dpg.set_value("recording_status_text", "Video folder changed.")
-
-
-def cancel_callback(sender, app_data):
-    dpg.set_value("status_text", "Operation was cancelled.")
 
 
 def recording_cancel_callback(sender, app_data):
@@ -1688,6 +1666,30 @@ def setup_settings_window(font_size):
     with dpg.file_dialog(
         directory_selector=True,
         show=False,
+        callback=source_folder_select_callback,
+        tag="source_file_dialog",
+        cancel_callback=copy_manager_folder_cancel_callback,
+        width=dpg.get_viewport_width() / 1.5,
+        height=dpg.get_viewport_height() / 1.5,
+        label="Select source",
+    ):
+        pass  # Just add some settings or extension filters
+
+    with dpg.file_dialog(
+        directory_selector=True,
+        show=False,
+        callback=destination_folder_select_callback,
+        tag="destination_file_dialog",
+        cancel_callback=copy_manager_folder_cancel_callback,
+        width=dpg.get_viewport_width() / 1.5,
+        height=dpg.get_viewport_height() / 1.5,
+        label="Select destination",
+    ):
+        pass
+
+    with dpg.file_dialog(
+        directory_selector=True,
+        show=False,
         callback=screenshot_folder_select_callback,
         default_path=recording_settings["screenshot_folder"],
         tag="screenshot_file_dialog",
@@ -1874,14 +1876,18 @@ def show_windows():
 
                                 dpg.add_button(
                                     label="Select Source Directory",
-                                    callback=open_source_file_dialog,
+                                    callback=lambda: dpg.show_item(
+                                        "source_file_dialog"
+                                    ),
                                 )
                                 dpg.add_text("", tag="source_display", wrap=0)
                                 dpg.add_spacer(height=5)
 
                                 dpg.add_button(
                                     label="Select Destination Directory",
-                                    callback=open_destination_file_dialog,
+                                    callback=lambda: dpg.show_item(
+                                        "destination_file_dialog"
+                                    ),
                                 )
                                 dpg.add_text("", tag="destination_display", wrap=0)
                                 dpg.add_spacer(height=5)
