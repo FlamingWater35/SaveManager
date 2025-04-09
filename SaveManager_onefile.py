@@ -39,7 +39,7 @@ settings: dict = {
     "skip_existing_files": True,
     "clear_destination_folder": False,
     "skip_hidden_files": False,
-    "file_extensions": [".sav", ".save"],
+    "file_extensions": [".sav", ".save", ".dat"],
     "folder_paths": [
         "C:\\Program Files",
         "C:\\Program Files (x86)",
