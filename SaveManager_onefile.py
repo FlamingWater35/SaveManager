@@ -20,8 +20,6 @@ import logging
 import shutil
 import pywinstyles
 from win32 import win32gui
-import customtkinter as ct
-from tkinter import filedialog
 
 
 app_version: str = "2.6.1_Windows"
@@ -1282,33 +1280,25 @@ def add_current_folderpath():
         dpg.show_item("folderpath_add_button")
 
 
-def open_folderpath_file_dialog():
+def folderpath_list_select_callback(sender, app_data):
     global settings
 
-    try:
-        main = ct.CTk()
-        main.iconbitmap(resource_path("docs/icon.ico"))
-        main.withdraw()
-        folder_path = filedialog.askdirectory(title="Add folder to search in")
-        main.destroy()
-    except Exception as e:
-        logging.error(f"Exception occurred during folder select: {e}")
+    folder_path = app_data["file_path_name"]
 
-    if folder_path:
-        folderpath_list: list = settings["folder_paths"]
-        true_folderpath = folder_path.replace("/", "\\")
-        if true_folderpath not in folderpath_list:
-            folderpath_list.append(true_folderpath)
-            save_settings("Settings", "folder_paths", folderpath_list)
+    folderpath_list: list = settings["folder_paths"]
+    true_folderpath = folder_path.replace("/", "\\")
+    if true_folderpath not in folderpath_list:
+        folderpath_list.append(true_folderpath)
+        save_settings("Settings", "folder_paths", folderpath_list)
 
-            dpg.delete_item("folderpath_list", children_only=True)
-            for index, folderpath in enumerate(folderpath_list, start=1):
-                dpg.add_text(f"{index}: {folderpath}", parent="folderpath_list", wrap=0)
-            dpg.hide_item("add_folderpath_group")
-            dpg.hide_item("comfirm_add_folderpath")
-            dpg.hide_item("add_folderpath_dialog_group")
-            dpg.show_item("folderpath_remove_button")
-            dpg.show_item("folderpath_add_button")
+        dpg.delete_item("folderpath_list", children_only=True)
+        for index, folderpath in enumerate(folderpath_list, start=1):
+            dpg.add_text(f"{index}: {folderpath}", parent="folderpath_list", wrap=0)
+        dpg.hide_item("add_folderpath_group")
+        dpg.hide_item("comfirm_add_folderpath")
+        dpg.hide_item("add_folderpath_dialog_group")
+        dpg.show_item("folderpath_remove_button")
+        dpg.show_item("folderpath_add_button")
 
 
 def open_folder_path_menu():
@@ -1321,7 +1311,7 @@ def open_folder_path_menu():
     with dpg.window(
         label="Manage folder paths",
         tag="folderpath_manager_window",
-        modal=True,
+        modal=False,
         no_collapse=True,
         width=window_width,
         height=window_height,
@@ -1351,7 +1341,10 @@ def open_folder_path_menu():
         dpg.add_spacer(height=3)
         with dpg.group(horizontal=True, show=False, tag="add_folderpath_dialog_group"):
             dpg.add_text("Select folder", wrap=0)
-            dpg.add_button(label="Browse", callback=open_folderpath_file_dialog)
+            dpg.add_button(
+                label="Browse",
+                callback=lambda: dpg.show_item("folderpath_list_file_dialog"),
+            )
         dpg.add_spacer(height=3)
         dpg.add_text(
             "Select an item to remove:",
@@ -1731,6 +1724,18 @@ def setup_settings_window(font_size):
         height=dpg.get_viewport_height() / 1.5,
         modal=True,
         label="Select folder to ignore",
+    ):
+        pass
+
+    with dpg.file_dialog(
+        directory_selector=True,
+        show=False,
+        callback=folderpath_list_select_callback,
+        tag="folderpath_list_file_dialog",
+        cancel_callback=None,
+        width=dpg.get_viewport_width() / 1.5,
+        height=dpg.get_viewport_height() / 1.5,
+        label="Select folder",
     ):
         pass
 
