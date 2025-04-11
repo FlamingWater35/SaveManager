@@ -681,7 +681,15 @@ def copy_thread(valid_entries, total_bytes_to_copy):
                     os.makedirs(new_destination, exist_ok=True)
                     dest = new_destination
                 except OSError as e:
-                    progress_queue.put(("log_error", (f"Cannot create destination subfolder '{new_destination}': {e}", "copy")))
+                    progress_queue.put(
+                        (
+                            "log_error",
+                            (
+                                f"Cannot create destination subfolder '{new_destination}': {e}",
+                                "copy",
+                            ),
+                        )
+                    )
                     continue
 
             # Get all files with sizes
@@ -698,11 +706,16 @@ def copy_thread(valid_entries, total_bytes_to_copy):
                 # Skip ignored folders
                 if current_folder_abs in ignored_folders:
                     rel_ignored_path = os.path.relpath(current_folder_abs, source)
-                    progress_queue.put(("log_message", (
-                        f"Ignored because of a setting: '{rel_ignored_path}'",
-                        (139, 140, 0),
-                        "ignore"
-                        )))
+                    progress_queue.put(
+                        (
+                            "log_message",
+                            (
+                                f"Ignored because of a setting: '{rel_ignored_path}'",
+                                (139, 140, 0),
+                                "ignore",
+                            ),
+                        )
+                    )
                     # Skip this folder and its contents by clearing the dirs list
                     dirs[:] = []
                     continue
@@ -711,11 +724,16 @@ def copy_thread(valid_entries, total_bytes_to_copy):
                 if settings["skip_hidden_files"] and os.path.basename(root).startswith(
                     "."
                 ):
-                    progress_queue.put(("log_message", (
-                        f"Skipped (hidden folder): '{rel_dir_path}'",
-                        (139, 140, 0),
-                        "skip"
-                        )))
+                    progress_queue.put(
+                        (
+                            "log_message",
+                            (
+                                f"Skipped (hidden folder): '{rel_dir_path}'",
+                                (139, 140, 0),
+                                "skip",
+                            ),
+                        )
+                    )
                     dirs[:] = []
                     continue
 
@@ -724,7 +742,15 @@ def copy_thread(valid_entries, total_bytes_to_copy):
                 try:
                     os.makedirs(dest_dir_path, exist_ok=True)
                 except OSError as e:
-                    progress_queue.put(("log_error", (f"Cannot create destination directory '{dest_dir_path}': {e}", "copy")))
+                    progress_queue.put(
+                        (
+                            "log_error",
+                            (
+                                f"Cannot create destination directory '{dest_dir_path}': {e}",
+                                "copy",
+                            ),
+                        )
+                    )
                     continue
 
                 # Collect files from non-ignored folders
@@ -732,11 +758,16 @@ def copy_thread(valid_entries, total_bytes_to_copy):
                     if settings["skip_hidden_files"] and file.startswith(
                         "."
                     ):  # Skip hidden files
-                        progress_queue.put(("log_message", (
-                            f"Skipped (hidden file): '{file}'",
-                            (139, 140, 0),
-                            "skip"
-                        )))
+                        progress_queue.put(
+                            (
+                                "log_message",
+                                (
+                                    f"Skipped (hidden file): '{file}'",
+                                    (139, 140, 0),
+                                    "skip",
+                                ),
+                            )
+                        )
                         continue
                     path = os.path.join(root, file)
                     file_list.append((path, os.path.getsize(path)))
@@ -754,11 +785,16 @@ def copy_thread(valid_entries, total_bytes_to_copy):
                     os.path.exists(dest_path)
                     and settings["skip_existing_files"] == True
                 ):
-                    progress_queue.put(("log_message", (
-                        f"Skipped (already exists): '{rel_path}'",
-                        (139, 140, 0),
-                        "skip"
-                    )))
+                    progress_queue.put(
+                        (
+                            "log_message",
+                            (
+                                f"Skipped (already exists): '{rel_path}'",
+                                (139, 140, 0),
+                                "skip",
+                            ),
+                        )
+                    )
                     total_bytes -= size
                     progress_queue.put(("adjust_total", total_bytes))
                     continue
@@ -767,21 +803,31 @@ def copy_thread(valid_entries, total_bytes_to_copy):
                     with open(src_path, "rb") as f_src, open(dest_path, "wb") as f_dst:
                         while chunk := f_src.read(1024 * 1024):  # 1MB chunks
                             if cancel_flag.is_set():
-                                progress_queue.put(("cancel", "Copy cancelled by user!"))
+                                progress_queue.put(
+                                    ("cancel", "Copy cancelled by user!")
+                                )
                                 return
                             f_dst.write(chunk)
                             copied_bytes += len(chunk)
                             progress_queue.put(("progress", copied_bytes))
 
-                    progress_queue.put(("log_message", (
-                        f"Copied: '{rel_path}'",
-                        (0, 140, 139),
-                        "copy"
-                    )))
+                    progress_queue.put(
+                        (
+                            "log_message",
+                            (f"Copied: '{rel_path}'", (0, 140, 139), "copy"),
+                        )
+                    )
                 except IOError as e:
-                    progress_queue.put(("log_error", (f"I/O Error copying '{rel_path}': {e}", "copy")))
+                    progress_queue.put(
+                        ("log_error", (f"I/O Error copying '{rel_path}': {e}", "copy"))
+                    )
                 except Exception as e:
-                    progress_queue.put(("log_error", (f"Unexpected error copying '{rel_path}': {e}", "copy")))
+                    progress_queue.put(
+                        (
+                            "log_error",
+                            (f"Unexpected error copying '{rel_path}': {e}", "copy"),
+                        )
+                    )
 
         progress_queue.put(("complete", "Copying completed."))
 
@@ -816,7 +862,7 @@ def copy_all_callback(sender, app_data):
     # Calculate total size and valid entries
     total_bytes = 0
     valid_entries = []
-    log_messages_to_add = [] 
+    log_messages_to_add = []
 
     for index in range(len(sources)):
         source = sources[index]
@@ -825,29 +871,54 @@ def copy_all_callback(sender, app_data):
         is_valid = True
 
         if not os.path.exists(source):
-            log_messages_to_add.append((f"Folder pair '{name}': Source '{source}' does not exist. Skipping.", (229, 57, 53), "error"))
+            log_messages_to_add.append(
+                (
+                    f"Folder pair '{name}': Source '{source}' does not exist. Skipping.",
+                    (229, 57, 53),
+                    "error",
+                )
+            )
             is_valid = False
 
         if not os.path.exists(dest):
-            log_messages_to_add.append((f"Folder pair '{name}': Destination '{dest}' does not exist. Skipping.", (229, 57, 53), "error"))
-            if is_valid: is_valid = False
-        
+            log_messages_to_add.append(
+                (
+                    f"Folder pair '{name}': Destination '{dest}' does not exist. Skipping.",
+                    (229, 57, 53),
+                    "error",
+                )
+            )
+            if is_valid:
+                is_valid = False
+
         if is_valid:
             try:
                 # Implement async for get_folder_size() in the near future
                 folder_size = get_folder_size(source)
                 if folder_size > settings["file_size_limit"] * 1024**3:
-                    log_messages_to_add.append((f"Folder pair '{name}': Exceeds size limit ({settings['file_size_limit']} GB). Skipping.", (139, 140, 0), "skip"))
+                    log_messages_to_add.append(
+                        (
+                            f"Folder pair '{name}': Exceeds size limit ({settings['file_size_limit']} GB). Skipping.",
+                            (139, 140, 0),
+                            "skip",
+                        )
+                    )
                     is_valid = False
                 else:
                     valid_entries.append(index)
                     total_bytes += folder_size
 
             except Exception as e:
-                log_messages_to_add.append((f"Folder pair '{name}': Error calculating size for '{source}': {e}. Skipping.", (229, 57, 53), "error"))
+                log_messages_to_add.append(
+                    (
+                        f"Folder pair '{name}': Error calculating size for '{source}': {e}. Skipping.",
+                        (229, 57, 53),
+                        "error",
+                    )
+                )
                 logging.error(f"Error calculating size for {source}: {e}")
                 is_valid = False
-        
+
     for msg, color, tag in log_messages_to_add:
         add_log_message(msg, color, tag)
 
@@ -865,14 +936,18 @@ def copy_all_callback(sender, app_data):
             dpg.set_value("status_text", "Destination folders cleared.")
         except Exception as e:
             dpg.set_value("status_text", f"Error clearing destinations: {e}")
-            add_log_message(f"Error during destination clear: {e}", (229, 57, 53), "error")
+            add_log_message(
+                f"Error during destination clear: {e}", (229, 57, 53), "error"
+            )
             dpg.show_item("copy_button")
             dpg.hide_item("cancel_button")
             return
 
     dpg.set_value("status_text", "Starting copy operation...")
 
-    copy_job_thread = threading.Thread(target=copy_thread, args=(valid_entries, total_bytes), daemon=True)
+    copy_job_thread = threading.Thread(
+        target=copy_thread, args=(valid_entries, total_bytes), daemon=True
+    )
     copy_job_thread.start()
 
 
@@ -1496,14 +1571,18 @@ def add_log_message(message, color, tag):
         wrap=0,
         parent="copy_log",
         user_data=tag,
-        tag=dpg.generate_uuid()
+        tag=dpg.generate_uuid(),
     )
 
     # Check filter status and hide if necessary (can optimize this later)
     filter_button_tag = f"log_{tag}_filter_button"
     if dpg.does_item_exist(filter_button_tag):
         filter_state = dpg.get_item_user_data(filter_button_tag)
-        if isinstance(filter_state, list) and len(filter_state) > 1 and filter_state[1] == "hidden":
+        if (
+            isinstance(filter_state, list)
+            and len(filter_state) > 1
+            and filter_state[1] == "hidden"
+        ):
             dpg.hide_item(item_id)
 
 
@@ -2344,7 +2423,9 @@ def main():
                     last_update_time = start_time_global
                     copied_bytes = 0
                     dpg.set_value("progress_bar", 0.0)
-                    dpg.configure_item("progress_bar", overlay="0.00 GB / Calculating... GB (0%) ")
+                    dpg.configure_item(
+                        "progress_bar", overlay="0.00 GB / Calculating... GB (0%) "
+                    )
                     dpg.show_item("progress_bar")
                     dpg.show_item("speed_text")
                     dpg.set_value("speed_text", "Calculating speed...")
@@ -2369,10 +2450,14 @@ def main():
                                 speed = copied_bytes / elapsed
                                 speed_mb = speed / (1024**2)
                                 remaining_bytes = total_bytes_global - copied_bytes
-                                eta_secs = remaining_bytes / speed if speed > 0 else float('inf')
+                                eta_secs = (
+                                    remaining_bytes / speed
+                                    if speed > 0
+                                    else float("inf")
+                                )
 
                                 eta_str = "N/A"
-                                if eta_secs != float('inf'):
+                                if eta_secs != float("inf"):
                                     eta_mins = int(eta_secs // 60)
                                     eta_s = int(eta_secs % 60)
                                     eta_str = f"{eta_mins} min {eta_s} sec"
@@ -2392,7 +2477,9 @@ def main():
 
                 elif item_type == "log_error":
                     msg, context_tag = data
-                    add_log_message(f"ERROR ({context_tag}): {msg}", (229, 57, 53), "error")
+                    add_log_message(
+                        f"ERROR ({context_tag}): {msg}", (229, 57, 53), "error"
+                    )
                     logging.error(f"Logged Error ({context_tag}): {msg}")
 
                 elif item_type == "complete":
@@ -2427,11 +2514,13 @@ def main():
                     except Exception as e:
                         dpg.set_value("status_text", f"Failed to open browser: {e}")
                         logging.error(f"Failed to open URL {data}: {e}")
-                
+
             except queue.Empty:
                 break
             except Exception as e:
-                logging.error(f"Error processing progress queue item: {e}", exc_info=True)
+                logging.error(
+                    f"Error processing progress queue item: {e}", exc_info=True
+                )
                 dpg.set_value("status_text", f"Error processing internal message: {e}")
 
         dpg.render_dearpygui_frame()
