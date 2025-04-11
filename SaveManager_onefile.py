@@ -22,8 +22,8 @@ import pywinstyles
 from win32 import win32gui
 
 
-app_version: str = "2.6.1_Windows"
-release_date: str = "3/9/2025"
+app_version: str = "2.6.2_Windows"
+release_date: str = "4/10/2025"
 
 sources: list = []
 destinations: list = []
@@ -60,11 +60,12 @@ recording_settings: dict = {
 
 img_id = None
 is_recording_keybind = False
-target_app_frame_rate: int = -1
 
 start_time_global = 0
 total_bytes_global = 0
 last_update_time = 0
+
+max_log_entries = 500
 
 
 config = configparser.ConfigParser()
@@ -95,7 +96,7 @@ def resource_path(relative_path):
 
     if not os.path.exists(full_path):
         os.makedirs(full_path, exist_ok=True)
-        logging.error(f"Resource not found: {full_path}")
+        logging.error(f"Resource not found: '{full_path}', folder created")
 
     return full_path
 
@@ -384,9 +385,8 @@ def add_entry_callback(sender, app_data):
 
 
 def record_video_thread():
-    global recording_settings, target_app_frame_rate
+    global recording_settings
 
-    target_app_frame_rate = 30
     target_fps = recording_settings["video_fps"]
     filename = datetime.now().strftime("SaveManager_recording_%Y-%m-%d_%H-%M-%S.mp4")
     filepath = os.path.join(recording_settings["video_folder"], filename)
@@ -424,7 +424,6 @@ def record_video_thread():
 
     camera.stop()
     writer.release()
-    target_app_frame_rate = -1
     dpg.show_item("start_video_recording_button")
     dpg.set_value("recording_status_text", f"Recording saved as: {filename}")
     logging.debug("Video recorded successfully")
@@ -558,8 +557,6 @@ def start_keybind_recording():
 def set_cancel_to_true():
     global cancel_flag
     cancel_flag.set()
-    dpg.show_item("copy_button")
-    dpg.hide_item("cancel_button")
     logging.debug("Non-daemon threads signaled to exit")
 
 
@@ -663,41 +660,49 @@ def get_folder_size(source):
     return total_size
 
 
-def copy_thread(valid_entries, total_bytes):
-    global cancel_flag, settings, sources, destinations, names
+def copy_thread(valid_entries, total_bytes_to_copy):
+    global cancel_flag, settings, sources, destinations, names, progress_queue
+    copied_bytes = 0
+    total_bytes = total_bytes_to_copy
+
     try:
         progress_queue.put(("start", total_bytes))
-        copied_bytes = 0
         for index in valid_entries:
             if cancel_flag.is_set():
                 progress_queue.put(("cancel", "Copy cancelled by user!"))
                 return
             source = sources[index]
             dest = destinations[index]
-            name = names[index]
+            # name = names[index]
 
             if settings["copy_folder_checkbox_state"]:
                 new_destination = os.path.join(dest, os.path.basename(source))
-                os.makedirs(new_destination, exist_ok=True)
-                dest = new_destination
+                try:
+                    os.makedirs(new_destination, exist_ok=True)
+                    dest = new_destination
+                except OSError as e:
+                    progress_queue.put(("log_error", (f"Cannot create destination subfolder '{new_destination}': {e}", "copy")))
+                    continue
 
             # Get all files with sizes
             file_list = []
             ignored_folders = settings["ignored_folders"]
             for root, dirs, files in os.walk(source):
+                if cancel_flag.is_set():
+                    progress_queue.put(("cancel", "Copy cancelled by user!"))
+                    return
+
                 rel_dir_path = os.path.relpath(root, source)
                 current_folder_abs = os.path.abspath(root)
 
                 # Skip ignored folders
                 if current_folder_abs in ignored_folders:
                     rel_ignored_path = os.path.relpath(current_folder_abs, source)
-                    dpg.add_text(
+                    progress_queue.put(("log_message", (
                         f"Ignored because of a setting: '{rel_ignored_path}'",
-                        color=(139, 140, 0),
-                        wrap=0,
-                        parent="copy_log",
-                        user_data="ignore",
-                    )
+                        (139, 140, 0),
+                        "ignore"
+                        )))
                     # Skip this folder and its contents by clearing the dirs list
                     dirs[:] = []
                     continue
@@ -706,32 +711,32 @@ def copy_thread(valid_entries, total_bytes):
                 if settings["skip_hidden_files"] and os.path.basename(root).startswith(
                     "."
                 ):
-                    dpg.add_text(
+                    progress_queue.put(("log_message", (
                         f"Skipped (hidden folder): '{rel_dir_path}'",
-                        color=(139, 140, 0),
-                        wrap=0,
-                        parent="copy_log",
-                        user_data="skip",
-                    )
-                    dirs[:] = []  # Prevent traversal into hidden folders
+                        (139, 140, 0),
+                        "skip"
+                        )))
+                    dirs[:] = []
                     continue
 
                 # Ensure empty folders are copied
                 dest_dir_path = os.path.join(dest, rel_dir_path)
-                os.makedirs(dest_dir_path, exist_ok=True)
+                try:
+                    os.makedirs(dest_dir_path, exist_ok=True)
+                except OSError as e:
+                    progress_queue.put(("log_error", (f"Cannot create destination directory '{dest_dir_path}': {e}", "copy")))
+                    continue
 
                 # Collect files from non-ignored folders
                 for file in files:
                     if settings["skip_hidden_files"] and file.startswith(
                         "."
                     ):  # Skip hidden files
-                        dpg.add_text(
+                        progress_queue.put(("log_message", (
                             f"Skipped (hidden file): '{file}'",
-                            color=(139, 140, 0),
-                            wrap=0,
-                            parent="copy_log",
-                            user_data="skip",
-                        )
+                            (139, 140, 0),
+                            "skip"
+                        )))
                         continue
                     path = os.path.join(root, file)
                     file_list.append((path, os.path.getsize(path)))
@@ -749,130 +754,126 @@ def copy_thread(valid_entries, total_bytes):
                     os.path.exists(dest_path)
                     and settings["skip_existing_files"] == True
                 ):
-                    dpg.add_text(
+                    progress_queue.put(("log_message", (
                         f"Skipped (already exists): '{rel_path}'",
-                        color=(139, 140, 0),
-                        wrap=0,
-                        parent="copy_log",
-                        user_data="skip",
-                    )
-                    total_bytes -= size  # Adjust total size
+                        (139, 140, 0),
+                        "skip"
+                    )))
+                    total_bytes -= size
                     progress_queue.put(("adjust_total", total_bytes))
-                    continue  # Skip this file
+                    continue
 
-                with open(src_path, "rb") as f_src, open(dest_path, "wb") as f_dst:
-                    while chunk := f_src.read(1024 * 1024):  # 1MB chunks
-                        if cancel_flag.is_set():
-                            progress_queue.put(("cancel", "Copy cancelled by user!"))
-                            return
-                        f_dst.write(chunk)
-                        copied_bytes += len(chunk)
-                        progress_queue.put(("progress", copied_bytes))
+                try:
+                    with open(src_path, "rb") as f_src, open(dest_path, "wb") as f_dst:
+                        while chunk := f_src.read(1024 * 1024):  # 1MB chunks
+                            if cancel_flag.is_set():
+                                progress_queue.put(("cancel", "Copy cancelled by user!"))
+                                return
+                            f_dst.write(chunk)
+                            copied_bytes += len(chunk)
+                            progress_queue.put(("progress", copied_bytes))
 
-                dpg.add_text(
-                    f"Copied: '{rel_path}'",
-                    wrap=0,
-                    color=(0, 140, 139),
-                    parent="copy_log",
-                    user_data="copy",
-                )
+                    progress_queue.put(("log_message", (
+                        f"Copied: '{rel_path}'",
+                        (0, 140, 139),
+                        "copy"
+                    )))
+                except IOError as e:
+                    progress_queue.put(("log_error", (f"I/O Error copying '{rel_path}': {e}", "copy")))
+                except Exception as e:
+                    progress_queue.put(("log_error", (f"Unexpected error copying '{rel_path}': {e}", "copy")))
 
         progress_queue.put(("complete", "Copying completed."))
 
     except Exception as e:
-        progress_queue.put(("error", f"Error: {str(e)}"))
+        progress_queue.put(("error", f"Error in copy thread: {str(e)}"))
+        logging.error(f"Error in copy thread: {e}", exc_info=True)
     finally:
-        cancel_flag.clear()
-        dpg.show_item("copy_button")
-        dpg.hide_item("cancel_button")
+        progress_queue.put(("copy_finished", None))
 
 
 def copy_all_callback(sender, app_data):
-    global settings, cancel_flag, sources, destinations, names
+    global settings, cancel_flag, sources, destinations, names, progress_queue
 
     dpg.hide_item("copy_button")
     dpg.show_item("cancel_button")
     cancel_flag.clear()
     dpg.delete_item("copy_log", children_only=True)
+
+    dpg.set_value("status_text", "")
     dpg.set_value("speed_text", "")
-    dpg.show_item("speed_text")
+    dpg.hide_item("speed_text")
+    dpg.set_value("progress_bar", 0.0)
+    dpg.configure_item("progress_bar", overlay="Waiting...")
+    dpg.hide_item("progress_bar")
 
     if not sources or not destinations or not names:
         dpg.set_value("status_text", "No entries to copy.")
+        dpg.show_item("copy_button")
+        dpg.hide_item("cancel_button")
         return
 
     # Calculate total size and valid entries
     total_bytes = 0
     valid_entries = []
+    log_messages_to_add = [] 
+
     for index in range(len(sources)):
         source = sources[index]
         dest = destinations[index]
         name = names[index]
-        invalid_entry: bool = False
+        is_valid = True
 
-        match (os.path.exists(source), os.path.exists(dest)):
-            case (False, True):
-                dpg.add_text(
-                    f"Folder pair '{name}' skipped as folder '{source}' does not exist.",
-                    color=(229, 57, 53),
-                    wrap=0,
-                    parent="copy_log",
-                    user_data="skip",
-                )
-                invalid_entry = True
-            case (True, False):
-                dpg.add_text(
-                    f"Folder pair '{name}' skipped as folder '{dest}' does not exist.",
-                    color=(229, 57, 53),
-                    wrap=0,
-                    parent="copy_log",
-                    user_data="skip",
-                )
-                invalid_entry = True
-            case (False, False):
-                dpg.add_text(
-                    f"Folder pair '{name}' skipped as folders '{source}' and '{dest}' do not exist.",
-                    color=(229, 57, 53),
-                    wrap=0,
-                    parent="copy_log",
-                    user_data="skip",
-                )
-                invalid_entry = True
+        if not os.path.exists(source):
+            log_messages_to_add.append((f"Folder pair '{name}': Source '{source}' does not exist. Skipping.", (229, 57, 53), "error"))
+            is_valid = False
 
-        if not invalid_entry:
-            folder_size = get_folder_size(source)
-            if folder_size <= settings["file_size_limit"] * 1024**3:  # Check size limit
-                valid_entries.append(index)
-                total_bytes += folder_size
-            else:
-                dpg.add_text(
-                    f"Skipped folder pair '{name}' as it exceeds size limit.",
-                    color=(139, 140, 0),
-                    wrap=0,
-                    parent="copy_log",
-                    user_data="skip",
-                )
+        if not os.path.exists(dest):
+            log_messages_to_add.append((f"Folder pair '{name}': Destination '{dest}' does not exist. Skipping.", (229, 57, 53), "error"))
+            if is_valid: is_valid = False
+        
+        if is_valid:
+            try:
+                # Implement async for get_folder_size() in the near future
+                folder_size = get_folder_size(source)
+                if folder_size > settings["file_size_limit"] * 1024**3:
+                    log_messages_to_add.append((f"Folder pair '{name}': Exceeds size limit ({settings['file_size_limit']} GB). Skipping.", (139, 140, 0), "skip"))
+                    is_valid = False
+                else:
+                    valid_entries.append(index)
+                    total_bytes += folder_size
 
-    match invalid_entry:
-        case False:
-            if not valid_entries:
-                dpg.set_value(
-                    "status_text", "No entries to copy (all exceed size limit)."
-                )
-                return
-        case True:
-            if not valid_entries:
-                dpg.set_value("status_text", "No entries to copy (check log).")
-                return
+            except Exception as e:
+                log_messages_to_add.append((f"Folder pair '{name}': Error calculating size for '{source}': {e}. Skipping.", (229, 57, 53), "error"))
+                logging.error(f"Error calculating size for {source}: {e}")
+                is_valid = False
+        
+    for msg, color, tag in log_messages_to_add:
+        add_log_message(msg, color, tag)
+
+    if not valid_entries:
+        dpg.set_value("status_text", "No valid folder pairs found to copy (check log).")
+        dpg.show_item("copy_button")
+        dpg.hide_item("cancel_button")
+        return
 
     if settings["clear_destination_folder"]:
-        delete_folder_with_children()
+        dpg.set_value("status_text", "Clearing destination folders...")
+        # Make delete_folder_with_children use the queue
+        try:
+            delete_folder_with_children()
+            dpg.set_value("status_text", "Destination folders cleared.")
+        except Exception as e:
+            dpg.set_value("status_text", f"Error clearing destinations: {e}")
+            add_log_message(f"Error during destination clear: {e}", (229, 57, 53), "error")
+            dpg.show_item("copy_button")
+            dpg.hide_item("cancel_button")
+            return
 
-    dpg.set_value("progress_bar", 0.0)
-    dpg.set_value("status_text", "Copying directories...")
-    dpg.show_item("progress_bar")
+    dpg.set_value("status_text", "Starting copy operation...")
 
-    threading.Thread(target=copy_thread, args=(valid_entries, total_bytes)).start()
+    copy_job_thread = threading.Thread(target=copy_thread, args=(valid_entries, total_bytes), daemon=True)
+    copy_job_thread.start()
 
 
 def source_folder_select_callback(sender, app_data):
@@ -1479,6 +1480,31 @@ def save_window_positions():
 def text_click_handler(sender, app_data, user_data):
     pyperclip.copy(user_data)
     dpg.set_value("status_text", f"Copied to clipboard: {user_data}")
+
+
+def add_log_message(message, color, tag):
+    global max_log_entries
+
+    log_items = dpg.get_item_children("copy_log", slot=1)
+    if len(log_items) >= max_log_entries:
+        if dpg.does_item_exist(log_items[0]):
+            dpg.delete_item(log_items[0])
+
+    item_id = dpg.add_text(
+        message,
+        color=color,
+        wrap=0,
+        parent="copy_log",
+        user_data=tag,
+        tag=dpg.generate_uuid()
+    )
+
+    # Check filter status and hide if necessary (can optimize this later)
+    filter_button_tag = f"log_{tag}_filter_button"
+    if dpg.does_item_exist(filter_button_tag):
+        filter_state = dpg.get_item_user_data(filter_button_tag)
+        if isinstance(filter_state, list) and len(filter_state) > 1 and filter_state[1] == "hidden":
+            dpg.hide_item(item_id)
 
 
 def setup_settings_window(font_size):
@@ -2284,7 +2310,8 @@ def setup_viewport():
 
 
 def main():
-    global settings, target_app_frame_rate
+    global settings, progress_queue
+    global start_time_global, total_bytes_global, last_update_time
 
     run_application()
 
@@ -2306,94 +2333,130 @@ def main():
         pywinstyles.apply_style(hwnd, "mica")
 
     while dpg.is_dearpygui_running():
-        start_time = time.time()
 
         while not progress_queue.empty():
-            item_type, data = progress_queue.get()
-            if item_type == "start":
-                total_bytes_global = data
-                start_time_global = time.time()
-                last_update_time = start_time_global
-            elif item_type == "progress":
-                copied_bytes = data
-                if total_bytes_global > 0:
-                    copied_gb = copied_bytes / (1024**3)
-                    total_gb = total_bytes_global / (1024**3)
-                    progress_value = copied_bytes / total_bytes_global
+            try:
+                item_type, data = progress_queue.get_nowait()
 
-                    dpg.configure_item(
-                        "progress_bar",
-                        overlay=f"{copied_gb:.2f} GB / {total_gb:.2f} GB ({int(progress_value*100)}%)",
-                    )
-                    dpg.set_value("progress_bar", progress_value)
+                if item_type == "start":
+                    total_bytes_global = data if data else 0
+                    start_time_global = time.time()
+                    last_update_time = start_time_global
+                    copied_bytes = 0
+                    dpg.set_value("progress_bar", 0.0)
+                    dpg.configure_item("progress_bar", overlay="0.00 GB / Calculating... GB (0%) ")
+                    dpg.show_item("progress_bar")
+                    dpg.show_item("speed_text")
+                    dpg.set_value("speed_text", "Calculating speed...")
 
-                    current_time = time.time()
-                    if current_time - last_update_time >= 0.5:
-                        elapsed = current_time - start_time_global
-                        if elapsed > 0:
-                            speed = copied_bytes / elapsed
-                            speed_mb = speed / (1024**2)
-                            remaining = (total_bytes_global - copied_bytes) / max(
-                                speed, 1
-                            )
+                elif item_type == "progress":
+                    copied_bytes = data
+                    if total_bytes_global > 0:
+                        copied_gb = copied_bytes / (1024**3)
+                        total_gb = total_bytes_global / (1024**3)
+                        progress_value = copied_bytes / total_bytes_global
 
-                            remaining_seconds = int(remaining)
-                            eta_mins = remaining_seconds // 60
-                            eta_secs = remaining_seconds % 60
-                            dpg.set_value(
-                                "speed_text",
-                                f"Speed: {speed_mb:.1f} MB/s | ETA: {eta_mins} min {eta_secs} sec",
-                            )
-                        last_update_time = current_time
-            elif item_type == "adjust_total":
-                total_bytes_global = data
-            elif item_type == "complete":
-                dpg.set_value("status_text", data)
-                dpg.hide_item("progress_bar")
-                dpg.hide_item("speed_text")
-            elif item_type == "cancel":
-                dpg.set_value("status_text", data)
-                dpg.hide_item("progress_bar")
-                dpg.hide_item("speed_text")
-            elif item_type == "error":
-                dpg.add_text(
-                    data,
-                    color=(229, 57, 53),
-                    wrap=0,
-                    parent="copy_log",
-                    user_data="error",
-                )
-                logging.error(f"Error during copy thread: {data}")
-                dpg.hide_item("progress_bar")
-                dpg.hide_item("speed_text")
-            elif item_type == "update":
-                dpg.set_value("status_text", data)
-            elif item_type == "open_url":
-                webbrowser.open(data)
+                        dpg.configure_item(
+                            "progress_bar",
+                            overlay=f"{copied_gb:.2f} GB / {total_gb:.2f} GB ({int(progress_value*100)}%) ",
+                        )
+                        dpg.set_value("progress_bar", progress_value)
+
+                        current_time = time.time()
+                        if current_time - last_update_time >= 0.5:
+                            elapsed = current_time - start_time_global
+                            if elapsed > 0:
+                                speed = copied_bytes / elapsed
+                                speed_mb = speed / (1024**2)
+                                remaining_bytes = total_bytes_global - copied_bytes
+                                eta_secs = remaining_bytes / speed if speed > 0 else float('inf')
+
+                                eta_str = "N/A"
+                                if eta_secs != float('inf'):
+                                    eta_mins = int(eta_secs // 60)
+                                    eta_s = int(eta_secs % 60)
+                                    eta_str = f"{eta_mins} min {eta_s} sec"
+
+                                dpg.set_value(
+                                    "speed_text",
+                                    f"Speed: {speed_mb:.1f} MB/s | ETA: {eta_str}",
+                                )
+                            last_update_time = current_time
+
+                elif item_type == "adjust_total":
+                    total_bytes_global = data if data else 0
+
+                elif item_type == "log_message":
+                    msg, color, tag = data
+                    add_log_message(msg, color, tag)
+
+                elif item_type == "log_error":
+                    msg, context_tag = data
+                    add_log_message(f"ERROR ({context_tag}): {msg}", (229, 57, 53), "error")
+                    logging.error(f"Logged Error ({context_tag}): {msg}")
+
+                elif item_type == "complete":
+                    dpg.set_value("status_text", data)
+                    dpg.set_value("progress_bar", 1.0)
+                    dpg.hide_item("progress_bar")
+                    dpg.hide_item("speed_text")
+
+                elif item_type == "cancel":
+                    dpg.set_value("status_text", data)
+                    dpg.hide_item("progress_bar")
+                    dpg.hide_item("speed_text")
+
+                elif item_type == "error":
+                    dpg.set_value("status_text", f"Operation failed: {data}")
+                    add_log_message(f"FATAL ERROR: {data}", (229, 57, 53), "error")
+                    logging.error(f"Fatal Error from thread: {data}")
+                    dpg.hide_item("progress_bar")
+                    dpg.hide_item("speed_text")
+
+                elif item_type == "copy_finished":
+                    dpg.show_item("copy_button")
+                    dpg.hide_item("cancel_button")
+                    cancel_flag.clear()
+
+                elif item_type == "update":
+                    dpg.set_value("status_text", data)
+
+                elif item_type == "open_url":
+                    try:
+                        webbrowser.open(data)
+                    except Exception as e:
+                        dpg.set_value("status_text", f"Failed to open browser: {e}")
+                        logging.error(f"Failed to open URL {data}: {e}")
+                
+            except queue.Empty:
+                break
+            except Exception as e:
+                logging.error(f"Error processing progress queue item: {e}", exc_info=True)
+                dpg.set_value("status_text", f"Error processing internal message: {e}")
 
         dpg.render_dearpygui_frame()
-
-        if target_app_frame_rate != -1:
-            frame_delay = 1.0 / target_app_frame_rate
-            frame_time = time.time() - start_time
-            # Maintain the target frame rate
-            if frame_time < frame_delay:
-                time.sleep(frame_delay - frame_time)
 
     def cleanup():
         global cancel_flag, settings
 
         logging.info("Application exited")
         cancel_flag.set()
-        for thread in threading.enumerate():
-            if thread is not threading.main_thread() and not thread.daemon:
-                thread.join(timeout=2)
+
+        # If you have non-daemon threads, add join logic here:
+        # for thread in threading.enumerate():
+        #     if thread is not threading.main_thread() and not thread.daemon:
+        #         logging.info(f"Waiting for thread {thread.name} to finish...")
+        #         thread.join(timeout=2) # Add timeout
 
         if settings["remember_window_pos"] == True:
-            save_window_positions()
+            try:
+                save_window_positions()
+            except Exception as e:
+                logging.error(f"Failed to save window positions on exit: {e}")
 
     dpg.set_exit_callback(cleanup)
     dpg.destroy_context()
+    logging.debug("DPG context destroyed")
 
 
 if __name__ == "__main__":
