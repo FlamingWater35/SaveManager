@@ -26,9 +26,7 @@ The installer will download and extract the latest release to a directory of you
 1. Download SaveManager.exe from releases
 2. Run the file
 
-This will store config files in localappdata without your consent
+This will automatically store config files in local appdata
 
 ## Known Issues
-- Log filter buttons freeze the entire application for a while if the log is too long
-- Log filters don't apply to log items created after clicking equivalent buttons
-- Spamming "Select Source Directory"- or "Select Destination Directory"-buttons will open a file dialog for every click even after the application is closed
+- Log filter buttons freeze the entire application for a while if the log is too long (currently resolved by adding a log length limit)
