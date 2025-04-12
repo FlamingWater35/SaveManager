@@ -12,6 +12,7 @@ import py7zr
 import pythoncom
 import shutil
 import concurrent.futures
+import queue
 
 
 logging.basicConfig(
@@ -29,17 +30,23 @@ def resource_path(relative_path):
     full_path = os.path.join(base_path, relative_path)
 
     if not os.path.exists(full_path):
-        os.makedirs(full_path, exist_ok=True)
-        logging.error(f"Resource not found: {full_path}")
+        try:
+            os.makedirs(full_path, exist_ok=True)
+        except OSError as e:
+            logging.error(f"Resource not found: '{full_path}', folder creation failed")
+        logging.error(f"Resource not found: '{full_path}', folder created")
 
     return full_path
 
 class App(ct.CTk):
     def __init__(self):
         super().__init__()
-        self.executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
 
-        self.title("SaveManager Setup")
+        self.executor = concurrent.futures.ThreadPoolExecutor(max_workers=4)
+        self.queue = queue.Queue()
+        self.executor.submit(self.process_queue)
+
+        self.title("SaveManager Installer")
         window_width = 1000
         window_height = 600
 
@@ -53,12 +60,12 @@ class App(ct.CTk):
         self.protocol("WM_DELETE_WINDOW", self.show_close_popup)
   
         self.install_is_completed: bool = False
-        self.install_progress_bar_value = 0
+        self.installation_progress: float = 0.0
+
         self.pages: list = []
         self.page_progress: float = 0
         self.current_page: int = 0
         self.installation_path = os.path.join(os.getenv("LOCALAPPDATA"), "SaveManager")
-        os.makedirs(self.installation_path, exist_ok=True)
 
         ct.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
         ct.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
@@ -153,6 +160,11 @@ class App(ct.CTk):
     def start_installation(self):
         self.next_button.configure(state="disabled")
         self.back_button.configure(state="disabled")
+
+        self.install_is_completed = False
+        self.installation_progress = 0.0
+        self.install_progressbar.set(0.0)
+
         self.executor.submit(self.install_process)
         self.update_ui()
 
@@ -250,38 +262,59 @@ class App(ct.CTk):
         self.install_log.grid(row=2, column=0, padx=30, pady=(10, 30), sticky="nsew")
     
     def update_ui(self):
+        self.install_progressbar.set(max(0.0, min(1.0, self.installation_progress)))
+
         if not self.install_is_completed:
-            self.install_progressbar.set(self.install_progress_bar_value)
-            self.after(5, self.update_ui)
+            self.after(10, self.update_ui)
         else:
             self.install_progressbar.set(1.0)
             self.next_button.configure(text="Finish", state="normal")
 
-    def log_text(self, text):
-        self.install_log.configure(state="normal")
-        self.install_log.insert("end", text + "\n")
-        self.install_log.see("end")
-        self.install_log.configure(state="disabled")
+    def process_queue(self):
+        try:
+            while True:
+                data = self.queue.get_nowait()
+
+                item_type = data[0]
+                item_data = data[1]
+
+                if item_type == 'log':
+                    self.install_log.configure(state="normal")
+                    self.install_log.insert("end", item_data + "\n")
+                    self.install_log.see("end")
+                    self.install_log.configure(state="disabled")
+                
+        except queue.Empty:
+            pass
+        finally:
+            self.after(50, self.process_queue)
 
     def install_process(self):
         try:
+            os.makedirs(self.installation_path, exist_ok=True)
+
             file_path = os.path.join(self.installation_path, "SaveManager.exe")
             if os.path.isfile(file_path):
-                self.log_text("Existing installation detected, proceeding to remove it...")
+                self.queue.put(("log", "Existing installation detected, proceeding to remove it..."))
                 for item in os.listdir(self.installation_path):
                     item_path = os.path.join(self.installation_path, item)
                     
                     if item == "app_data":
                         continue
                     
-                    if os.path.isdir(item_path):
-                        shutil.rmtree(item_path)
-                    elif os.path.isfile(item_path):
-                        os.remove(item_path)
+                    try:
+                        if os.path.isdir(item_path):
+                            shutil.rmtree(item_path)
+                        elif os.path.isfile(item_path):
+                            os.remove(item_path)
+                    except PermissionError as e:
+                        self.queue.put(("log", "Removing previous installation failed"))
+                        logging.error(f"Deleting previous installation failed: {e}")
+                        continue
 
             repo_api_url = "https://api.github.com/repos/FlamingWater35/SaveManager/releases/latest"
             
-            self.log_text("Fetching latest release information...")
+            self.queue.put(("log", "Fetching latest release information..."))
             response = requests.get(repo_api_url)
             response.raise_for_status()
             release_data = response.json()
@@ -296,7 +329,7 @@ class App(ct.CTk):
                 self.show_error_popup("No .7z file found in latest release.")
                 return
             
-            self.log_text(f"Downloading files from {asset_url}...")
+            self.queue.put(("log", f"Downloading files from {asset_url}..."))
 
             # Download 7z archive
             response = requests.get(asset_url, stream=True)
@@ -310,9 +343,9 @@ class App(ct.CTk):
                 archive_buffer.write(chunk)
                 downloaded += len(chunk)
                 if total_size > 0:
-                    self.install_progress_bar_value = downloaded / total_size
+                    self.installation_progress = downloaded / total_size
 
-            self.log_text("Extracting files...")
+            self.queue.put(("log", "Extracting files..."))
             archive_buffer.seek(0)
 
             # Extract 7z archive
@@ -325,11 +358,13 @@ class App(ct.CTk):
             if self.start_menu.get():
                 self.create_start_menu_shortcut()
             
-            self.log_text("Installation complete!")
+            self.queue.put(("log", "Installation complete!"))
+            self.installation_progress = 1.0
             self.install_is_completed = True
         
         except Exception as e:
-            self.show_error_popup(e)
+            self.install_is_completed = True
+            self.after(0, self.show_error_popup(e))
             logging.error(f"Installation failed: {e}")
         
     def create_desktop_shortcut(self):
@@ -345,9 +380,11 @@ class App(ct.CTk):
             shortcut.WorkingDirectory = self.installation_path
             shortcut.Save()
             self.log_text(f"Desktop shortcut created")
-            
+
         except Exception as e:
             self.log_text(f"Failed to create desktop shortcut: {e}")
+        finally:
+            pythoncom.CoUninitialize()
 
     def create_start_menu_shortcut(self):
         try:
@@ -365,6 +402,8 @@ class App(ct.CTk):
             
         except Exception as e:
             self.log_text(f"Failed to create start menu shortcut: {e}")
+        finally:
+            pythoncom.CoUninitialize()
 
     def select_folder(self):
         try:
@@ -377,11 +416,11 @@ class App(ct.CTk):
             self.show_error_popup(e)
             logging.error(f"Error in select_folder: {e}")
     
-    def validate_folder_path(self, event=None):
+    def validate_folder_path(self):
         try:
             folder_path = self.path_entry.get()
-            if os.path.exists(folder_path):
-                self.installation_path = folder_path.replace(" ", "")
+            if os.path.exists(folder_path) and os.path.isdir(folder_path):
+                self.installation_path = folder_path.rstrip()
                 self.path_entry.configure(border_color="#2E7D32")
             else:
                 self.installation_path = None
