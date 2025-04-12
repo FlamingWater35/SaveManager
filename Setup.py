@@ -1,9 +1,10 @@
 import customtkinter as ct
 from tkinter import filedialog
-import os
-import logging
 from CTkToolTip import CTkToolTip
 from CTkMessagebox import CTkMessagebox
+
+import os
+import logging
 import requests
 import io
 import sys
@@ -416,7 +417,7 @@ class App(ct.CTk):
             self.show_error_popup(e)
             logging.error(f"Error in select_folder: {e}")
     
-    def validate_folder_path(self):
+    def validate_folder_path(self, event=None):
         try:
             folder_path = self.path_entry.get()
             if os.path.exists(folder_path) and os.path.isdir(folder_path):
@@ -425,6 +426,7 @@ class App(ct.CTk):
             else:
                 self.installation_path = None
                 self.path_entry.configure(border_color="#B71C1C")
+                
         except Exception as e:
             self.show_error_popup(e)
             logging.error(f"Error in validate_folder_path: {e}")
